@@ -1,6 +1,6 @@
 # 0018 — El Puntaje Ranking se ingresa manualmente en el simulador
 
-Fecha: 2026-11-07 · Estado: propuesta
+Fecha: 2026-11-07 · Estado: aceptada (2026-11-09, por el líder, tras [revisión legal](../revision-legal-adr-pendientes.md); pendiente: este número 0018 está repetido, el líder decide cuál pasa a 0022)
 
 ## Contexto
 

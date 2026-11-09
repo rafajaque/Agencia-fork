@@ -120,4 +120,4 @@ Para cerrar la advertencia de comparación, se repitió la prueba solo con las c
 - No se ha publicado ni citado ninguna cifra fuera del repositorio.
 - No se ha probado el pronóstico con una institución.
 - No se ha decidido el precio ni la vía de compra; eso es del líder y de asesoría legal.
-- El ADR 0018 sigue como propuesta, pendiente de revisión legal.
+- El ADR 0018 está aceptado solo como decisión interna (2026-11-09); la oferta comercial sigue pendiente de un abogado habilitado.

@@ -2,6 +2,36 @@
 
 Memoria de trabajo entre sesiones. Lo más reciente, arriba.
 
+## 2026-11-09 (revisión legal de los documentos sin aprobar)
+
+**Hecho**: `docs/revision-legal-adr-pendientes.md` (revisión jurídica hecha por IA, no por abogado). Aceptados por el líder: ADR 0012, 0013, 0014, 0016 (como compuerta), 0017, 0018 producto (solo decisión interna), 0018 puntaje y el plan de análisis (con A5 y la parte B bloqueadas). No aprobados: informe del pronóstico y propuesta institucional (borradores). Se corrigieron enlaces rotos al ADR 0017 y un error de tipeo. Sin commit.
+**Pendiente del líder**: abogado habilitado para contrato, vía de compra y preguntas del ADR 0018 antes del 1-dic-2026; decidir cuál de los dos ADR 0018 pasa a 0022; confirmar por escrito la reutilización comercial de datos SIES y Mineduc; leer la Ley 21.091 en bcn.cl.
+
+## 2026-11-09 (PR 81 fusionado; hoja para la profesional, PR 83; cuenta y ficha bloqueadas)
+
+**Hecho**: PR 81 (nota de cierre estructurada, P8) fusionado a `main` (commit `027a219`), con CI en verde, incluidas las pruebas RLS. Pendiente del líder: aplicar `20261109100000_nota_de_cierre_estructurada.sql` en Supabase, después de `20261108100000`. PR 83: `docs/revision-profesional-una-pagina.md`, hoja de una página para la profesional (borrador, sin enviar).
+**No hecho, con motivo**: la cuenta del estudiante (ADR 0015) y la ficha de trayectoria. Faltan decisiones y fuentes que no puedo inventar: lista de dominios institucionales verificada, campos por capa de la Ficha y revisión legal de la capa sensible. Configurar el acceso por correo en Supabase cambia ajustes de seguridad que el líder debe autorizar. Sin cuenta no hay pantalla de ficha útil.
+**No hecho**: los PR de Ale y Cris (ramas de ellos, no mías).
+
+## 2026-11-09 (decisiones de derivación: P2, P3, P5 y P8 aceptadas)
+
+**Hecho**: el líder aceptó las propuestas de P2 (sin guardia: alerta sin revisión humana fuera de horario, con aviso a la persona), P3 (contacto solo con sesión y consentimiento), P5 (la persona ve que hubo revisión, sin detalle) y P8 (nota de cierre con tres datos). Queda registrado en `docs/revision-profesional-derivacion.md`, sección 3. Sin commit, en `feat/tablero-pronostico`.
+**Implementado**: P8 en el PR 81 (borrador, rama `feat/nota-cierre-derivacion`): migración `20261109100000_nota_de_cierre_estructurada.sql` (cierre con contactada, red y fecha de seguimiento), pruebas RLS actualizadas. Las pruebas no se corrieron localmente; corren en CI. Aplicar la migración en Supabase lo hace el líder.
+**Pendiente de implementación**: P2 (texto para la persona, requiere revisión profesional del protocolo); P3 (la app no tiene flujo de contacto); P5 (requiere la cuenta del estudiante, ADR 0015). P1, P4, P6 y P7 como `TODO(profesional)` o `TODO(legal)`.
+**Pendiente del líder**: decidir si se fusiona el PR 79 (no se respondió).
+
+## 2026-11-09 (transparencia y tablero solo internos; resumen para la propuesta, PR 79)
+
+**Decisión del líder**: publicar solo si no afecta en nada y trae beneficio. Hoy no se cumple: la transparencia compromete a publicar la comparación, y el tablero trae nombres e insumos sin verificar. Queda interno. El PR 78 (transparencia) pasó a borrador y no se fusiona.
+**Hecho**: `docs/mercado/resumen-interno-oferta.md` en el PR 79 (borrador, desde `origin/main`, sin fusionar): cifras registradas con rango, historial de validación, qué no decimos, preguntas probables y calendario con solo la fecha del 4-ene-2027 confirmada. Uso interno.
+**Corrección**: el tablero (`datos/pronosticos/dashboard/`) ya está en `main`, no pendiente. El repositorio es privado.
+**Pendiente**: revisión del líder del PR 79; revisión legal antes de usar cifras con una institución; verificar a mano la fecha DEMRE antes de citarla.
+
+## 2026-11-09 (decisiones del líder: #74 fusionado, ADR 0015/0019/0020 aceptados)
+
+**Hecho**: #74 se marcó como listo y se fusionó a `main` con squash (commit `383b603`); estaba en borrador con CI en verde. Los ADR 0015, 0019 y 0020 pasan a «aceptada» (solo la línea de estado; sin commit).
+**Pendiente del líder**: aprobación de #74 con otra cuenta de revisor (no se hizo); confirmar en Supabase las migraciones `20261108100000_alertas_y_derivacion.sql` y `20261108110000_derechos_del_titular.sql`; definir los `TODO(profesional)` del ADR 0019 y los `TODO(legal)` del ADR 0020.
+
 ## 2026-11-09 (mezcla de ingreso 2026 verificada en el informe del SIES, #78)
 
 **Hecho**: se leyó el «Informe de Matrícula en Educación Superior en Chile 2026» (SIES, julio de 2026; https://www.mifuturo.cl/wp-content/uploads/2026/07/Informe-de-Matr%C3%ADcula-2026.pdf). Su tabla 7 trae el primer año de pregrado 2026: universidades 161.292 (43,5 %), IP 166.139 (44,8 %), CFT 43.636 (11,8 %), total 371.067. Con esos conteos exactos y las tasas de retención por tipo, 382.725 × 77,497 % da 296.601, la permanencia registrada: el cálculo se reproduce sin redondeos. La base de matrícula histórica está en https://www.mifuturo.cl/bases-de-datos-de-matriculados/ (`Matricula_2007_2026_WEB_10_07_2026.zip`).

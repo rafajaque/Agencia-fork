@@ -1,6 +1,6 @@
 # 0017 — Pronóstico agregado de la próxima generación y piloto en una sede privada
 
-Fecha: 2026-11-07 · Estado: propuesta (pendiente de revisión del líder, @rafajaque) · Relacionado: [ADR 0010](0010-modulo-de-permanencia.md), [ADR 0012](0012-cadena-causal-y-promesa.md), [ADR 0015](0015-cuenta-del-estudiante-y-vinculo-institucional.md), [ADR 0016](0016-prediccion-condicionada-de-riesgo.md)
+Fecha: 2026-11-07 · Estado: aceptada (2026-11-09, por el líder, tras [revisión legal](../revision-legal-adr-pendientes.md); el nombre de la institución no sale del repositorio sin autorización escrita) · Relacionado: [ADR 0010](0010-modulo-de-permanencia.md), [ADR 0012](0012-cadena-causal-y-promesa.md), [ADR 0015](0015-cuenta-del-estudiante-y-vinculo-institucional.md), [ADR 0016](0016-prediccion-condicionada-de-riesgo.md)
 
 ## Contexto
 
@@ -10,7 +10,7 @@ Para el primer piloto se pidió una **sede de una institución privada**, en la 
 
 1. **Relación con la institución.** Un piloto con nombre propio puede parecer una recomendación o una relación comercial. El portal público no puede ordenar ni destacar instituciones por ser clientes (AGENTS.md, sección 1).
 2. **Tamaño de la muestra.** Una sede pequeña tiene pocos casos por cohorte. Con pocos casos las tasas son inestables, y un pronóstico sin intervalos visibles puede inducir a error.
-3. **Lo que se dijo en la conversación.** Una persona de la institución señaló que ya ya tiene sus propios datos y no le interesa la información que puede aportar la plataforma. Es una sola conversación y no representa a la institución. Sirve como hipótesis para preguntar, no como conclusión.
+3. **Lo que se dijo en la conversación.** Una persona de la institución señaló que ya tiene sus propios datos y no le interesa la información que puede aportar la plataforma. Es una sola conversación y no representa a la institución. Sirve como hipótesis para preguntar, no como conclusión.
 
 ## Opciones evaluadas
 
