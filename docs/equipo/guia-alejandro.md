@@ -31,9 +31,17 @@ Según la Matriz RACI (Tabla 3.8) y los entregables (Tabla 3.10), tú eres:
 | **S2 (10 al 16 nov)** | Cerrar el simulador (PR 132); probar la ficha y el comparador a 360 px, con teclado y lector de pantalla | La ficha de una carrera real se ve en el teléfono con fuente y fecha (lunes 16) |
 | **S3 (17 al 23 nov)** | **OE1 completo:** ficha con puntaje ponderado, arancel y beneficio aplicable bien visibles; simulador fusionado. Pantallas de consentimiento (T4) | Un estudiante identifica los tres datos sin ayuda (4 de 5 en la prueba); 100 % de los datos con fuente (lunes 23) |
 | **S3 y S4** | **OE2:** revisar la guía de trámites y el calendario del FUAS a 360 px, con el próximo plazo visible en la portada | Se identifica el próximo plazo del FUAS en menos de un minuto (T3) |
-| **S3 y S4 (17 al 30 nov)** | **OE3:** pantallas del panel de seguimiento con datos ficticios, marcadas «Datos de demostración». Primera versión lunes 23 | Ver sección 4, tarea A12 |
+| **S3 y S4 (17 al 27 nov)** | **OE3:** pantallas del panel de seguimiento con datos ficticios, marcadas «Datos de demostración». Primera versión lunes 23 | Ver sección 4, tarea A12 |
 | **S4 (24 al 30 nov)** | Aplicar la **prueba de uso** con Cristóbal; corregir con ramas `fix/…` lo que falle; auditoría de accesibilidad | 16 de 20 tareas completadas sin ayuda (sección 5) |
-| **Cierre (18 y 19 dic)** | Informe de la prueba y presentación | Entrega el 19 de diciembre |
+| **Vie 27 nov** | **Congelamiento de funciones:** el panel y las pantallas de consentimiento, listos para revisión | Ninguna función nueva después de esta fecha |
+| **Lun 30 nov** | Termina la prueba de uso; entregas a Rafael la lista de hallazgos con gravedad y arreglo propuesto | Cada hallazgo con pantalla, tarea y gravedad |
+| **Mar 1 dic** | Todo tu trabajo de funciones fusionado a `main` | Ningún PR de función tuyo abierto |
+| **1 al 4 dic** | Corregir los hallazgos de la prueba con ramas `fix/…` (los graves primero) | Hallazgos graves corregidos el vie 4 dic; el resto con estado y motivo |
+| **7 al 11 dic** | Auditoría de accesibilidad final (A13) y pulido de interfaz con los tokens existentes; mejoras leves | `docs/auditoria-accesibilidad.md` con 0 fallas AA graves el vie 11 dic |
+| **14 al 17 dic** | Informe de la prueba de uso (T1 a T4, resultados, hallazgos, limitaciones); ensayo de la presentación. Último PR de código el mar 15 dic | Informe sin marcas `[COMPLETAR]` el mié 16 dic |
+| **Cierre (18 y 19 dic)** | Presentación | Entrega el 19 de diciembre |
+
+**Cómo se usa la ventana del 1 al 17 de diciembre:** el desarrollo de funciones termina el 27 de noviembre y el 1 de diciembre todo debe estar en `main`. Esas semanas son para pulir y probar, no para terminar lo pendiente. Una mejora leve no agrega pantallas, tablas ni dependencias, cabe en un PR de menos de 150 líneas y no toca consentimiento ni aislamiento; si necesita más, pasa a proyección. Revisiones de PR: martes 1, 8 y 15 y viernes 4 y 11 de diciembre.
 
 ---
 
@@ -85,7 +93,7 @@ Las fórmulas viven en `lib/calculos/2027/` (Cristóbal). Tú solo las llamas.
 - [ ] 360 px, teclado y lector de pantalla.
 
 ### A12 · Panel de seguimiento para colegios (pantallas)
-**Skills:** `mapa-de-trayecto`, `asistente-seguro`, `lenguaje-claro` · **Fechas:** primera versión lunes 23; final lunes 30 nov
+**Skills:** `mapa-de-trayecto`, `asistente-seguro`, `lenguaje-claro` · **Fechas:** primera versión lunes 23; final **viernes 27 nov** (congelamiento de funciones)
 
 Alcance acordado (ADR 0031 y propuesta del PR 153; el líder lo confirma el 18 de noviembre): meta vocacional de cada estudiante, su avance (ensayo con prueba oficial publicada, por enlace, y estimación comparada con la meta de la carrera) y un **resumen para el docente**. Solo de estudiantes que lo autorizan. Datos **ficticios** y etiqueta visible «Datos de demostración».
 
@@ -101,7 +109,7 @@ Alcance acordado (ADR 0031 y propuesta del PR 153; el líder lo confirma el 18 d
 **Fuera del alcance** (escalabilidad): permanencia en educación superior, pulso de check-in, predicción o riesgo de deserción, panel para instituciones de educación superior, pruebas propias por colegio. No diseñes pantallas para ellos.
 
 ### A13 · Auditoría de accesibilidad y rendimiento
-**Rama:** `fix/auditoria-final` · **Fecha:** del 16 al 23 nov una primera pasada; final antes de la prueba (24 nov)
+**Rama:** `fix/auditoria-final` · **Fecha:** del 16 al 23 nov una primera pasada; segunda pasada completa del 7 al 11 dic, sobre `main`
 
 Recorre **todas** las pantallas del entregable (ficha, explorador, comparador, simulador, hoja de decisión, FUAS y calendario, consentimiento, panel) y deja un informe en `docs/auditoria-accesibilidad.md`:
 
@@ -117,6 +125,8 @@ Recorre **todas** las pantallas del entregable (ficha, explorador, comparador, s
 
 Corrige lo que encuentres y anota lo que quede pendiente. Cumple WCAG 2.2 nivel AA.
 
+**Del 1 al 17 de diciembre (A13 final):** repite la tabla sobre `main` ya fusionado (vie 11 dic) y corrige solo con mejoras leves. **Criterios:** 0 errores de axe, Lighthouse de accesibilidad 100, sin desplazamiento horizontal a 360 px, foco visible en todas las pantallas, textos al 200 % sin cortes. Lo que exceda una mejora leve queda anotado en el informe como limitación o proyección.
+
 ### A15 · Indicador de etapas del proceso en la portada
 Hay una decisión pendiente del líder sobre **qué estaciones muestra el indicador** (con el alcance vigente, «Llegar» y «Avanzar» no tienen pantallas). **No cambies el indicador** hasta que la decida (ver `docs/diseno.md` y la skill `mapa-de-trayecto`). La función de fechas depende de `datos/calendario/` (tarea C14 de Cristóbal), que aún no existe.
 
@@ -130,7 +140,7 @@ Eres el responsable de los indicadores **I-OG, I-OE1b e I-OE2a**. Cristóbal org
 
 **Cuatro tareas centrales** (Anexo 3.A): T1 encontrar una carrera y leer su fuente y fecha; T2 identificar su puntaje ponderado, arancel y beneficio; T3 identificar el próximo plazo del FUAS; T4 decidir qué compartir con el colegio y revocarlo. 5 estudiantes × 4 tareas = 20; la meta es **16 sin ayuda (80 %)**.
 
-**Antes del 24 de noviembre** deben estar fusionados: ficha con puntaje, arancel y beneficio; simulador; calendario y guía del FUAS; consentimiento. Si falta algo, avisa en el grupo **ese mismo día**; no se esconde el atraso.
+**Antes del 24 de noviembre** deben estar fusionados: ficha con puntaje, arancel y beneficio; simulador; calendario y guía del FUAS; consentimiento. Si falta algo, avisa en el grupo **ese mismo día**; se reordena el plan con fechas nuevas.
 
 ---
 

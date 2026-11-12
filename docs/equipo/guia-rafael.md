@@ -32,9 +32,12 @@ Producto acordado (ADR 0031): sitio gratuito para estudiantes de 3.º y 4.º med
 |---|---|---|---|---|
 | **F1 Datos y ficha de carrera (OE1)** | S1 y S2 (3 al 16 nov) | Aprobar y fusionar la ficha, el explorador, el comparador y la carga de oferta; base de datos y RLS | Ficha se abre en teléfono con fuente, enlace y fecha | Hecha en lo central: ficha en vivo desde Supabase, 11.364 carreras procesadas. Pendiente: confirmar 360 px y teclado en el sitio publicado |
 | **F2 Guía de trámites del FUAS (OE2)** | S2 y S3 (10 al 23 nov) | Aprobar; verificar fechas del FUAS 2027 | Cada hito con fuente y fecha de vigencia (100 %) | Hecha en lo central: portada con acceso a plazos (PR 141, 146), calendario corregido (PR 142), guía según la situación (PR 152) |
-| **F3 Panel de seguimiento (OE3)** | S3 y S4 (17 al 30 nov) | **Diseñar y programar** el panel con datos ficticios; **consentimiento y aislamiento** con pruebas | Panel muestra meta y avance y quién necesita apoyo; el colegio pierde el acceso al revocar; pruebas aprobadas (I-OE3b 100 %) | **Pendiente.** Hay propuesta (PR 153, abierto) y tablas en la base; falta la interfaz, la meta de carrera, el resumen para el docente y la prueba de revocación |
+| **F3 Panel de seguimiento (OE3)** | S3 y S4 (17 al **27 nov**, congelamiento de funciones) | **Diseñar y programar** el panel con datos ficticios; **consentimiento y aislamiento** con pruebas | Panel muestra meta y avance y quién necesita apoyo; el colegio pierde el acceso al revocar; pruebas aprobadas (I-OE3b 100 %) | **Pendiente.** Hay propuesta (PR 153, abierto) y tablas en la base; falta la interfaz, la meta de carrera, el resumen para el docente y la prueba de revocación |
 | **F4 Validación** | S4 (24 al 30 nov) | Consentimientos y autorizaciones; aprobar el informe de la prueba | 5 estudiantes y 2 profesionales; menores con autorización del tutor | Pendiente: el reclutamiento depende de ti (colegios, carta formal) |
-| **F5 Cierre** | 18 y 19 dic | Informe final y presentación (Tabla 3.10, fila OG) | Entrega completa | Pendiente |
+| **F5a Fusión y correcciones** | Mar 1 dic y 1 al 4 dic | Fusionar todo a `main`; revisar las ramas `fix/…` de la prueba de uso | Ningún PR de función abierto el 1 dic; hallazgos graves corregidos el 4 dic | Pendiente |
+| **F5b Pruebas y privacidad** | 7 al 11 dic | Revisión de privacidad; repetir las pruebas de consentimiento y aislamiento sobre `main`; revisar mejoras leves | Pruebas 100 % aprobadas; sin datos personales en URL, logs ni analítica | Pendiente |
+| **F5c Informe** | 14 al 17 dic | Informe final; último PR de código el mar 15 dic | Sin marcas `[COMPLETAR]`; cifras coinciden con la prueba y los datos | Pendiente |
+| **F5d Cierre** | 18 y 19 dic | Revisión final y presentación (Tabla 3.10, fila OG) | Entrega completa | Pendiente |
 
 ### Hitos con fecha
 
@@ -43,7 +46,13 @@ Producto acordado (ADR 0031): sitio gratuito para estudiantes de 3.º y 4.º med
 | **Lun 16 nov** | Cierre de F1: ficha con fuente en teléfono | Revisión en el sitio publicado |
 | **Lun 23 nov** | OE1 completo (I-OE1a 100 %): ficha, puntaje ponderado con pruebas (simulador, PR 132) y arancel y beneficio visibles. **Clave de Gemini en el nivel pagado** (ADR 0004) antes de cualquier prueba con personas | Revisión por muestra de las cifras |
 | **Lun 23 nov** | Carta a colegios enviada y 7 participantes confirmados (invitar a más de los necesarios) | Lista sin nombres en el repositorio |
-| **Lun 30 nov** | OE2 y OE3 completos; prueba de uso terminada (24 al 30) | Informe de la prueba y de las pruebas automáticas de consentimiento y aislamiento |
+| **Vie 27 nov** | Congelamiento de funciones: OE2 y OE3 completos, con pruebas automáticas de consentimiento y aislamiento aprobadas | Informe de las pruebas automáticas |
+| **Lun 30 nov** | Prueba de uso terminada (24 al 30); hallazgos con gravedad | Lista de hallazgos |
+| **Mar 1 dic** | Todo fusionado a `main` y publicado | `main` pasa lint, pruebas y `tokens.py --check` |
+| **Vie 4 dic** | Hallazgos graves de la prueba corregidos | Revisión de las ramas `fix/…` |
+| **Vie 11 dic** | Revisión de privacidad hecha; pruebas 100 % aprobadas sobre `main` | Informe corto de la revisión |
+| **Mar 15 dic** | Último PR de código fusionado | `main` sin PR de código abiertos |
+| **Jue 17 dic** | Informe final y presentación listos | Sin marcas pendientes |
 | **Sáb 19 dic** | Informe final y presentación | Entrega |
 
 ---
@@ -76,13 +85,17 @@ Cerrados sin fusionar (reemplazados por otros): PR 62 (por 92), 119 (por 121), 1
 | R2 | Confirmar en el sitio publicado la ficha a 360 px y con teclado | Lun 16 nov | Sin desplazamiento horizontal; foco visible | Pendiente |
 | R3 | **Decidir el alcance del panel** (PR 153) y escribir el ADR corto si cambia algo | Mié 18 nov | Alcance: ensayo oficial publicado por enlace y estimación comparada con la meta de la carrera, meta de carrera, resumen para el docente. Lo demás, escalabilidad | Pendiente |
 | R4 | **Consentimiento del estudiante** (ADR 0015) en la interfaz: sin casillas premarcadas, por finalidad, revocable; flujo del tutor para menores (ADR 0022) | Vie 20 nov | El menor no se autoriza a sí mismo; revocar quita el acceso del colegio | Base de datos hecha; interfaz pendiente |
-| R5 | **Panel de seguimiento** con datos ficticios, marcado «Datos de demostración» | Lun 23 nov (primera versión), Lun 30 nov (final) | Muestra meta y avance de cada estudiante y quién necesita apoyo y por qué; solo de quienes autorizan; grupos pequeños sin cifra | Pendiente |
+| R5 | **Panel de seguimiento** con datos ficticios, marcado «Datos de demostración» | Lun 23 nov (primera versión), **Vie 27 nov** (final) | Muestra meta y avance de cada estudiante y quién necesita apoyo y por qué; solo de quienes autorizan; grupos pequeños sin cifra | Pendiente |
 | R6 | **Pruebas automáticas de consentimiento y aislamiento** (I-OE3b) | Vie 27 nov | 100 % aprobadas; incluyen revocación y un colegio que no ve a otro | Aislamiento por institución probado; consentimiento pendiente |
 | R7 | Pasar Gemini al nivel pagado y verificar variables del despliegue (`GEMINI_API_KEY`, `GEMINI_MODELO`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`) | Lun 23 nov | Ninguna clave en el repositorio | Pendiente |
 | R8 | **Reclutar** a 5 estudiantes y 2 profesionales de colegios; carta formal; autorizaciones de tutores guardadas fuera del repositorio | Lun 23 nov | 7 confirmados | Pendiente |
 | R9 | Sesión de validación del panel con los 2 profesionales | 24 al 30 nov | 2 de 2 identifican a quién apoyar en un caso ficticio (I-OE3a) | Pendiente |
-| R10 | Completar el entregable con los resultados de la encuesta, las entrevistas y la prueba de uso (los `[COMPLETAR]`) | 1 dic | Sin marcas pendientes | Pendiente |
-| R11 | Informe final y presentación | 19 dic | Entrega completa | Pendiente |
+| R10 | Completar el entregable con los resultados de la encuesta, las entrevistas y la prueba de uso (los `[COMPLETAR]`) | 4 dic (primer borrador) y 17 dic (final) | Sin marcas pendientes | Pendiente |
+| R12 | **Fusionar todo a `main`**: revisar y fusionar cada PR de función abierto; decidir qué pasa a proyección | Mar 1 dic | Ningún PR de función abierto; `main` pasa lint, pruebas y `tokens.py --check` | Pendiente |
+| R13 | **Revisión de PR** de las correcciones y mejoras leves (martes y viernes) | 1, 4, 8, 11 y 15 dic | Cada PR con primera revisión en la ventana; una mejora leve no agrega pantallas, tablas ni dependencias y no toca consentimiento ni aislamiento | Pendiente |
+| R14 | **Revisión de privacidad** sobre `main`: campos personales justificados, menores con autorización del tutor, sin datos personales en URL, logs, errores ni analítica; repetir las pruebas de consentimiento y aislamiento | Vie 11 dic | Pruebas 100 % aprobadas; el colegio pierde el acceso al revocar; informe corto con lo verificado | Pendiente |
+| R15 | **Verificar el panel** con datos ficticios tras las correcciones: etiqueta «Datos de demostración», solo estudiantes que autorizan, grupos pequeños sin cifra | Vie 11 dic | Sin cambios en el comportamiento de consentimiento después del 27 nov | Pendiente |
+| R11 | Informe final y presentación (ensayo el 17 dic; revisión final el 18) | 19 dic | Entrega completa | Pendiente |
 
 ---
 

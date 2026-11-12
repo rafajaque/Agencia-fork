@@ -127,11 +127,16 @@ Es el Gantt de la Tabla 3.7. El detalle por persona, con criterios de aceptació
 | F1 · Datos oficiales y ficha de carrera (OE1) | S1 y S2 (3 al 16 nov) | Base de datos y RLS; aprobar | Ficha, explorador, comparador | Cargas oficiales, fórmula del ranking | Ficha con fuente y fecha (**hecha en lo central**) |
 | F2 · Guía de trámites y plazos del FUAS (OE2) | S2 y S3 (10 al 23 nov) | Aprobar | Guía y calendario | Hitos con fuente y vigencia | Guía y calendario con vigencia |
 | OE1 completo | **Lun 23 nov** | Revisar el simulador (PR 132) | Simulador y puntaje, arancel y beneficio a la vista | Casos del puntaje ponderado; 100 % de datos con fuente | I-OE1a = 100 % |
-| F3 · Panel de seguimiento (OE3) | S3 y S4 (17 al 30 nov) | Panel (lógica), consentimiento y aislamiento con pruebas | Pantallas del panel y del consentimiento | Textos y datos de metas de carrera | Panel con datos ficticios |
+| F3 · Panel de seguimiento (OE3) | S3 y S4 (17 al **27 nov**, congelamiento de funciones) | Panel (lógica), consentimiento y aislamiento con pruebas | Pantallas del panel y del consentimiento | Textos y datos de metas de carrera | Panel con datos ficticios |
 | F4 · Validación | S4 (24 al 30 nov) | Reclutar colegios y autorizaciones | Observar, anotar y corregir | Organizar las sesiones y el informe | 16 de 20 tareas sin ayuda |
-| F5 · Cierre | 18 y 19 dic | Informe final y presentación | Informe de la prueba | Informe de datos | **Entrega el 19 dic** |
+| F5a · Todo fusionado y correcciones | **Mar 1 dic** y 1 al 4 dic | Fusionar todo a `main`; revisar `fix/…` | Corregir hallazgos de la prueba | Corregir datos y textos hallados | Ningún PR de función abierto; hallazgos graves corregidos |
+| F5b · Pruebas y mejoras leves | 7 al 11 dic | Privacidad, consentimiento y aislamiento; revisión de PR | Auditoría de accesibilidad; pulido de interfaz | Verificación de datos con fuente; mejoras leves de la ficha | Pruebas 100 % aprobadas; 100 % de datos con fuente |
+| F5c · Documentación e informe | 14 al 17 dic (último PR de código: mar 15) | Informe final | Informe de la prueba | Informe de datos | Informes sin marcas `[COMPLETAR]` |
+| F5d · Cierre | 18 y 19 dic | Revisión final y presentación | Presentación | Presentación | **Entrega el 19 dic** |
 
-**Hito al cierre de cada semana** (lunes 16, 23 y 30): algo que se pueda mostrar en un teléfono.
+**Ritmo de las próximas semanas:** el desarrollo de funciones termina el **viernes 27 de noviembre**; el **martes 1 de diciembre** todo debe estar fusionado a `main`. La ventana del 1 al 17 de diciembre es para pulir y probar (correcciones, accesibilidad, verificación de datos, mejoras leves, documentación e informe), no para terminar lo pendiente. Una mejora leve no agrega pantallas, tablas ni dependencias, cabe en un PR de menos de 150 líneas y no toca consentimiento ni aislamiento; lo demás pasa a proyección. **Revisión de PR: martes (1, 8 y 15 dic) y viernes (27 nov, 4 y 11 dic).**
+
+**Hito al cierre de cada semana** (lunes 16 y 23, viernes 27 de noviembre y viernes 4 y 11 de diciembre): algo que se pueda mostrar en un teléfono.
 
 ---
 
@@ -144,9 +149,12 @@ Es el Gantt de la Tabla 3.7. El detalle por persona, con criterios de aceptació
 | Alejandro | Base de datos y reglas de consentimiento para las pantallas | Líder | Vie 20 nov |
 | Cristóbal | Carta a colegios y autorizaciones de tutores | Líder | Lun 23 nov |
 | Alejandro y Cristóbal | Todo lo que se prueba, fusionado y publicado | Todos | Lun 23 nov (la prueba empieza el 24) |
+| Rafael | Lista de hallazgos de la prueba, con gravedad y arreglo propuesto | Alejandro y Cristóbal | Lun 30 nov |
+| Todos | Todo lo comprometido, fusionado a `main` | Todos | Mar 1 dic |
+| Alejandro | Datos y textos verificados de cada pantalla para el informe | Cristóbal | Vie 11 dic |
 | Alejandro | Textos revisados de cada pantalla | Cristóbal | El día después de cada pantalla |
 
-Si una dependencia se atrasa, **trabaja con datos de ejemplo** y avisa en el grupo ese mismo día. Nunca te quedes esperando sin decir nada.
+Si una dependencia no llega en la fecha, **trabaja con datos de ejemplo** y avisa en el grupo ese mismo día. Nunca te quedes esperando sin decir nada.
 
 ---
 
