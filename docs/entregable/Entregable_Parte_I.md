@@ -1085,9 +1085,9 @@ La valorización responde cuánto cuesta mantener funcionando el servicio y, por
 
 **Supuestos de cálculo.**
 
-- **Remuneración de referencia.** Se usan los rangos de remuneración mensual de los tres perfiles del propio equipo, consultados en Get on Board (2026): un *product builder* semi senior (Rafael), de $1.400.000 a $2.000.000; un encargado de datos junior (Cristóbal), de $1.200.000 a $1.500.000, y un diseñador backend junior (Alejandro), de $1.200.000 a $1.500.000. Con el punto medio de cada rango ($1.700.000, $1.350.000 y $1.350.000), el promedio es **$1.466.667 al mes**.
+- **Remuneración de referencia.** Se usan tres ofertas de empleo publicadas en Get on Board el 11 de noviembre de 2026, una por perfil del equipo, con su sueldo bruto mensual en dólares: *Full-Stack Developer*, semi senior, Santiago (híbrido), US$ 2.500 a 2.700 (referencia para Rafael); *Data Scientist Junior*, Santiago (presencial), US$ 1.400 a 2.300, publicada con nivel semi senior (referencia para Cristóbal); e *Ingeniero/a de Proyecto — Implementación*, junior, Santiago (presencial), US$ 1.100 a 1.600 (referencia para Alejandro). Con el punto medio de cada rango (US$ 2.600, US$ 1.850 y US$ 1.350) el promedio es **US$ 1.933 al mes**, que al supuesto de $950 por dólar equivale a **$1.836.667**. Son sueldos brutos de ofertas, no de contratos.
 - **Horas mensuales.** Jornada de 42 horas semanales desde abril de 2026 (Ley 21.561): 42 × 4,33 ≈ 182 horas al mes.
-- **Costo hora.** Costo base = $1.466.667 ÷ 182 = $8.059. Con 30 % de costos adicionales (factor 1,30), el costo hora es $8.059 × 1,30 = **$10.477**.
+- **Costo hora.** Costo base = $1.836.667 ÷ 182 = $10.092. Con 30 % de costos adicionales (factor 1,30), el costo hora es $10.092 × 1,30 = **$13.120**.
 - **Tipo de cambio.** Los servicios en la nube se cobran en dólares. Se usa un supuesto de $950 por dólar, que se reemplaza por el dólar observado del Banco Central del día de entrega.
 - **Servicios de infraestructura.** Cloudflare Workers, plan de pago: US$ 5 al mes (Cloudflare, s. f.). Supabase, plan Pro: US$ 25 al mes por organización (Supabase, s. f.). Dominio .cl: $9.990 al año, tarifa de NIC Chile vigente desde el 1 de noviembre de 2023 (NIC Chile, 2023); se confirma al inscribir.
 
@@ -1098,20 +1098,20 @@ La valorización responde cuánto cuesta mantener funcionando el servicio y, por
 | Cloudflare Workers (plan de pago) | Fijo, pecuniario | US$ 5 × $950 | $4.750 |
 | Supabase Pro | Fijo, pecuniario | US$ 25 × $950 | $23.750 |
 | Dominio .cl | Fijo, pecuniario | $9.990 × 1,19 ÷ 12 | $991 |
-| Actualización de datos y soporte | Fijo, valorizado | 10 h × $10.477 | $104.770 |
-| Mantención y mejora del sistema | Fijo, valorizado | 20 h × $10.477 | $209.540 |
-| **Costos fijos mensuales** | | | **$343.801** |
-| Capacitación y soporte por colegio | Variable por colegio | 4 h × $10.477 | $41.908 |
+| Actualización de datos y soporte | Fijo, valorizado | 10 h × $13.120 | $131.200 |
+| Mantención y mejora del sistema | Fijo, valorizado | 20 h × $13.120 | $262.400 |
+| **Costos fijos mensuales** | | | **$423.091** |
+| Capacitación y soporte por colegio | Variable por colegio | 4 h × $13.120 | $52.480 |
 
 Los planes gratuitos de Cloudflare y Supabase alcanzan para el prototipo, pero el plan gratuito de Supabase pausa los proyectos inactivos por siete días y el de Cloudflare no permite procesar tarjetas; por eso los costos operativos parten del plan de pago.
 
 **Cálculo del precio (costo más margen).** Unidad de venta: suscripción mensual por colegio. Meta: 3 colegios (supuesto de partida; no hay colegio comprometido).
 
-- Costo total = $343.801 + 3 × $41.908 = $469.525.
-- Costo unitario = $469.525 ÷ 3 = $156.508 por colegio al mes.
-- Margen de 20 %, que la fundación destina a reinversión (factor 1,20): $156.508 × 1,20 = $187.810, redondeado a **$188.000 mensuales por colegio**, más IVA si corresponde.
+- Costo total = $423.091 + 3 × $52.480 = $580.531.
+- Costo unitario = $580.531 ÷ 3 = $193.510 por colegio al mes.
+- Margen de 20 %, que la fundación destina a reinversión (factor 1,20): $193.510 × 1,20 = $232.212, redondeado a **$232.000 mensuales por colegio**, más IVA si corresponde.
 
-**Punto de equilibrio.** Q = costos fijos ÷ (precio − costo variable) = $343.801 ÷ ($188.000 − $41.908) = $343.801 ÷ $146.092 = 2,35. Se necesitan **3 colegios** para cubrir los costos. Con menos, el servicio necesita financiamiento complementario de fondos públicos o filantropía (8.4). Tres colegios son el 8,6 % de los 35 establecimientos con enseñanza media y financiamiento público de la provincia de Colchagua (Ministerio de Educación, 2026c), de modo que la meta no exige una cuota alta del mercado local; la disposición a pagar de esos colegios es lo que falta validar.
+**Punto de equilibrio.** Q = costos fijos ÷ (precio − costo variable) = $423.091 ÷ ($232.000 − $52.480) = $423.091 ÷ $179.520 = 2,36. Se necesitan **3 colegios** para cubrir los costos. Con menos, el servicio necesita financiamiento complementario de fondos públicos o filantropía (8.4). Tres colegios son el 8,6 % de los 35 establecimientos con enseñanza media y financiamiento público de la provincia de Colchagua (Ministerio de Educación, 2026c), de modo que la meta no exige una cuota alta del mercado local; la disposición a pagar de esos colegios es lo que falta validar.
 
 **Verificación del precio.** *Competencia:* uPlanner no publica precios y los demás referentes son gratuitos para el liceo o programas de una fundación (4.7), por lo que no hay precio de referencia público. *Valor percibido:* se compara con el gasto que un sostenedor asigna a información y orientación en su Plan de Mejoramiento Educativo; ese monto no es público por colegio y se consultará en las entrevistas semiestructuradas del Punto 2 (Anexo 2.B).
 
@@ -1125,7 +1125,7 @@ Se analizan los seis aspectos que pide la guía (Sapag Chain et al., 2014). Sem�
 |---|---|---|---|
 | Técnico | ¿Podemos construirlo y operarlo con la tecnología y el conocimiento disponibles? | Prototipo desplegado con ficha de carrera, comparador, hoja de decisión y guía del FUAS; 11.364 carreras procesadas; aislamiento de datos por institución probado; competencias del perfil de egreso (Tabla 4.6) | 🟢 Factible. Pendiente: medir accesibilidad con lector de pantalla y rendimiento en conexión lenta |
 | Legal | ¿Cumple la normativa y tenemos los permisos y derechos? | Ley 21.719 (datos personales; vigencia fijada para el 1 de diciembre de 2026, que puede cambiar) y autorización del tutor para menores; Ley 17.336 y licencias de los componentes revisadas (4.3); fundación aún no constituida (8.2); uso de datos del Consejo Nacional de Educación excluido por licencia | 🟡 Factible con condiciones: constituir la fundación antes de firmar contratos, y validar con un abogado los estatutos, la titularidad del código y el tratamiento de datos de menores |
-| Económico | ¿Los beneficios justifican los costos? ¿Es sostenible? | Costos mensuales de $343.801 y precio de $188.000 por colegio; punto de equilibrio de 3 colegios (9.1); prototipo sin desembolso relevante | 🟡 Factible con condiciones: al menos 3 colegios suscritos, o financiamiento complementario de fondos públicos |
+| Económico | ¿Los beneficios justifican los costos? ¿Es sostenible? | Costos mensuales de $423.091 y precio de $232.000 por colegio; punto de equilibrio de 3 colegios (9.1); prototipo sin desembolso relevante | 🟡 Factible con condiciones: al menos 3 colegios suscritos, o financiamiento complementario de fondos públicos |
 | De mercado | ¿Existe demanda y alguien dispuesto a usarlo o pagarlo? | Estándar 7.3 y gasto en actividades de información y orientación del Plan de Mejoramiento Educativo (Ministerio de Educación, 2020, 2026b); programas existentes (4.7) que no ofrecen seguimiento por estudiante para el colegio; sin carta de interés de ningún colegio | 🟡 Factible con condiciones: obtener al menos una carta de interés de un colegio o sostenedor de Colchagua antes del piloto |
 | Social | ¿La comunidad lo acepta y le beneficia? ¿Excluye a alguien? | Brecha de acceso verificada (SIES, 2023a); sitio gratuito, liviano y desde 360 px; sin validación con estudiantes aún | 🟡 Factible con condiciones: autorización de colegios y de tutores para las pruebas con menores |
 | Ambiental | ¿Genera impactos ambientales y cómo se manejan? | Páginas livianas, datos mínimos y proveedores de nube en lugar de servidores propios; el consumo no se mide | 🟢 Factible: impacto bajo; el peso de página es una meta por medir |
@@ -1136,18 +1136,18 @@ Las condiciones de los aspectos legal, económico, de mercado y social pasan com
 
 ## 10. Presupuesto del proyecto
 
-El presupuesto estima los recursos para ejecutar el **piloto de 2027 en dos liceos de Colchagua durante 8 semanas (2 meses)** y muestra quién los financia. Usa los mismos valores unitarios de la valorización (9.1). Valores en pesos chilenos; los servicios de proveedores extranjeros no incluyen IVA y el dominio sí. Los **aportes pecuniarios** son dinero; los **no pecuniarios** son horas del equipo valorizadas a $10.477 por hora.
+El presupuesto estima los recursos para ejecutar el **piloto de 2027 en dos liceos de Colchagua durante 8 semanas (2 meses)** y muestra quién los financia. Usa los mismos valores unitarios de la valorización (9.1). Valores en pesos chilenos; los servicios de proveedores extranjeros no incluyen IVA y el dominio sí. Los **aportes pecuniarios** son dinero; los **no pecuniarios** son horas del equipo valorizadas a $13.120 por hora.
 
 **Tabla 10.1.** Presupuesto del piloto.
 
 | Ítem | Descripción | Unidad | Cant. | Valor unitario | Total | Fuente del valor | Financiado por |
 |---|---|---|---|---|---|---|---|
-| Comercial | Reuniones y presentaciones a sostenedores y directivos | hora | 12 | $10.477 | $125.724 | Costo hora (9.1) | Equipo (no pecuniario) |
+| Comercial | Reuniones y presentaciones a sostenedores y directivos | hora | 12 | $13.120 | $157.440 | Costo hora (9.1) | Equipo (no pecuniario) |
 | Operaciones | Cloudflare Workers, plan de pago | mes | 2 | $4.750 | $9.500 | Cloudflare (s. f.); US$ 5 a $950 | Equipo (pecuniario) |
 | Operaciones | Supabase Pro | mes | 2 | $23.750 | $47.500 | Supabase (s. f.); US$ 25 a $950 | Equipo (pecuniario) |
 | Operaciones | Dominio .cl | año | 1 | $11.888 | $11.888 | NIC Chile (2023); $9.990 × 1,19 | Equipo (pecuniario) |
-| Personal | Desarrollo, diseño y pruebas: 3 integrantes × 10 h × 8 semanas | hora | 240 | $10.477 | $2.514.480 | Costo hora (9.1) | Equipo (no pecuniario) |
-| Personal | Capacitación a orientadores: 2 colegios × 2 sesiones × 2 h | hora | 8 | $10.477 | $83.816 | Costo hora (9.1) | Equipo (no pecuniario) |
+| Personal | Desarrollo, diseño y pruebas: 3 integrantes × 10 h × 8 semanas | hora | 240 | $13.120 | $3.148.800 | Costo hora (9.1) | Equipo (no pecuniario) |
+| Personal | Capacitación a orientadores: 2 colegios × 2 sesiones × 2 h | hora | 8 | $13.120 | $104.960 | Costo hora (9.1) | Equipo (no pecuniario) |
 | Infraestructura | Computadores y conexión de los integrantes | global | 1 | $0 | $0 | Equipos propios, sin valorizar | Equipo (en especie) |
 | Imprevistos | 10 % de los aportes pecuniarios | % | 10 | — | $6.889 | Regla de la guía (5 % a 10 %) | Equipo (pecuniario) |
 
@@ -1156,10 +1156,10 @@ El presupuesto estima los recursos para ejecutar el **piloto de 2027 en dos lice
 | Concepto | Monto |
 |---|---|
 | Aportes pecuniarios (operaciones + imprevistos) | $75.777 |
-| Aportes no pecuniarios (horas del equipo) | $2.724.020 |
-| **Costo total del piloto** | **$2.799.797** |
+| Aportes no pecuniarios (horas del equipo) | $3.411.200 |
+| **Costo total del piloto** | **$3.486.977** |
 | Ingresos del piloto (convenio sin cobro) | $0 |
-| Resultado del período | Déficit de $2.799.797, cubierto en un 97 % por horas del equipo |
+| Resultado del período | Déficit de $3.486.977, cubierto en un 98 % por horas del equipo |
 
 **Ítem financiero: resumen.** Los $75.777 pecuniarios se financian con recursos propios del equipo, en tres partes iguales de $25.259, y se pagan en el orden de la inscripción del dominio, el primer mes de proveedores y el segundo mes. El resto son aportes en especie. Si la fundación se constituye antes del piloto, puede postular a Semilla Inicia o a fondos similares para cubrir hasta el 75 % del costo total (Corporación de Fomento de la Producción, s. f.-a), con el aporte propio como contraparte.
 
@@ -1177,7 +1177,7 @@ El presupuesto estima los recursos para ejecutar el **piloto de 2027 en dos lice
 | Factibilidad legal | Hay que constituir la fundación y validar estatutos | Los declara sin monto, por cotizar |
 | Cadena de valor (8.3) | La capacitación al colegio es parte del servicio | Incluye 8 horas de capacitación |
 | Perfil de inversores (8.4) | Fondos públicos con cofinanciamiento | Muestra el aporte propio pecuniario |
-| Valorización (9.1) | Costo hora de $10.477 y costos fijos de $343.801 al mes | Usa los mismos valores unitarios |
+| Valorización (9.1) | Costo hora de $13.120 y costos fijos de $423.091 al mes | Usa los mismos valores unitarios |
 | Objetivos (Punto 3) | OE3: panel de seguimiento validado con profesionales | Incluye horas de desarrollo, pruebas y capacitación |
 
 
@@ -1208,7 +1208,7 @@ El presupuesto estima los recursos para ejecutar el **piloto de 2027 en dos lice
 - Freeman, R. E. (1984). *Strategic management: A stakeholder approach*. Pitman.
 - Fundación Luksic. (2026). *Aspiraciones sobre el Futuro* (consultado el 11 de noviembre de 2026). https://fundacionluksic.cl/youth/aspirations/
 - Fundación Por Una Carrera. (2026). Sitio institucional (consultado el 6 de noviembre de 2026). https://www.porunacarrera.cl/
-- Get on Board. (2026). *Empleos y rangos de remuneración de programación en Chile* [Sitio de empleo]. https://www.getonbrd.com/
+- Get on Board. (2026, 11 de noviembre). *Ofertas de empleo: Full-Stack Developer, Data Scientist Junior e Ingeniero/a de Proyecto — Implementación* [Sitio de empleo]. https://www.getonbrd.com/
 - Hernández-Sampieri, R., y Mendoza, C. P. (2018). *Metodología de la investigación: Las rutas cuantitativa, cualitativa y mixta*. McGraw-Hill.
 - International Organization for Standardization. (2010). *ISO 26000:2010 Guidance on social responsibility*. ISO.
 - Kotler, P., y Keller, K. L. (2016). *Dirección de marketing* (15.ª ed.). Pearson.
