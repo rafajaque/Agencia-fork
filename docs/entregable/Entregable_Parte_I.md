@@ -528,13 +528,14 @@ Se analiza el triple resultado (Elkington, 1997). No se incluyen cifras de emisi
 
 **Tabla 3.7.** Carta Gantt.
 
-| Fase | S1 (3-9 nov) | S2 (10-16 nov) | S3 (17-23 nov) | S4 (24-30 nov) | Cierre (1-19 dic) | Hito |
-|---|---|---|---|---|---|---|
-| F1 Datos oficiales y ficha de carrera (OE1) | X | X | | | | Ficha de carrera con fuente y fecha |
-| F2 Guía de trámites y plazos del FUAS (OE2) | | X | X | | | Guía y calendario con vigencia |
-| F3 Panel de seguimiento para colegios (OE3) | | | X | X | | Panel con datos ficticios |
-| F4 Validación con estudiantes y profesionales | | | | X | | Informe de la prueba |
-| F5 Cierre: informe y presentación | | | | | X | Entrega el 19 dic |
+| Fase | S1 (3-9 nov) | S2 (10-16 nov) | S3 (17-23 nov) | S4 (24-30 nov) | 1-17 dic | 18-19 dic | Hito |
+|---|---|---|---|---|---|---|---|
+| F1 Datos oficiales y ficha de carrera (OE1) | X | X | | | | | Ficha de carrera con fuente y fecha |
+| F2 Guía de trámites y plazos del FUAS (OE2) | | X | X | | | | Guía y calendario con vigencia |
+| F3 Panel de seguimiento para colegios (OE3), con congelamiento de funciones el 27 nov | | | X | X | | | Panel con datos ficticios |
+| F4 Validación con estudiantes y profesionales | | | | X | | | Informe de la prueba |
+| F5 Pruebas finales, correcciones y mejoras leves, sin funciones nuevas | | | | | X | | Correcciones de los hallazgos de la prueba |
+| F6 Cierre: informe y presentación | | | | | X | X | Entrega el 19 dic |
 
 **Tabla 3.8.** Matriz RACI. R: ejecuta; A: aprueba (uno por tarea); C: consultado; I: informado.
 
