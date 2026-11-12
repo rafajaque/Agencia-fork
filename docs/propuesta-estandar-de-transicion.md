@@ -143,7 +143,7 @@ Ordenado por componente, con la tasa de respuesta visible ("respondieron X de N"
 
 ## 6. Qué se hace y cuándo
 
-**Hasta el 2 de diciembre de 2026 (sin construir nada nuevo de software):**
+**Hasta el 19 de diciembre de 2026 (sin construir nada nuevo de software):**
 1. Publicar el Estándar de Transición v0.1 (este documento, en lenguaje claro) con su cuestionario de autoevaluación en papel o formulario simple.
 2. Solicitar por transparencia el agregado de matrícula en educación superior por establecimiento.
 3. Verificar el texto oficial de la Resolución 2076 y las orientaciones del PME.

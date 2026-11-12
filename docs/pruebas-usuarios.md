@@ -179,4 +179,4 @@ Se considera terminada cuando:
 - [ ] el informe no contiene datos identificables;
 - [ ] los problemas están ordenados por gravedad y los aceptados tienen un arreglo propuesto y una rama `fix/…`;
 - [ ] el líder confirmó qué correcciones se harán antes de la entrega;
-- [ ] el informe está listo para el **2 de diciembre** (Tabla 3.10).
+- [ ] el informe está listo para el **19 de diciembre** (Tabla 3.10).

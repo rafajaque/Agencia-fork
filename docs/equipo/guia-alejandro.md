@@ -1,6 +1,6 @@
 # Guía de Alejandro · Interfaz y diseño
 
-> **Para la IA que acompaña a Alejandro:** este documento es tu hoja de ruta hasta el entregable del **2 de diciembre de 2026**. Antes de proponer cualquier cosa, lee `AGENTS.md`, `docs/equipo/README.md`, `docs/diseno.md` (base visual **Andén urbano**, ADR 0029) y la skill indicada en cada tarea. Si algo de aquí contradice `AGENTS.md`, gana `AGENTS.md`. Si una tarea te pide inventar un dato, un color o una medida, detente y pregunta.
+> **Para la IA que acompaña a Alejandro:** este documento es tu hoja de ruta hasta el entregable del **19 de diciembre de 2026**. Antes de proponer cualquier cosa, lee `AGENTS.md`, `docs/equipo/README.md`, `docs/diseno.md` (base visual **Andén urbano**, ADR 0029) y la skill indicada en cada tarea. Si algo de aquí contradice `AGENTS.md`, gana `AGENTS.md`. Si una tarea te pide inventar un dato, un color o una medida, detente y pregunta.
 
 Estado verificado el **11 de noviembre de 2026** con `gh pr list` (solo lectura).
 
@@ -8,7 +8,7 @@ Estado verificado el **11 de noviembre de 2026** con `gh pr list` (solo lectura)
 
 ## 1. Qué se entrega y qué te toca
 
-El producto del 2 de diciembre (ADR 0031, Entregable Parte I): un sitio gratuito para estudiantes de 3.º y 4.º medio de liceos con financiamiento público y un **panel interactivo de seguimiento para colegios**. Tu rol es **interfaz**: todo lo que el estudiante y el docente ven y tocan, en cualquier teléfono y con cualquier conexión.
+El producto del 19 de diciembre (ADR 0031, Entregable Parte I): un sitio gratuito para estudiantes de 3.º y 4.º medio de liceos con financiamiento público y un **panel interactivo de seguimiento para colegios**. Tu rol es **interfaz**: todo lo que el estudiante y el docente ven y tocan, en cualquier teléfono y con cualquier conexión.
 
 Según la Matriz RACI (Tabla 3.8) y los entregables (Tabla 3.10), tú eres:
 
@@ -16,8 +16,8 @@ Según la Matriz RACI (Tabla 3.8) y los entregables (Tabla 3.10), tú eres:
 |---|---|---|---|
 | Guía de trámites y calendario del FUAS (OE2) | **R** (Rafael aprueba; Cristóbal, consultado) | Cada hito con fuente y fecha de vigencia | 30 nov |
 | Panel de seguimiento y consentimientos (OE3) | **R** (con Rafael) | Panel con datos ficticios que muestra meta y avance de cada estudiante y qué estudiantes necesitan apoyo; el colegio pierde el acceso al revocar | 30 nov |
-| Pruebas con estudiantes y profesionales | **R** (con Cristóbal) | Informe de la prueba: tareas, resultados, hallazgos y limitaciones | 2 dic |
-| Informe y presentación | **R** (con Cristóbal; Rafael aprueba) | Entrega completa | 2 dic |
+| Pruebas con estudiantes y profesionales | **R** (con Cristóbal) | Informe de la prueba: tareas, resultados, hallazgos y limitaciones | 19 dic |
+| Informe y presentación | **R** (con Cristóbal; Rafael aprueba) | Entrega completa | 19 dic |
 | Indicadores I-OG, I-OE1b, I-OE2a (Anexo 3.A) | Responsable | 16 de 20 tareas sin ayuda; 4 de 5 identifican puntaje, arancel y beneficio; 4 de 5 identifican el próximo plazo del FUAS | 30 nov |
 
 **No te toca** (pídeselo a quien corresponde): datos oficiales, fórmulas y textos finales → Cristóbal. Base de datos, autenticación, RLS, consentimientos en la base, asistente IA y claves → Rafael. Las fórmulas de puntaje las usas, no las escribes.
@@ -33,7 +33,7 @@ Según la Matriz RACI (Tabla 3.8) y los entregables (Tabla 3.10), tú eres:
 | **S3 y S4** | **OE2:** revisar la guía de trámites y el calendario del FUAS a 360 px, con el próximo plazo visible en la portada | Se identifica el próximo plazo del FUAS en menos de un minuto (T3) |
 | **S3 y S4 (17 al 30 nov)** | **OE3:** pantallas del panel de seguimiento con datos ficticios, marcadas «Datos de demostración». Primera versión lunes 23 | Ver sección 4, tarea A12 |
 | **S4 (24 al 30 nov)** | Aplicar la **prueba de uso** con Cristóbal; corregir con ramas `fix/…` lo que falle; auditoría de accesibilidad | 16 de 20 tareas completadas sin ayuda (sección 5) |
-| **Cierre (1 y 2 dic)** | Informe de la prueba y presentación | Entrega el 2 de diciembre |
+| **Cierre (18 y 19 dic)** | Informe de la prueba y presentación | Entrega el 19 de diciembre |
 
 ---
 

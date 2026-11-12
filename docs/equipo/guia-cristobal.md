@@ -1,6 +1,6 @@
 # Guía de Cristóbal · Datos y contenido
 
-> **Para la IA que acompaña a Cristóbal:** este documento es tu hoja de ruta hasta el entregable del **2 de diciembre de 2026**. Antes de proponer cualquier cosa, lee `AGENTS.md`, `docs/equipo/README.md`, `docs/fuentes.md` y la skill indicada en cada tarea. **Nunca inventes un dato, una fecha, un monto ni una fórmula**: si no tienes la fuente oficial delante, escribe `TODO(fuente)` y avisa. **Solo fuentes oficiales, primarias o académicas**: nunca prensa, blogs ni calculadoras de terceros. Si algo de aquí contradice `AGENTS.md`, gana `AGENTS.md`.
+> **Para la IA que acompaña a Cristóbal:** este documento es tu hoja de ruta hasta el entregable del **19 de diciembre de 2026**. Antes de proponer cualquier cosa, lee `AGENTS.md`, `docs/equipo/README.md`, `docs/fuentes.md` y la skill indicada en cada tarea. **Nunca inventes un dato, una fecha, un monto ni una fórmula**: si no tienes la fuente oficial delante, escribe `TODO(fuente)` y avisa. **Solo fuentes oficiales, primarias o académicas**: nunca prensa, blogs ni calculadoras de terceros. Si algo de aquí contradice `AGENTS.md`, gana `AGENTS.md`.
 
 Estado verificado el **11 de noviembre de 2026** con `gh pr list` (solo lectura).
 
@@ -8,7 +8,7 @@ Estado verificado el **11 de noviembre de 2026** con `gh pr list` (solo lectura)
 
 ## 1. Qué se entrega y qué te toca
 
-El producto del 2 de diciembre (ADR 0031, Entregable Parte I): un sitio gratuito para estudiantes de 3.º y 4.º medio de liceos con financiamiento público y un panel de seguimiento para colegios. **Todo lo que el sitio afirma sale de tus datos**, y por eso eres el responsable del primer objetivo.
+El producto del 19 de diciembre (ADR 0031, Entregable Parte I): un sitio gratuito para estudiantes de 3.º y 4.º medio de liceos con financiamiento público y un panel de seguimiento para colegios. **Todo lo que el sitio afirma sale de tus datos**, y por eso eres el responsable del primer objetivo.
 
 Según la Matriz RACI (Tabla 3.8) y los entregables (Tabla 3.10):
 
@@ -18,8 +18,8 @@ Según la Matriz RACI (Tabla 3.8) y los entregables (Tabla 3.10):
 | Cálculo del puntaje ponderado (OE1) | **R** | Casos verificados contra la fuente oficial, todos aprobados | **23 nov** |
 | Guía de trámites y calendario del FUAS (OE2) | **C** (consultado; Alejandro ejecuta) | Cada hito con fuente y fecha de vigencia (I-OE2b: 100 %) | 30 nov |
 | Panel de seguimiento (OE3) | I (informado) | Que las metas de carrera y ponderaciones que use el panel salgan de tus datos | 30 nov |
-| Pruebas con estudiantes y profesionales | **R** (con Alejandro) | Informe: tareas, resultados, hallazgos y limitaciones | 2 dic |
-| Informe y presentación | **R** (con Alejandro; Rafael aprueba) | Entrega completa | 2 dic |
+| Pruebas con estudiantes y profesionales | **R** (con Alejandro) | Informe: tareas, resultados, hallazgos y limitaciones | 19 dic |
+| Informe y presentación | **R** (con Alejandro; Rafael aprueba) | Entrega completa | 19 dic |
 | Indicadores I-OE1a, I-OE2b (Anexo 3.A) | Responsable | 100 % de los datos mostrados con fuente, enlace y fecha | 23 y 30 nov |
 
 **No te toca** (pídeselo a quien corresponde): pantallas y estilos → Alejandro; esquema de la base de datos, claves, RLS, asistente IA → Rafael.
@@ -36,7 +36,7 @@ Según la Matriz RACI (Tabla 3.8) y los entregables (Tabla 3.10):
 | **S3 (17 al 23 nov)** | **OE1 completo:** verificación por muestra de las cifras (C12) y casos oficiales del puntaje ponderado; textos de las pantallas revisados con `lenguaje-claro` | **100 % de los datos mostrados con fuente, enlace y fecha el 23 de noviembre**; casos del puntaje ponderado todos aprobados |
 | **S3 y S4** | **OE2:** revisar cada hito del FUAS 2027 contra la fuente oficial (consultado por Alejandro) | 100 % de los hitos con fuente y fecha de vigencia (30 nov) |
 | **S4 (24 al 30 nov)** | **Organizar y aplicar la prueba de uso** con Alejandro (sección 5) | 5 estudiantes y 2 profesionales; 16 de 20 tareas sin ayuda |
-| **Cierre (1 y 2 dic)** | Informe de la prueba y de datos; presentación | Entrega el 2 de diciembre |
+| **Cierre (18 y 19 dic)** | Informe de la prueba y de datos; presentación | Entrega el 19 de diciembre |
 
 ---
 
@@ -53,7 +53,7 @@ Según la Matriz RACI (Tabla 3.8) y los entregables (Tabla 3.10):
 | Nombres de carreras con fuente oficial | Fusionado | PR 109 |
 | Tokens de Andén urbano (ADR 0029) | Fusionado (tuyo) | PR 151 |
 | C12 · Verificación cruzada final | **Pendiente** | — |
-| C13 · Informe de datos | **Pendiente** (se integra al informe del 2 dic) | — |
+| C13 · Informe de datos | **Pendiente** (se integra al informe del 19 dic) | — |
 | C14 · Calendario de la admisión con campo `estacion` | **En espera:** `datos/calendario/` no existe y el indicador de etapas tiene una decisión pendiente del líder. No lo empieces sin su confirmación | — |
 
 ---
@@ -113,13 +113,13 @@ Eres **R** de las pruebas, con Alejandro. El guion y el registro están en [`doc
 - **Muestra:** 5 estudiantes y 2 profesionales de colegios (orientador o directivo), por conveniencia. Menores de 18: autorización escrita del tutor, guardada fuera del repositorio (Rafael gestiona la carta a los colegios).
 - **Tareas:** T1 encontrar una carrera y leer su fuente y fecha; T2 identificar su puntaje ponderado, arancel y beneficio; T3 identificar el próximo plazo del FUAS; T4 decidir qué compartir con el colegio y revocarlo. Meta: **16 de 20 sin ayuda**.
 - **Privacidad:** sin nombres, RUT, colegio ni datos reales en el repositorio; «Participante 1…5» y «Profesional 1…2». No grabes pantalla ni voz sin consentimiento explícito y separado.
-- **Informe (2 dic):** problemas por gravedad y arreglo propuesto; con Alejandro, cada problema aceptado se convierte en una rama `fix/…`. Declara las limitaciones: muestra por conveniencia, sin estimar efectos.
+- **Informe (19 dic):** problemas por gravedad y arreglo propuesto; con Alejandro, cada problema aceptado se convierte en una rama `fix/…`. Declara las limitaciones: muestra por conveniencia, sin estimar efectos.
 
 ---
 
 ## 6. Qué quedó fuera del alcance, y por qué
 
-No trabajes en: **permanencia en educación superior, pulso de check-in, predicción o riesgo de deserción, panel para instituciones de educación superior y pruebas propias por colegio.** Se descartaron como objetivos por falta de evidencia o de capacidad del equipo (entregable 3.1; ADR 0031) y quedan como proyección. Sus ADR y documentos de evidencia (`docs/evidencia-permanencia.md`) se conservan como historia. El **portal de transparencia** (tablero de pronósticos rediseñado) es una idea acordada que no entra al 2 de diciembre.
+No trabajes en: **permanencia en educación superior, pulso de check-in, predicción o riesgo de deserción, panel para instituciones de educación superior y pruebas propias por colegio.** Se descartaron como objetivos por falta de evidencia o de capacidad del equipo (entregable 3.1; ADR 0031) y quedan como proyección. Sus ADR y documentos de evidencia (`docs/evidencia-permanencia.md`) se conservan como historia. El **portal de transparencia** (tablero de pronósticos rediseñado) es una idea acordada que no entra al 19 de diciembre.
 
 ---
 

@@ -101,7 +101,7 @@ El proyecto propone una innovación de proceso, de carácter incremental, nueva 
 
 **Calidad.** Para este proyecto, calidad es que cada dato mostrado tenga fuente, enlace y fecha de consulta, que los cálculos se contrasten con la fuente oficial y que la interfaz cumpla las Pautas de Accesibilidad para el Contenido Web (WCAG) 2.2 nivel AA (World Wide Web Consortium [W3C], 2023). Decisión: un dato que no se pueda verificar en una fuente oficial no se publica. La accesibilidad con lector de pantalla y el rendimiento en conexión lenta aún no se miden.
 
-**Tiempo.** El prototipo se presenta el 2 de diciembre de 2026 y la ejecución cubre cuatro semanas, del 3 de noviembre al 2 de diciembre. Decisión: el alcance se limita al explorador de carreras, la comparación, la simulación del puntaje ponderado, la hoja de decisión y la guía de plazos del FUAS para los estudiantes, y al prototipo del panel de seguimiento para colegios con datos ficticios. El piloto con uno o dos liceos queda como proyección para 2027.
+**Tiempo.** El prototipo se presenta el 19 de diciembre de 2026 (Entregable II) y la ejecución cubre siete semanas, del 3 de noviembre al 19 de diciembre. Decisión: el alcance se limita al explorador de carreras, la comparación, la simulación del puntaje ponderado, la hoja de decisión y la guía de plazos del FUAS para los estudiantes, y al prototipo del panel de seguimiento para colegios con datos ficticios. El piloto con uno o dos liceos queda como proyección para 2027.
 
 **Factibilidad.** La viabilidad técnica tiene respaldo parcial: el equipo cuenta con un prototipo funcional con explorador de carreras, comparador, hoja de decisión y guía de plazos del FUAS, y con programas que procesaron 11.364 carreras de pregrado con datos oficiales (elaboración propia con archivos del Mineduc, el SIES y el DEMRE, 2026). Las dimensiones legal y ética condicionan más: el trabajo con menores de 18 años exige autorización de su tutor y cumplir la Ley 21.719, y ninguna herramienta puede diagnosticar condiciones de salud ni reemplazar a un profesional. Decisión: recolectar solo los datos necesarios y mostrar al estudiante qué ve su colegio. El análisis completo queda para el Punto 9.
 
@@ -280,7 +280,7 @@ Lo interno lo controla el equipo; lo externo es del entorno.
 
 | | Positivos | Negativos |
 |---|---|---|
-| **Internos** | **Fortalezas.** F1. Procesamiento de datos oficiales (elaboración propia con archivos del Mineduc, el SIES y el DEMRE, 2026): 11.364 carreras de pregrado procesadas, 7.299 con indicadores del SIES y 2.086 con ponderaciones y vacantes del DEMRE. F2. Cada cifra mostrada con fuente, enlace y fecha, y cifras sin origen retiradas. F3. Prototipo funcional con explorador de carreras, comparador, hoja de decisión y guía de plazos del FUAS. F4. Diseño de privacidad desde el inicio: aislamiento de datos por institución y consentimiento del estudiante. F5. Competencias del equipo en desarrollo de software, bases de datos y gestión de proyectos | **Debilidades.** D1. Tres integrantes y cuatro semanas de ejecución (3 de noviembre al 2 de diciembre). D2. Sin profesional de psicología o psicopedagogía en el equipo para validar contenidos de orientación. D3. Investigación primaria sin aplicar y con muestra por conveniencia. D4. Panel de seguimiento para colegios aún como prototipo. D5. Sin figura jurídica constituida: el equipo no puede firmar convenios ni recibir fondos |
+| **Internos** | **Fortalezas.** F1. Procesamiento de datos oficiales (elaboración propia con archivos del Mineduc, el SIES y el DEMRE, 2026): 11.364 carreras de pregrado procesadas, 7.299 con indicadores del SIES y 2.086 con ponderaciones y vacantes del DEMRE. F2. Cada cifra mostrada con fuente, enlace y fecha, y cifras sin origen retiradas. F3. Prototipo funcional con explorador de carreras, comparador, hoja de decisión y guía de plazos del FUAS. F4. Diseño de privacidad desde el inicio: aislamiento de datos por institución y consentimiento del estudiante. F5. Competencias del equipo en desarrollo de software, bases de datos y gestión de proyectos | **Debilidades.** D1. Tres integrantes y siete semanas de ejecución (3 de noviembre al 19 de diciembre). D2. Sin profesional de psicología o psicopedagogía en el equipo para validar contenidos de orientación. D3. Investigación primaria sin aplicar y con muestra por conveniencia. D4. Panel de seguimiento para colegios aún como prototipo. D5. Sin figura jurídica constituida: el equipo no puede firmar convenios ni recibir fondos |
 | **Externos** | **Oportunidades.** O1. El estándar 7.3 da a los colegios un motivo, y el gasto en asesoría técnica y actividades de información y orientación del Plan de Mejoramiento Educativo, un posible financiamiento (Ministerio de Educación, 2020, 2026b). O2. Datos abiertos oficiales del Mineduc, SIES y DEMRE. O3. Evidencia de que la información personalizada y el acompañamiento cambian decisiones (Bettinger et al., 2012; Nickow et al., 2024). O4. Proceso FUAS 2027 con calendario oficial publicado (Ministerio de Educación, 2026a). O5. Infraestructura de plan gratuito que permite uso comercial | **Amenazas.** A1. Vigencia de la Ley 21.719 (fijada para el 1 de diciembre de 2026, que puede cambiar), que exige tratar con cuidado los datos de menores. A2. Reglas, montos y plazos de beneficios que cambian cada año. A3. Proveedores cuyo plan gratuito puede cambiar. A4. Sin obligación legal de hacer seguimiento: los colegios deciden si invierten. A5. Plazos de terceros: autorización de colegios y apoderados, y respuesta de la solicitud de acceso a la información. A6. Oferta existente de otras organizaciones (Fundación Por Una Carrera, Programa Aspiraciones, Programa PACE) |
 
 **Tabla 2.5.** FODA cruzado (Weihrich, 1982).
@@ -426,7 +426,7 @@ Cada hipótesis del árbol de problemas (Tabla 2.3) se confronta con un instrume
 
 ## 3. Fundamentación del proyecto
 
-Este punto convierte el diagnóstico en objetivos, metas y una forma de trabajo. Los objetivos se formulan sobre el problema (la situación de los estudiantes y de sus colegios), no sobre un producto. Las metas miden lo que se puede verificar antes del 2 de diciembre de 2026; los efectos de largo plazo (ingreso, persistencia) quedan como fin y como proyección para un piloto en 2027, no como compromiso de este período.
+Este punto convierte el diagnóstico en objetivos, metas y una forma de trabajo. Los objetivos se formulan sobre el problema (la situación de los estudiantes y de sus colegios), no sobre un producto. Las metas miden lo que se puede verificar antes del 19 de diciembre de 2026; los efectos de largo plazo (ingreso, persistencia) quedan como fin y como proyección para un piloto en 2027, no como compromiso de este período.
 
 ### 3.1 Del árbol de problemas al árbol de objetivos
 
@@ -449,7 +449,7 @@ Se descartan como objetivos el modelo que predice deserción y los contenidos ps
 
 Se redactan con el criterio SMART (Doran, 1981). Fórmula: verbo + qué + para quién y dónde + para qué + cuándo + cuánto. Cada objetivo describe una situación lograda, y su medio de ejecución se detalla en los entregables (3.7).
 
-**Objetivo general (OG).** Lograr que los estudiantes de 3.º y 4.º medio de liceos con financiamiento público de la Región de O'Higgins definan una meta vocacional con información verificable y que su colegio pueda seguir su avance, para reducir la brecha de acceso a la educación superior, validado en pruebas con 5 estudiantes y 2 profesionales de colegios al 2 de diciembre de 2026, con al menos el 80 % de las tareas centrales (16 de 20) completadas sin ayuda por los estudiantes.
+**Objetivo general (OG).** Lograr que los estudiantes de 3.º y 4.º medio de liceos con financiamiento público de la Región de O'Higgins definan una meta vocacional con información verificable y que su colegio pueda seguir su avance, para reducir la brecha de acceso a la educación superior, validado en pruebas con 5 estudiantes y 2 profesionales de colegios al 19 de diciembre de 2026, con al menos el 80 % de las tareas centrales (16 de 20) completadas sin ayuda por los estudiantes.
 
 **OE1.** Lograr que los estudiantes conozcan los requisitos, el puntaje y el financiamiento de las carreras que les interesan, con fuente, enlace y fecha de cada dato, medido con el 100 % de los datos mostrados con su fuente al 23 de noviembre de 2026 y con al menos 4 de 5 estudiantes de prueba que identifican en una carrera su puntaje ponderado, su arancel y el beneficio aplicable.
 
@@ -461,7 +461,7 @@ Se redactan con el criterio SMART (Doran, 1981). Fórmula: verbo + qué + para q
 
 | Objetivo | S (específico) | M (medible) | A (alcanzable) | R (relevante) | T (plazo) |
 |---|---|---|---|---|---|
-| OG | Meta vocacional y seguimiento en liceos con financiamiento público de O'Higgins | 16 de 20 tareas sin ayuda (5 estudiantes × 4 tareas); 2 de 2 profesionales validan | Prototipo funcional ya probado en sus componentes | Ataca el problema central en sus tres causas | 2 dic 2026 |
+| OG | Meta vocacional y seguimiento en liceos con financiamiento público de O'Higgins | 16 de 20 tareas sin ayuda (5 estudiantes × 4 tareas); 2 de 2 profesionales validan | Prototipo funcional ya probado en sus componentes | Ataca el problema central en sus tres causas | 19 dic 2026 |
 | OE1 | Requisitos, puntaje y financiamiento con fuente | 100 % con fuente; 4 de 5 estudiantes identifican los tres datos | 11.364 carreras ya procesadas con datos oficiales | Causa 1 | 23 nov (datos); 30 nov (prueba) |
 | OE2 | Trámites y plazos de beneficios | 4 de 5 identifican el próximo plazo; 100 % de hitos con fuente | Calendario oficial FUAS 2027 publicado | Causa 2 | 30 nov 2026 |
 | OE3 | Seguimiento de meta y avance por colegio | 2 de 2 profesionales identifican a quién apoyar; 100 % de pruebas aprobadas | Diseño del panel y aislamiento de datos probados | Causa 3 | 30 nov 2026 |
@@ -528,13 +528,13 @@ Se analiza el triple resultado (Elkington, 1997). No se incluyen cifras de emisi
 
 **Tabla 3.7.** Carta Gantt.
 
-| Fase | S1 (3-9 nov) | S2 (10-16 nov) | S3 (17-23 nov) | S4 (24-30 nov) | Cierre (1-2 dic) | Hito |
+| Fase | S1 (3-9 nov) | S2 (10-16 nov) | S3 (17-23 nov) | S4 (24-30 nov) | Cierre (1-19 dic) | Hito |
 |---|---|---|---|---|---|---|
 | F1 Datos oficiales y ficha de carrera (OE1) | X | X | | | | Ficha de carrera con fuente y fecha |
 | F2 Guía de trámites y plazos del FUAS (OE2) | | X | X | | | Guía y calendario con vigencia |
 | F3 Panel de seguimiento para colegios (OE3) | | | X | X | | Panel con datos ficticios |
 | F4 Validación con estudiantes y profesionales | | | | X | | Informe de la prueba |
-| F5 Cierre: informe y presentación | | | | | X | Entrega el 2 dic |
+| F5 Cierre: informe y presentación | | | | | X | Entrega el 19 dic |
 
 **Tabla 3.8.** Matriz RACI. R: ejecuta; A: aprueba (uno por tarea); C: consultado; I: informado.
 
@@ -570,8 +570,8 @@ La norma ISO 26000 organiza la responsabilidad social en siete materias fundamen
 | OE2 | Guía de trámites y calendario del FUAS | Cada hito con fuente y fecha de vigencia | 30 nov | Alejandro |
 | OE3 | Panel interactivo de seguimiento para colegios, con datos ficticios | Muestra meta y avance de cada estudiante y qué estudiantes necesitan apoyo | 30 nov | Rafael, Alejandro |
 | OE3 | Consentimiento del estudiante y aislamiento de datos | El colegio pierde el acceso al revocar el consentimiento; pruebas aprobadas | 30 nov | Rafael |
-| OG | Informe de la prueba con estudiantes y profesionales | Tareas, resultados, hallazgos y limitaciones registrados | 2 dic | Alejandro, Cristóbal |
-| OG | Informe final y presentación | Entrega completa | 2 dic | Rafael |
+| OG | Informe de la prueba con estudiantes y profesionales | Tareas, resultados, hallazgos y limitaciones registrados | 19 dic | Alejandro, Cristóbal |
+| OG | Informe final y presentación | Entrega completa | 19 dic | Rafael |
 
 ### 3.8 Resultados esperados
 
@@ -582,7 +582,7 @@ La norma ISO 26000 organiza la responsabilidad social en siete materias fundamen
 | OE1 | Al 23 de noviembre de 2026, todos los datos mostrados traen su fuente, y al 30 de noviembre al menos 4 de 5 estudiantes de prueba identifican puntaje, arancel y beneficio de una carrera |
 | OE2 | Al 30 de noviembre de 2026, al menos 4 de 5 estudiantes de prueba identifican el próximo plazo del FUAS y sus pasos |
 | OE3 | Al 30 de noviembre de 2026, 2 de 2 profesionales de colegios identifican a quién apoyar y las pruebas de consentimiento pasan en su totalidad |
-| OG | Al 2 de diciembre de 2026, 16 de 20 tareas centrales se completaron sin ayuda y los hallazgos quedaron registrados |
+| OG | Al 19 de diciembre de 2026, 16 de 20 tareas centrales se completaron sin ayuda y los hallazgos quedaron registrados |
 
 Limitación: con 5 estudiantes y 2 profesionales por conveniencia, los resultados son una validación de uso y no estiman efectos en la población.
 
@@ -701,7 +701,7 @@ La neutralidad es condición de cualquier mecanismo: el sitio público nunca ord
 | TRL | Estado | Situación del proyecto | Condición |
 |---|---|---|---|
 | 1 a 3: idea, concepto y prueba de concepto | Logrado | Diagnóstico con datos oficiales; programas que procesaron 11.364 carreras de pregrado, 7.299 con indicadores del SIES y 2.086 con datos del DEMRE; aislamiento de datos por institución probado | Hecho |
-| 4: prototipo validado en entorno controlado | Parcial hoy | Sitio desplegado con ficha de carrera, explorador, comparador, hoja de decisión y guía de plazos del FUAS; panel de seguimiento en diseño | Meta al 2 de diciembre de 2026: flujo recorrido con 5 estudiantes y 2 profesionales de colegios |
+| 4: prototipo validado en entorno controlado | Parcial hoy | Sitio desplegado con ficha de carrera, explorador, comparador, hoja de decisión y guía de plazos del FUAS; panel de seguimiento en diseño | Meta al 19 de diciembre de 2026: flujo recorrido con 5 estudiantes y 2 profesionales de colegios |
 | 5: validación en entorno relevante | No comprometido | Requeriría el panel probado con un colegio real | Posible techo, no prometido |
 | 6 y 7: piloto en entorno real | Proyección 2027 | Piloto con uno o dos liceos de Colchagua mediante convenio de colaboración | Sin fecha ni colegio comprometido |
 | 8 y 9: sistema operando y adoptado | Proyección | Servicio en operación con colegios y sostenedores clientes | Proyección |
@@ -875,7 +875,7 @@ Se usa el **Canvas Social** y no el Lean Canvas (Maurya, 2012), por tres razones
 |---|---|
 | Segmentos: beneficiarios y clientes | Beneficiarios: estudiantes de 3.º y 4.º medio de liceos con financiamiento público de O'Higgins (menores con autorización de su tutor). Clientes: colegios y sostenedores, primero; fondos públicos y filantropía, después |
 | Propuesta de valor | Social: información oficial clara y guía de trámites, gratis. Cliente: seguimiento de la meta y el avance de cada estudiante que lo autoriza |
-| Medidas de impacto | Al 2 de diciembre de 2026, usabilidad con 5 estudiantes y validación con 2 profesionales. En el piloto de 2027: postulaciones al FUAS completadas, matrícula efectiva y persistencia al segundo año |
+| Medidas de impacto | Al 19 de diciembre de 2026, usabilidad con 5 estudiantes y validación con 2 profesionales. En el piloto de 2027: postulaciones al FUAS completadas, matrícula efectiva y persistencia al segundo año |
 | Tipo de intervención | Sitio web gratuito para el estudiante (producto) y panel interactivo por suscripción para el colegio (servicio) |
 | Canales | Sitio público abierto; los colegios y sus orientadores como puerta de entrada; presentación directa a sostenedores y directivos |
 | Actividades, recursos y socios clave | Actividades: actualizar datos oficiales, mantener el sistema, revisar contenido. Recursos: código propio, datos oficiales con fuente, infraestructura contratada. Socios: Mineduc, SIES y DEMRE como fuentes; liceos del piloto; un profesional de psicología o psicopedagogía que revise el contenido (por conseguir); AIEP San Fernando |
@@ -977,7 +977,7 @@ Se elige constituir una **fundación**. Hay tres razones. (1) **Fin fijado:** el
 
 | Etapa | Forma | Por qué |
 |---|---|---|
-| Hasta el 2 de diciembre de 2026 | Sin entidad nueva; convenios de colaboración para las pruebas con usuarios | Es un prototipo sin ingresos |
+| Hasta el 19 de diciembre de 2026 | Sin entidad nueva; convenios de colaboración para las pruebas con usuarios | Es un prototipo sin ingresos |
 | 2027: piloto | Convenio de colaboración con uno o dos liceos de Colchagua, firmado por el equipo bajo la supervisión de AIEP, y constitución de la fundación | El piloto no genera ingresos relevantes; la fundación se constituye para firmar contratos y recibir fondos |
 | Operación | Fundación, con suscripción de colegios y sostenedores | Permite facturar, firmar contratos y recibir donaciones |
 
@@ -1031,7 +1031,7 @@ Los datos de instrumentos públicos se consultaron en los sitios oficiales de CO
 
 | Etapa | Financista elegido | Coherencia con la forma jurídica |
 |---|---|---|
-| Prototipo (hasta el 2 de diciembre de 2026) | Recursos propios y planes gratuitos | No requiere entidad |
+| Prototipo (hasta el 19 de diciembre de 2026) | Recursos propios y planes gratuitos | No requiere entidad |
 | Piloto (2027) | Convenios con liceos y sostenedores | Sin ingresos relevantes; la fundación se constituye en esta etapa |
 | Operación | Suscripción de colegios y sostenedores, y fondos públicos | Requiere la fundación para facturar |
 | Último recurso | Donaciones de filantropía | Requiere la fundación; la Ley 19.885 permite beneficios tributarios a quienes donan a fundaciones calificadas |

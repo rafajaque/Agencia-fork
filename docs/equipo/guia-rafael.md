@@ -1,14 +1,14 @@
 # Guía de Rafael · Líder de arquitectura
 
-> **Para la IA que acompaña a Rafael:** este documento es la hoja de ruta del líder hasta el entregable del **2 de diciembre de 2026**. Antes de proponer cualquier cosa, lee `AGENTS.md`, `BITACORA.md`, `docs/entregable/Entregable_Parte_I.md` (puntos 3, 8, 9 y 10) y [`docs/decisiones/0031-producto-y-organizacion.md`](../decisiones/0031-producto-y-organizacion.md). Rafael decide y aprueba; tú propones, verificas y declaras lo que no pudiste comprobar. Lo que **no se delega** a otra herramienta: `lib/ia/`, las políticas de Row Level Security (RLS) y los consentimientos ([reparto](reparto.md)). Si algo de aquí contradice `AGENTS.md`, gana `AGENTS.md`.
+> **Para la IA que acompaña a Rafael:** este documento es la hoja de ruta del líder hasta el entregable del **19 de diciembre de 2026**. Antes de proponer cualquier cosa, lee `AGENTS.md`, `BITACORA.md`, `docs/entregable/Entregable_Parte_I.md` (puntos 3, 8, 9 y 10) y [`docs/decisiones/0031-producto-y-organizacion.md`](../decisiones/0031-producto-y-organizacion.md). Rafael decide y aprueba; tú propones, verificas y declaras lo que no pudiste comprobar. Lo que **no se delega** a otra herramienta: `lib/ia/`, las políticas de Row Level Security (RLS) y los consentimientos ([reparto](reparto.md)). Si algo de aquí contradice `AGENTS.md`, gana `AGENTS.md`.
 
 Estado verificado el **11 de noviembre de 2026** con `gh pr list` (solo lectura). La tabla de PR de la sección 3 se actualiza cada vez que se fusiona algo.
 
 ---
 
-## 1. Qué se entrega el 2 de diciembre y qué te toca
+## 1. Qué se entrega el 19 de diciembre y qué te toca
 
-Producto acordado (ADR 0031): sitio gratuito para estudiantes de 3.º y 4.º medio de liceos con financiamiento público (O'Higgins, Colchagua, sede San Fernando de AIEP) y un **panel interactivo de seguimiento para colegios**, solo de los estudiantes que lo autorizan. Organización: fundación sin fines de lucro en 2027; hasta el 2 de diciembre, proyecto de título, sin entidad.
+Producto acordado (ADR 0031): sitio gratuito para estudiantes de 3.º y 4.º medio de liceos con financiamiento público (O'Higgins, Colchagua, sede San Fernando de AIEP) y un **panel interactivo de seguimiento para colegios**, solo de los estudiantes que lo autorizan. Organización: fundación sin fines de lucro en 2027; hasta el 19 de diciembre, proyecto de título, sin entidad.
 
 **Tu rol:** arquitectura y privacidad. Eres **A (aprueba)** de todas las filas de la Tabla 3.8 y **R (ejecuta)** de dos: el panel de seguimiento con sus consentimientos y el informe final con la presentación.
 
@@ -34,7 +34,7 @@ Producto acordado (ADR 0031): sitio gratuito para estudiantes de 3.º y 4.º med
 | **F2 Guía de trámites del FUAS (OE2)** | S2 y S3 (10 al 23 nov) | Aprobar; verificar fechas del FUAS 2027 | Cada hito con fuente y fecha de vigencia (100 %) | Hecha en lo central: portada con acceso a plazos (PR 141, 146), calendario corregido (PR 142), guía según la situación (PR 152) |
 | **F3 Panel de seguimiento (OE3)** | S3 y S4 (17 al 30 nov) | **Diseñar y programar** el panel con datos ficticios; **consentimiento y aislamiento** con pruebas | Panel muestra meta y avance y quién necesita apoyo; el colegio pierde el acceso al revocar; pruebas aprobadas (I-OE3b 100 %) | **Pendiente.** Hay propuesta (PR 153, abierto) y tablas en la base; falta la interfaz, la meta de carrera, el resumen para el docente y la prueba de revocación |
 | **F4 Validación** | S4 (24 al 30 nov) | Consentimientos y autorizaciones; aprobar el informe de la prueba | 5 estudiantes y 2 profesionales; menores con autorización del tutor | Pendiente: el reclutamiento depende de ti (colegios, carta formal) |
-| **F5 Cierre** | 1 y 2 dic | Informe final y presentación (Tabla 3.10, fila OG) | Entrega completa | Pendiente |
+| **F5 Cierre** | 18 y 19 dic | Informe final y presentación (Tabla 3.10, fila OG) | Entrega completa | Pendiente |
 
 ### Hitos con fecha
 
@@ -44,7 +44,7 @@ Producto acordado (ADR 0031): sitio gratuito para estudiantes de 3.º y 4.º med
 | **Lun 23 nov** | OE1 completo (I-OE1a 100 %): ficha, puntaje ponderado con pruebas (simulador, PR 132) y arancel y beneficio visibles. **Clave de Gemini en el nivel pagado** (ADR 0004) antes de cualquier prueba con personas | Revisión por muestra de las cifras |
 | **Lun 23 nov** | Carta a colegios enviada y 7 participantes confirmados (invitar a más de los necesarios) | Lista sin nombres en el repositorio |
 | **Lun 30 nov** | OE2 y OE3 completos; prueba de uso terminada (24 al 30) | Informe de la prueba y de las pruebas automáticas de consentimiento y aislamiento |
-| **Mié 2 dic** | Informe final y presentación | Entrega |
+| **Sáb 19 dic** | Informe final y presentación | Entrega |
 
 ---
 
@@ -82,11 +82,11 @@ Cerrados sin fusionar (reemplazados por otros): PR 62 (por 92), 119 (por 121), 1
 | R8 | **Reclutar** a 5 estudiantes y 2 profesionales de colegios; carta formal; autorizaciones de tutores guardadas fuera del repositorio | Lun 23 nov | 7 confirmados | Pendiente |
 | R9 | Sesión de validación del panel con los 2 profesionales | 24 al 30 nov | 2 de 2 identifican a quién apoyar en un caso ficticio (I-OE3a) | Pendiente |
 | R10 | Completar el entregable con los resultados de la encuesta, las entrevistas y la prueba de uso (los `[COMPLETAR]`) | 1 dic | Sin marcas pendientes | Pendiente |
-| R11 | Informe final y presentación | 2 dic | Entrega completa | Pendiente |
+| R11 | Informe final y presentación | 19 dic | Entrega completa | Pendiente |
 
 ---
 
-## 5. Qué quedó fuera del alcance del 2 de diciembre, y por qué
+## 5. Qué quedó fuera del alcance del 19 de diciembre, y por qué
 
 Se conserva la historia (los ADR no se borran); no se construye ni se promete:
 
@@ -96,7 +96,7 @@ Se conserva la historia (los ADR no se borran); no se construye ni se promete:
 | Predicción o riesgo de deserción | Sin evidencia ni capacidad; nunca se promete predicción (AGENTS.md 2.4) | ADR 0012 y 0013 (historia) |
 | Panel para instituciones de educación superior | El cliente es el colegio o sostenedor, no la institución de educación superior (ADR 0031) | Proyección |
 | Pruebas propias de ensayo por colegio | Escalabilidad; hoy solo se enlaza una prueba oficial publicada | Proyección |
-| Portal de transparencia (tablero de pronósticos rediseñado) | Idea acordada el 11 nov; falta diseñarlo; los datos son del Estado y el aporte es el proceso | ADR 0031, consecuencias; no entra al 2 dic |
+| Portal de transparencia (tablero de pronósticos rediseñado) | Idea acordada el 11 nov; falta diseñarlo; los datos son del Estado y el aporte es el proceso | ADR 0031, consecuencias; no entra al 19 dic |
 
 Decisiones que solo tú tomas: aceptar los ADR propuestos que sigan abiertos, la excepción de licencia MPL-2.0 de axe-core (ADR 0021), el respaldo de los códigos DEMRE 17074 y 32012, la forma jurídica (con validación de un abogado antes de constituir) y los plazos `TODO(profesional)` y `TODO(legal)` de alertas y derechos.
 
