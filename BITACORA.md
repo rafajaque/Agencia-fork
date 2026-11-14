@@ -2,6 +2,37 @@
 
 Memoria de trabajo entre sesiones. Lo más reciente, arriba.
 
+## 2026-11-14 (mapa de carreras en la página principal, en rama)
+
+**Hecho**: rama `feat/mapa-carreras` (worktree en `feat-mapa-carreras`, commit local, sin push): sección del mapa en la portada, SVG sin Three.js, ADR 0036 y fuentes. Pasa `tsc`, `eslint`, 214 pruebas y `next build` con la muestra. Solo región; las filas con `cubierto = 0` (120) quedan fuera.
+**Por qué**: el líder confirmó que es info para la persona que egresa, no para el portal de transparencia. Sin Three.js, por la dependencia y la accesibilidad; sin empleo real del área, porque el cruce con ramas no está validado.
+**Pendiente**: revisión `revisar-pr` del líder; ver la página en el navegador (no se hizo); decidir si el ADR 0036 toma número 0036 (el 0035 existe en otra rama); fase 2 con comuna.
+**Revisión (revisar-pr)**: se aplicaron los puntos de la revisión. Ramas apiladas: `datos/mapa-carreras` (datos y pruebas de publicación) y `feat/mapa-carreras` encima (interfaz, ADR 0036). Pasan 217 pruebas, tsc y lint. La prueba de accesibilidad de la portada pasa, incluido el desplazamiento a 360 px. Las pruebas de la ficha de carrera fallan por falta de SUPABASE_URL en el entorno de prueba, no por este cambio.
+**Siguiente**: el líder abre los PR (primero datos, luego interfaz) y revisa la página a 360 px en el navegador.
+
+## 2026-11-14 (ADR 0035 aceptado por el líder)
+
+**Hecho** (sin commit, rama `datos/tabla-agrupacion-carreras`): el líder aceptó el [ADR 0035](docs/decisiones/0035-descripcion-de-carreras.md); el estado pasa de propuesta a aceptada.
+**Ajuste del líder**: las áreas no requieren revisión profesional; se toman solo sus nombres (las 11 del buscador del SIES) de la fuente oficial, sin copiar descripciones. Nota en el ADR 0035.
+**Verificado (14-nov)**: la lista de 11 áreas está en el filtro «Área de conocimiento» de https://www.mifuturo.cl/buscador-de-carreras/ (leída literal). Coincide con la lista de `cruce_ocupaciones_areas.py` salvo la capitalización de «Sin Área definida». La página no muestra fecha de actualización. Se leyó solo la primera mitad de la página; el resumen automático dijo que no hay filtro de área, y se descartó por contradecir el texto literal. `docs/fuentes.md` ya cita la URL.
+**Pendiente**: la fecha de la última actualización de la lista de áreas (la página no la muestra); verificar si mifuturo.cl publica descripciones de carreras; medir cuántos grupos resultan de la tabla de agrupación.
+**Siguiente**: validar la tabla de agrupación del commit `445fdf4` contra estas decisiones.
+
+## 2026-11-14 (propuesta de ADR 0035: descripción de carreras por grupo)
+
+**Hecho** (sin commit): [ADR 0035](docs/decisiones/0035-descripcion-de-carreras.md) en estado propuesta. Propone describir cada grupo de carrera (nombre normalizado, sin menciones ni sedes) en lenguaje claro, con un bloque «Títulos parecidos» que explica las diferencias, en vez de describir las ~11 mil carreras una a una. Cada texto se rotula (fuente citada o «elaboración propia») y lo revisa un profesional antes de publicarse.
+**Por qué**: los nombres parecidos (Ingeniería Informática, Civil en Informática, de Ejecución en Informática) confunden a quien egresa. Describir cada programa no es revisable a tiempo, y una descripción generada por IA sin revisión infringe AGENTS.md 2.1 y 7.3.
+**Pendiente**: decidir el líder la aceptación; verificar si mifuturo.cl ya publica descripciones de carreras; medir cuántos grupos resultan de la base de oferta; definir qué profesionales revisan cada área.
+**Siguiente**: construir la tabla de agrupación en `datos/` si se acepta el ADR.
+
+## 2026-11-14 (prototipo del mapa de carreras por región; datos de empleo del INE y Censo)
+
+**Hecho** (sin commit, carpeta `datos/mapa/`): mapa 3D en `mapa.html` con filtros de región y comuna, contornos BCN (regiones y comunas) y recuadro de Juan Fernández y Pascua. Datos de entradas 2026 (SIES) y empleo al primer año (Mi Futuro, elaboración propia) en `carreras_regiones.json`. Empleo por rama de actividad a partir del microdato ENE Jul-Sep 2026 en `ene_ramas_region.json`, solo con totales. Microdato del Censo 2024 descargado en `datos/crudos/censo/` (320 MB, formato Redatam), registrado en el registro de descargas.
+**Por qué**: el Banco de Datos ENE pide registro con RUT y guarda quién consulta, así que no lo automatizamos. El Censo se exporta a mano desde Redatam o pidiendo la tabla al INE por la Ley 20.285. Una zona con menos de 10 estudiantes muestra «menos de 10», sin cifra (ADR 0025, opción B).
+**Callejón**: el INE no publica el grupo CIUO en la ENE del trimestre Jul-Sep 2026; la tabla exportada del Banco salió toda en cero. El microdato de la ENE tampoco trae comuna. El cruce de áreas SIES con ramas CAE es un supuesto nuestro sin validar.
+**Pendiente**: solicitud al INE ingresada con folio AH007T0014649 (acuse de recibo confirmado por el INE; el acuse no se sube al repositorio); seguir el plazo de 20 días hábiles en portaltransparencia.cl; fecha de referencia del Censo 2024; cuadros de Redatam por comuna de trabajo × CIUO; revisar la cifra de 120 filas con `cubierto=0`; decidir si «Derecho» y «Bachillerato y/o Licenciatura en Derecho» se agrupan; el mapa no se ha visto en un navegador real.
+**Siguiente**: cuando llegue la tabla del INE o el CSV del Censo, cruzar comuna de trabajo con grupo CIUO y área SIES, y revisar el cruce áreas-ramas con el líder.
+
 ## 2026-11-14 (cruce N18: artistas de espectáculo sin área; revisión de alcance)
 
 **Hecho**: bailarines, coreógrafos y músicos quedaban en «Sin área definida» por la regla de subgrupo `27-2`, que tapaba todo el grupo. Se agregaron `27-203` y `27-204` a Arte y Arquitectura (fusionado en el [PR 210](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/210), commit `91faf3b`).
