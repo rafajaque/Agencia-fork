@@ -26,7 +26,9 @@ export type CarreraMapa = {
 export type DatosMapa = {
   anio_entradas: number;
   umbral_entradas: number;
-  fuente_empleabilidad: { fuente: string; url: string; periodo: string; nota: string };
+  fuente_entradas: { fuente: string; url: string; fecha_consulta: string; nota: string };
+  fuente_empleabilidad: { fuente: string; url: string; periodo: string; nota: string; fecha_consulta: string };
+  fuente_regiones: { fuente: string; url: string; fecha_consulta: string };
   carreras: Record<string, CarreraMapa>;
 };
 

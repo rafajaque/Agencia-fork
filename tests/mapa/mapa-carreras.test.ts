@@ -51,7 +51,9 @@ test("las carreras se ordenan en español", () => {
   const datos: DatosMapa = {
     anio_entradas: 2026,
     umbral_entradas: 10,
-    fuente_empleabilidad: { fuente: "Mi Futuro", url: "https://mifuturo.cl", periodo: "2021-2023", nota: "" },
+    fuente_entradas: { fuente: "SIES", url: "https://mifuturo.cl", fecha_consulta: "2026-11-10", nota: "" },
+    fuente_empleabilidad: { fuente: "Mi Futuro", url: "https://mifuturo.cl", periodo: "2021-2023", nota: "", fecha_consulta: "2026-11-05" },
+    fuente_regiones: { fuente: "BCN", url: "https://www.bcn.cl", fecha_consulta: "2026-11-14" },
     carreras: { Zoología: { regiones: [], mediana_entradas_regionales: null, mediana_empleabilidad_regional_pct: null }, Árbitro: { regiones: [], mediana_entradas_regionales: null, mediana_empleabilidad_regional_pct: null } },
   };
   assert.deepEqual(nombresCarreras(datos), ["Árbitro", "Zoología"]);

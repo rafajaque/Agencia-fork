@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 
 import { Enlace } from '@/app/_componentes/Enlace';
+import { fechaLarga } from '@/lib/datos/fechas';
 import datosJson from '@/lib/datos/mapa/carreras-regiones.json';
 import regionesJson from '@/lib/datos/mapa/regiones.json';
 import {
@@ -187,22 +188,20 @@ export function MapaCarreras() {
 
       <div className={estilos.notas}>
         <p>
-          <strong>Estudiantes nuevos:</strong> personas que empezaron primer año en 2026. Fuente:{' '}
-          <Enlace href="https://www.mifuturo.cl/bases-de-datos-de-matriculados/">
-            Servicio de Información de Educación Superior (SIES), matrícula histórica
-          </Enlace>
-          , consultada el 10 de noviembre de 2026. Las sumas por región son elaboración propia.
+          <strong>Estudiantes nuevos:</strong> personas que empezaron primer año en {datos.anio_entradas}. Fuente:{' '}
+          <Enlace href={datos.fuente_entradas.url}>{datos.fuente_entradas.fuente}</Enlace>, consultada el{' '}
+          {fechaLarga(datos.fuente_entradas.fecha_consulta)}. Las sumas por región son elaboración propia.
         </p>
         <p>
           <strong>Empleo al primer año:</strong> de cada 100 titulados de la carrera, cuántos tenían empleo al primer año. Fuente:{' '}
           <Enlace href={datos.fuente_empleabilidad.url}>{datos.fuente_empleabilidad.fuente}</Enlace> (SIES), periodo{' '}
-          {datos.fuente_empleabilidad.periodo}, consultada el 5 de noviembre de 2026. La cifra por región es elaboración propia:
+          {datos.fuente_empleabilidad.periodo}, consultada el {fechaLarga(datos.fuente_empleabilidad.fecha_consulta)}. La cifra por región es elaboración propia:
           promedio de las instituciones, ponderado por sus estudiantes nuevos.
         </p>
         <p>
           <strong>Regiones:</strong>{' '}
-          <Enlace href="https://www.bcn.cl/siit/mapoteca/index.html">división regional de la Biblioteca del Congreso Nacional (BCN)</Enlace>
-          , consultada el 14 de noviembre de 2026.
+          <Enlace href={datos.fuente_regiones.url}>{datos.fuente_regiones.fuente}</Enlace>, consultada el{' '}
+          {fechaLarga(datos.fuente_regiones.fecha_consulta)}.
         </p>
       </div>
     </section>
