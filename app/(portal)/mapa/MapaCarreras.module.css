@@ -90,6 +90,12 @@
   stroke-dasharray: 4 3;
 }
 
+.guia {
+  stroke: var(--color-linea);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
 .etiqueta {
   font-family: var(--fuente-cifras);
   font-size: 11px;

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { buscarCarreras, categoriaZona, nombreRegion, nombresCarreras, radioZona, textosZona, type DatosMapa, type FilaRegion } from "../../lib/datos/mapa-carreras.ts";
+import { buscarCarreras, categoriaZona, nombreRegion, nombresCarreras, radioZona, separarEtiquetas, textosZona, type DatosMapa, type FilaRegion } from "../../lib/datos/mapa-carreras.ts";
 
 const publicable: FilaRegion = {
   codigo_region: "01",
@@ -77,4 +77,21 @@ test("sin texto se muestran las primeras carreras y el límite se respeta", () =
   const muchas = Array.from({ length: 30 }, (_, i) => `Carrera ${i}`);
   assert.equal(buscarCarreras(muchas, "").length, 12);
   assert.equal(buscarCarreras(muchas, "carrera 2", 3).length, 3);
+});
+
+test("las etiquetas que se pisan se separan y las que no tienen lugar se ocultan", () => {
+  const sueltas = separarEtiquetas([
+    { x: 0, y: 0, ancho: 20, alto: 11 },
+    { x: 100, y: 0, ancho: 20, alto: 11 },
+  ]);
+  assert.deepEqual(sueltas, [0, 0]);
+
+  const pisadas = separarEtiquetas([
+    { x: 50, y: 50, ancho: 20, alto: 11 },
+    { x: 50, y: 52, ancho: 20, alto: 11 },
+  ]);
+  assert.equal(pisadas[0], 0);
+  assert.ok(pisadas[1] !== null && Math.abs(pisadas[1]) >= 12, "la segunda debe moverse fuera de la primera");
+
+  assert.deepEqual(separarEtiquetas([{ x: 0, y: 0, ancho: 20, alto: 11 }, { x: 0, y: 0, ancho: 20, alto: 11 }], 0), [0, null]);
 });

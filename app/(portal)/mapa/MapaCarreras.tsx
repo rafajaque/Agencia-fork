@@ -12,6 +12,7 @@ import {
   nombreRegion,
   nombresCarreras,
   radioZona,
+  separarEtiquetas,
   textosZona,
   type DatosMapa,
   type FilaRegion,
@@ -53,6 +54,13 @@ export function MapaCarreras() {
 
   const maximo = Math.max(0, ...bloque.regiones.map((f) => f.entradas ?? 0));
   const seleccionada = filas.find((x) => x.region.codigo === region);
+  // Burbujas en orden de dibujo (la más grande primero) y su desplazamiento para que las cifras no se pisen.
+  const burbujas = [...filas]
+    .filter((x) => x.fila && radioZona(x.fila.entradas, maximo) !== null)
+    .sort((x, y) => (y.fila?.entradas ?? 0) - (x.fila?.entradas ?? 0));
+  const desplazamientos = separarEtiquetas(
+    burbujas.map(({ region: r, fila }) => ({ x: r.cx, y: r.cy, ancho: String(fila!.entradas).length * 7, alto: 14 })),
+  );
 
   return (
     <section className={estilos.seccion} aria-labelledby="mapa-carreras-titulo">
@@ -124,16 +132,15 @@ export function MapaCarreras() {
               />
             );
           })}
-          {[...filas]
-            .sort((x, y) => (y.fila?.entradas ?? 0) - (x.fila?.entradas ?? 0))
-            .map(({ region: r, fila }) => {
-            const radio = fila ? radioZona(fila.entradas, maximo) : null;
-            if (!fila || radio === null) return null;
-            const categoria = categoriaZona(fila, bloque.mediana_empleabilidad_regional_pct);
+          {burbujas.map(({ region: r, fila }, i) => {
+            const radio = radioZona(fila!.entradas, maximo)!;
+            const categoria = categoriaZona(fila!, bloque.mediana_empleabilidad_regional_pct);
+            const dy = desplazamientos[i];
             return (
               <g key={r.codigo} transform={`translate(${r.cx} ${r.cy})`} aria-hidden="true">
                 <circle r={radio} className={`${estilos.burbuja} ${categoria === 'bajo' ? estilos.burbujaBaja : ''}`} />
-                <text className={estilos.etiqueta} y={4}>{fila.entradas}</text>
+                {dy !== null && dy !== 0 ? <line className={estilos.guia} x1={0} y1={0} x2={0} y2={dy} /> : null}
+                {dy !== null ? <text className={estilos.etiqueta} y={4 + dy}>{fila!.entradas}</text> : null}
               </g>
             );
           })}
