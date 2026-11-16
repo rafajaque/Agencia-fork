@@ -2,6 +2,14 @@
 
 Memoria de trabajo entre sesiones. Lo más reciente, arriba.
 
+## 2026-11-16 (revisión de los 11 PR de Cristóbal)
+
+**Hecho**: revisados con `revisar-pr` y comentados en GitHub los PR 160, 161 a 168, 234 y 236. Aprobables: 236 (menor: `numero > 2` fijo en `IndicadorEstacion`, falta anotarlo en `docs/componentes.md`) y 160 (menor: orden del CSS). El 234 requiere cambios: no se pudieron verificar las páginas citadas del Acta N.º 75 ni de los Instrumentos 2023 y 2027, porque acceso.mineduc.cl estaba en mantenimiento; el cálculo de 824,36 sí cuadra. Los comentarios son informativos, no revisión formal.
+**Por qué**: el 161 al 168 no se pueden fusionar. Salen de la base vieja `8b0bcff` con 72 a 187 commits y merges `codex/revision-prNNN`, dan conflicto en 5 archivos con `main` (`CabeceraInterior.module.css`, `docs/diseno.md`, `portada.spec.ts`, `fixtures/cabeceras.tsx`, `navegacion/cabeceras.spec.ts`), repiten la ficha del 236 y arrastran 2 PNG. GitHub los marca «mergeable» solo porque su base es la rama anterior de la pila, no `main`. El 161 tiene 21 archivos y unas 800 líneas propias: hay que dividirlo.
+**Callejón**: el diff de cada PR contra su base de pila parece de 2.400 líneas; el aporte real se mide con `git diff refs/pr/N-1 refs/pr/N` o reconstruyendo sobre `main`. No se ejecutaron pruebas locales; solo se leyó el CI (verde en todos).
+**Pendiente**: Cristóbal reconstruye 161 a 168 desde `main` (como el 160 y el 236) y divide el 161; verificar las citas del 234 cuando el sitio vuelva; revisión visual y de textos del líder, porque Codex es el autor.
+**Siguiente**: fusionar 236 y 160 con la confirmación del líder; reabrir el 234 cuando Acceso Mineduc responda.
+
 ## 2026-11-14 (mapa de carreras en la página principal, en rama)
 
 **Hecho**: rama `feat/mapa-carreras` (worktree en `feat-mapa-carreras`, commit local, sin push): sección del mapa en la portada, SVG sin Three.js, ADR 0036 y fuentes. Pasa `tsc`, `eslint`, 214 pruebas y `next build` con la muestra. Solo región; las filas con `cubierto = 0` (120) quedan fuera.
