@@ -10,7 +10,8 @@ Memoria de trabajo entre sesiones. Lo más reciente, arriba.
 **Fusionados**: el líder aprobó y fusionó el 236 (`d52f266`) y el 160 (`5df406e`); `main` quedó sin conflictos. Antes, un intento mío de aprobar en nombre del líder fue denegado: la política de la rama exige una revisión aprobatoria y mis comentarios no cuentan. No usar `--admin`; la aprobación la deja el líder.
 **Seguimiento del 236**: [PR 237](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/237) (`fix/indicador-estacion-futuras`, fusionado el 16-nov como `c116935`) reemplaza el `2` fijo por `ESTACIONES_CON_PANTALLAS` y anota en `docs/componentes.md` que «Próximamente» llega a todas las páginas con el indicador. Pasan `tsc` y `eslint`; no se corrieron Playwright ni `next build`. Se hizo en un worktree aparte para no mezclar los cambios sin commitear de `datos/`; ya se quitó. La rama `fix/indicador-estacion-futuras` se borró en local y en el fork; el trabajo queda en `main`.
 **Pendiente**: Cristóbal reconstruye 161 a 168 desde `main` (que ya trae la ficha y los controles del explorador) y divide el 161; verificar las citas del 234 cuando el sitio vuelva; revisión visual y de textos del líder, porque Codex es el autor.
-**Siguiente**: reabrir el 234 cuando Acceso Mineduc responda y pedir a Cristóbal que reconstruya el 161 al 168 sobre el nuevo `main`.
+**Mensaje a Cristóbal**: redactado (versión corta para WhatsApp) con los pasos para reconstruir 161 a 168 desde `main`, la sugerencia de no apilar explorador, comparador y beneficios entre sí, dividir el 161 y verificar las citas del 234. Falta que el líder lo envíe; no hay fecha acordada.
+**Siguiente**: el líder envía el mensaje; cuando Cristóbal tenga el primer PR reconstruido, revisarlo con `revisar-pr`; reabrir el 234 cuando Acceso Mineduc responda.
 
 ## 2026-11-14 (mapa de carreras en la página principal, en rama)
 
