@@ -2,6 +2,12 @@
 
 Memoria de trabajo entre sesiones. Lo más reciente, arriba.
 
+## 2026-11-17 (noche: 251 fusionado, 162 devuelto para rehacerlo desde main)
+
+**Hecho**: el **251** (Cristóbal, reemplazo limpio del 161) quedó fusionado en `main` con squash y `--admin` a las 22:36 UTC, con los siete checks en verde, tras retirar la espera del alcance de las tarjetas y actualizar la rama. El **162** (espera accesible del explorador) se revisó y se devolvió: su base es la rama antigua del 161 y contra el `main` actual revertiría unas 3.700 líneas (acreditación, ponderaciones, puntaje de corte, ayuda, y `next` de 16.4.6 a 16.4.4). Se publicaron en el 162 dos comentarios: los cambios exactos para rehacerlo desde `main` y el mensaje para Cristóbal.
+**Pendiente**: Cristóbal abre un 162 nuevo desde `main` con solo `CargaExplorador.tsx`, `Explorador.tsx`, la espera en el CSS, una sección en `docs/diseno.md` y `carreras.spec.ts` (cinco archivos, un commit propio). Los textos y cómo se ve la espera los revisa el líder. Las ramas 163 a 168 se rehacen igual, de a una, cada una después de fusionar la anterior. El 234 sigue bloqueado: sus tres PDF de Acceso Mineduc no se pudieron verificar y falta el rebase.
+**Nota**: la rama `fix/pila-limpia-pr161` está en el fork de Cristóbal y no la puedo borrar desde aquí.
+
 ## 2026-11-17 (tercera pasada: 244 fusionado, 251 con cambios menores)
 
 **Hecho**: el **244** (comparador a 200 %) quedó fusionado en `main` con squash y `--admin`, por orden del líder; Ale resolvió las rutas sin auditar. El **251** (Cristóbal, reemplazo limpio del 161) recibió comentario con «requiere cambios menores»: unas 80 líneas de CSS de espera accesible que pertenecen al #162 y no se usan, formato y descripción. El **234** recibió recordatorio (fuentes de Acceso Mineduc sin verificar, rebase). Comentarios publicados en GitHub.
