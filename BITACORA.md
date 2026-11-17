@@ -2,6 +2,11 @@
 
 Memoria de trabajo entre sesiones. Lo más reciente, arriba.
 
+## 2026-11-17 (tercera pasada: 244 fusionado, 251 con cambios menores)
+
+**Hecho**: el **244** (comparador a 200 %) quedó fusionado en `main` con squash y `--admin`, por orden del líder; Ale resolvió las rutas sin auditar. El **251** (Cristóbal, reemplazo limpio del 161) recibió comentario con «requiere cambios menores»: unas 80 líneas de CSS de espera accesible que pertenecen al #162 y no se usan, formato y descripción. El **234** recibió recordatorio (fuentes de Acceso Mineduc sin verificar, rebase). Comentarios publicados en GitHub.
+**Pendiente**: Cristóbal arregla el 251; la pila 162-168 espera a que se fusione. Ale: probar nombre y arancel más largos a 200 % y 320 px, y unificar la función de minúsculas (ficha y comparador). La rama `fix/comparador-zoom-200` no se borró.
+
 ## 2026-11-17 (segunda pasada sobre los PR de Alejandro y Cristóbal: nada nuevo que revisar salvo el 242)
 
 **Hecho**: sin commits nuevos desde las revisiones previas en el **244** (Alejandro), el **234** y la pila **161 → 168** (Cristóbal). El **242** (`next` 16.4.5) es nuevo y quedó obsoleto: `main` ya trae 16.4.6 por el #243 y el PR tiene conflicto; se recomienda cerrarlo. Los PDF de Acceso Mineduc que bloquean el 234 siguen devolviendo la página de mantenimiento (probado el 17-nov). No se publicó ningún comentario en GitHub.
