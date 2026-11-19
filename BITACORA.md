@@ -2,6 +2,11 @@
 
 Memoria de trabajo entre sesiones. Lo más reciente, arriba.
 
+## 2026-11-18 (274 de Alejandro fusionado)
+
+**Hecho**: el **274** (hoja de decisión al 200 %, Alejandro) se revisó con `revisar-pr`, sin hallazgos Críticos, Altos ni Medios, y se fusionó con squash y `--admin` (siete checks en verde). Cristóbal no tiene PR abiertos.
+**Pendiente (menores, comentados en el 274)**: el enlace «Elegir como respaldo» de `Hoja.tsx` queda en minúsculas (falta `estilos.nombreCarrera`); el test `comparador-zoom.spec.ts` es de otro tema y usa 320 px. La verificación manual con TalkBack y zoom 200 % la declara Alejandro; no se pudo confirmar.
+
 ## 2026-11-17 (noche: 251 fusionado, 162 devuelto para rehacerlo desde main)
 
 **Hecho**: el **251** (Cristóbal, reemplazo limpio del 161) quedó fusionado en `main` con squash y `--admin` a las 22:36 UTC, con los siete checks en verde, tras retirar la espera del alcance de las tarjetas y actualizar la rama. El **162** (espera accesible del explorador) se revisó y se devolvió: su base es la rama antigua del 161 y contra el `main` actual revertiría unas 3.700 líneas (acreditación, ponderaciones, puntaje de corte, ayuda, y `next` de 16.4.6 a 16.4.4). Se publicaron en el 162 dos comentarios: los cambios exactos para rehacerlo desde `main` y el mensaje para Cristóbal.
