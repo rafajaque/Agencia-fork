@@ -47,10 +47,35 @@ export type RequisitoAdmision = {
   fecha_consulta: string;
 };
 
+// Acreditación institucional, tal como la informa la fuente en una fecha: es una situación fechada,
+// no una promesa de vigencia actual. «hasta» y «desde» vienen vacíos si la fuente no los informa.
+export type AcreditacionInstitucion = {
+  estado: 'acreditada' | 'no_acreditada' | 'bajo_tutela';
+  anios: number | null;
+  desde: string | null;
+  hasta: string | null;
+  situacion_al: string;
+  periodo: string;
+  fuente: string;
+  url: string;
+  fecha_consulta: string;
+};
+
+// Ingreso al 4.º año según el SIES: es un tramo en palabras («De $1 millón 600 mil a $1 millón 700 mil»), no un promedio.
+// «tramo» viene vacío cuando el SIES no lo publica, y entonces «motivo_sin_dato» dice por qué.
+export type TramoIngreso = {
+  tramo: string | null;
+  motivo_sin_dato: string | null;
+  periodo: string;
+  fuente: string;
+  url: string;
+  fecha_consulta: string;
+};
+
 export type Carrera = {
   codigo_sies: string;
   carrera: string;
-  institucion: { nombre: string; tipo: TipoInstitucion };
+  institucion: { nombre: string; tipo: TipoInstitucion; acreditacion?: AcreditacionInstitucion };
   sede: string;
   comuna: string;
   region: string;
@@ -58,6 +83,11 @@ export type Carrera = {
   duracion_semestres: number;
   indicadores: Indicador[];
   requisito_admision?: RequisitoAdmision;
+  ingreso_tramo?: TramoIngreso;
+  // Verdadero si la carrera tiene código DEMRE (se postula por el sistema de admisión centralizado). Ausente si no se sabe.
+  admision_centralizada?: boolean;
+  // Área de conocimiento del SIES de su carrera genérica (fuente en lib/datos/areas-sies.ts). Ausente si el SIES no la publica.
+  area?: string;
 };
 
 let cache: Carrera[] | null = null;

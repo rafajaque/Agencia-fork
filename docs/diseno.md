@@ -147,6 +147,18 @@ suman 51.236 bytes. Procedencia y licencias en `public/fuentes/README.md`.
 
 ## 4. Espacio y tamaño de toque
 
+### Puntos de corte de portada y cabeceras
+
+Las condiciones de `@media` se escriben en `rem` porque las variables CSS
+no se pueden usar en ellas. `48rem` permite distribuir la navegación y la portada
+en pantallas anchas. Las cabeceras interiores usan además `64rem` para separar
+texto e ilustración en columnas. Las medidas dentro de las reglas usan tokens.
+Se verifica la distribución a 360, 768 y 1280 px, con texto ampliado al 200 %.
+
+Los controles del explorador usan rejillas para distribuir filtros y
+resultados cuando hay espacio. El formulario conserva etiquetas visibles,
+objetivos táctiles y el envío por URL para funcionar sin JavaScript.
+
 | Decisión | Valor | Razón |
 |---|---|---|
 | Unidad base | 4 px, escala 4·8·12·16·24·32·48·64·80·96 | Un solo sistema evita decisiones arbitrarias ("¿13 o 15 px?") y mantiene alineación. |
@@ -187,6 +199,7 @@ suman 51.236 bytes. Procedencia y licencias en `public/fuentes/README.md`.
 
 - **Tuteo, español de Chile, frases cortas** (menos de 20 palabras cuando se pueda).
 - **Siglas explicadas la primera vez:** "Formulario Único de Acreditación Socioeconómica (FUAS)".
+  Después, la sigla va en `<abbr>` con subrayado punteado (`Sigla`, `docs/componentes.md`). El punteado la distingue de un enlace (subrayado continuo) sin usar color, porque «nunca información solo con color» (sección 2.7). Es una pista extra: el nombre completo ya está escrito la primera vez, porque el `title` no se muestra en pantallas táctiles.
 - **Botones con verbo y resultado:** "Comparar carreras", no "Continuar" ni "Enviar".
 - **Errores que dicen qué pasó y cómo arreglarlo:** "Falta tu puntaje de Matemática 1. Escríbelo para calcular", no "Error de validación".
 - **Nunca culpar ni etiquetar** al estudiante (AGENTS.md, sección 2.4).
@@ -216,13 +229,149 @@ Archivos en `public/marca/`, redibujados como vectores a partir del único origi
 
 ---
 
+## Ilustraciones y composición de la portada
+
+El tren relaciona las estaciones con el recorrido de la página. Las diagonales
+separan sus secciones mediante la identidad de señalética del ADR 0029.
+Las ilustraciones acompañan textos y enlaces que explican cada acción y llevan
+`aria-hidden="true"` para evitar anuncios decorativos.
+
+En `Tren.tsx`, las coordenadas, los radios y los grosores de trazo pertenecen al
+sistema de coordenadas del `viewBox`. Definen las proporciones internas del arte.
+El tamaño que ocupa cada SVG en la página se controla desde CSS con los tokens
+`--alto-arte` y `--espacio-*`. Los colores usan los tokens de marca en ambos temas.
+
+El logo se ajusta al espacio disponible junto al menú mediante flexbox y
+`--ancho-logo`. Los textos utilizan la medida máxima `--medida` y el interlineado
+de títulos existente. El indicador activo del carrusel usa `--espacio-3`, además
+del estado anunciado y del color. El cartel de plazos conserva su orientación
+horizontal para facilitar la lectura.
+
+En el logo para fondos oscuros, las partes azul claro tienen contraste 5,89 a 1
+y las partes coral, 4,39 a 1 sobre la cabecera azul marino. Se conserva el archivo
+de marca según las reglas del logotipo de la sección 9. El fondo de marca es el
+mismo en ambos temas. Las pruebas leen los colores del SVG y el fondo calculado,
+capturan ambos temas a 360 px y comprueban con axe los enlaces de navegación.
+
+La opacidad `0.1` atenúa la diagonal decorativa del héroe para separarla del
+contenido. La opacidad `0.4` distingue controles deshabilitados del carrusel,
+acompañada del atributo nativo `disabled` y de su nombre accesible. Estos valores
+permiten distinguir las capas decorativas y los estados de los controles.
+El quiebre de `48rem` permite presentar dos columnas y la navegación de escritorio
+cuando hay espacio. Esta condición sigue el patrón de media queries del proyecto.
+Se comprueba el comportamiento a 360, 768 y 1280 px, con texto al 200 %.
+
+El titular de portada usa `--texto-3` en teléfono para que «educación» conserve
+la palabra completa a 360 px con texto al 200 %. Desde `48rem` usa `--texto-5`.
+
+La altura del encabezado se mide con `ResizeObserver` y se propaga como
+`--alto-cabecera-portal`. Esta medida calculada y `--espacio-4` dejan visible el
+destino de cada ancla. Con JavaScript desactivado, el encabezado permanece en el flujo del
+documento y acompaña el desplazamiento de la página.
+
+La página interna `/componentes/navegacion` permite probar estos componentes en
+desarrollo y responde 404 en producción, como la guía de componentes. Las pruebas
+de `tests/navegacion/` se ejecutan con `npm run test:navegacion`. También forman
+parte de `npm run test:a11y`, después de las pruebas contra la compilación.
+
+## Cabecera interior compartida
+
+`CabeceraInterior` presenta un recorrido de cuatro enlaces, con `aria-current="page"`
+y negrita para identificar la página actual. El logo enlaza al inicio por convención.
+El foco usa `--color-marca-texto` sobre el fondo de marca y los enlaces se subrayan.
+En teléfono los enlaces ocupan dos filas y la cabecera permanece en el flujo.
+Desde `48rem` caben en una fila; desde `64rem` texto e ilustración ocupan columnas iguales.
+Los breakpoints se expresan en `rem` porque las condiciones de media queries no
+admiten variables CSS. Los demás tamaños, espacios y tiempos usan tokens.
+El riel y las ilustraciones reutilizan la identidad del ADR 0029 para orientar el recorrido.
+Los títulos usan `--texto-1` en teléfono y `--texto-4` en pantallas anchas.
+Así «Administración de Empresas» cabe a 360 px con texto al 200 % sin partir
+palabras ni desbordar. `break-word` conserva la salida para palabras más largas.
+La reducción de movimiento elimina las entradas animadas y el foco permanece visible.
+Las pruebas montan las variantes desde `tests/fixtures/cabeceras.tsx`.
+Su ruta se crea temporalmente, se retira junto con su tipo generado y queda fuera de producción.
+La ficha de carrera integra esta cabecera y conserva las fuentes de cada indicador.
+
+**Todas las páginas interiores la usan** (carreras, ficha, comparador, beneficios,
+simulador, FUAS, preguntas, hoja, ocupaciones y mapa), para que la persona reconozca
+dónde está con el mismo recorrido en todo el portal. El recorrido no suma paradas:
+una página que no es parada se cuelga de su **parada madre**, que lleva el tren y
+`aria-current="true"` (no `"page"`, porque no es esa página): ocupaciones y mapa →
+Carreras; hoja → Comparador; simulador y FUAS → Beneficios. Preguntas no es parte de
+la trayectoria: no marca parada ni muestra el indicador de estación. La estación del
+indicador sale de un mapa explícito en `CabeceraInterior.tsx`, no de la ruta.
+
+Al imprimir se ocultan el logo, el recorrido, el indicador y la ilustración; el título
+y la introducción quedan en `--color-texto` sin fondo, para que una ficha o una hoja
+impresa diga de qué es.
+
+### Ficha de carrera
+
+La ficha reutiliza el recorrido compartido y las ilustraciones de
+`app/_componentes/Tren.tsx`. El módulo anterior del portal reexporta las
+ilustraciones para conservar los consumidores existentes.
+Las tarjetas permiten encoger el contenido y usan `break-word` como salida
+para palabras que superen su ancho. Los títulos de los datos usan `--texto-1`.
+Las etapas futuras y el aviso móvil se derivan de la lista de `IndicadorEstacion`.
+Las pruebas recorren enlaces con teclado, comprueban foco y objetivos táctiles,
+ambos temas, 360, 768 y 1280 px, texto al 200 % y ausencia de JavaScript.
+En cada tamaño se verifica que los títulos conserven las palabras completas.
+Las capturas producidas por las pruebas usan datos de muestra.
+
+Las ponderaciones para postular se muestran como lista de definiciones, no como tabla: a 360 px con el texto al 200 % dos columnas no caben y desbordaban la tarjeta. El nombre del factor se ajusta en líneas y el porcentaje, en `--fuente-cifras`, queda siempre a la derecha. Solo aparecen los factores que aportan; «Historia y Ciencias Sociales, o Ciencias» cuenta una vez y explica que se usa la prueba de mayor puntaje. Una carrera sin ponderaciones cargadas dice «Sin datos suficientes» y el motivo, como el resto de las tarjetas.
+
+La acreditación se explica según su estado: «7 años» con las fechas de inicio y término, «No acreditada» o «Bajo tutela». Siempre dice a qué fecha corresponde la situación y enlaza la CNA, porque cambia. Si la fecha de término ya pasó, el titular dice «Terminada» y un aviso en negrita lo repite: no se deja un número grande que dé a entender que sigue vigente.
+
+El puntaje de corte dice qué mide («Puntaje ponderado de la última persona seleccionada por la vía regular») y que es «Elaboración propia con Datos abiertos DEMRE 2026», porque lo calculamos nosotros y la fuente lo exige. Si no se puede asegurar el número, la tarjeta explica por qué en vez de mostrarlo: el DEMRE quita registros de sus datos abiertos, o la carrera tuvo menos de 8 seleccionados. Las carreras fuera del sistema de admisión del DEMRE dicen que el DEMRE solo publica datos de las suyas. «Bajo tutela» no se presenta como falta de calidad: se dice lo que informa Mineduc y, en un centro de formación técnica, lo que establece la Ley 20.910.
+
+### Tarjetas del explorador
+
+Las tarjetas separan identidad y datos con los colores de marca existentes.
+El título usa `--texto-1` y el bloque de identidad, `--espacio-4`, para conservar
+palabras completas a 360 px con texto al 200 %, también al pasar a dos columnas.
+Cada cifra declara si corresponde a toda la carrera en la institución o a la
+sede y jornada. La medida, el período, la fuente y la fecha acompañan su valor.
+
+### Espera accesible del explorador
+
+Al enviar un formulario válido se anuncia «Buscando carreras…». Las tres tarjetas
+son decorativas: no representan la cantidad de resultados y quedan ocultas para
+lectores de pantalla. El ciclo usa `--mov-carga` y solo se anima si la persona
+no pide movimiento reducido. La espera se limita al formulario; la paginación
+y «Quitar filtros» conservan sus enlaces. No tiene tiempo máximo ni cancelación;
+al volver con el historial, `pageshow` restaura los resultados. Sin JavaScript,
+la búsqueda y los filtros mantienen el formulario GET y su navegación normal.
+
+### Controles del comparador
+
+Cada carrera elegida es una tarjeta con los colores de marca, igual que el bloque de identidad de las tarjetas del explorador, y su nombre completo en negrita. «Quitar carrera» va subrayado sobre ese fondo, sin relleno, para que la única acción principal (coral) siga siendo «Buscar». Los resultados para agregar son filas con separador y enlace subrayado. El buscador conserva su formulario GET, que funciona sin JavaScript. No se cambia el ancho de la página ni el quiebre de palabras de la tabla (ver el comparador a 200 %).
+
+### Cabecera y tarjetas del comparador
+
+El comparador usa la cabecera compartida (`CabeceraInterior`), igual que el explorador y la ficha: la persona reconoce el recorrido en todo el portal. Las carreras elegidas son tarjetas con el nombre en negrita y la institución y la sede debajo, con un ícono junto a «Quitar carrera» y a «Buscar»: el ícono acompaña al texto, nunca lo reemplaza. Una celda sin dato lleva borde discontinuo además del texto «Sin datos suficientes», para no transmitir la ausencia solo con color. En escritorio, la tabla usa una cuadrícula de una cuarta parte para la etiqueta y tres cuartas para las celdas, y la cabecera de carreras sigue esa misma cuadrícula (margen de 25 %). El HTML va en minúsculas para los lectores de pantalla; la mayúscula de los nombres es solo visual.
+
+### Secciones del comparador
+
+Las once filas del comparador van en cuatro grupos que responden una pregunta de la persona: «Cuánto cuesta», «Cómo entrar», «Cómo es estudiarla» y «Después de titularte» (`GRUPOS_DE_FILAS`, `lib/datos/indicadores-vista.ts`). Justificación: una lista plana de once datos obliga a leerlo todo para encontrar uno; el título de cada grupo permite saltar con un lector de pantalla por la lista de encabezados (grupo en nivel 2 y fila en nivel 3 en la tabla; en el bloque por carrera, grupo en 3 y fila en 4). Cada fila está en un solo grupo, y una prueba lo comprueba. La hoja de decisión usa los mismos grupos, en pantalla y en el texto descargable. Los grupos no ordenan ni destacan carreras: solo ordenan los datos. El título del grupo lleva una línea de `--color-linea` y `--texto-2`, sin color nuevo. El tramo de ingreso es un texto largo y parte en los espacios; las cifras no se parten.
+
+### Beneficios
+
+La página de beneficios usa la misma cabecera compartida que el explorador, la ficha y el comparador (`CabeceraInterior`), con dos accesos a sus secciones: «Ver calendario» y «Buscar beneficios». Justificación: la persona reconoce dónde está con el mismo recorrido en todo el portal, y los accesos evitan recorrer el catálogo completo para llegar a los plazos.
+
+La búsqueda de beneficios filtra el catálogo en el dispositivo y requiere JavaScript; no es un formulario GET como el explorador de carreras. Sin JavaScript se conserva el catálogo completo, sus fuentes y el calendario, con un aviso junto al buscador. Una prueba de accesibilidad comprueba que cada beneficio y cada plazo muestren su fuente y su fecha sin JavaScript.
+
 ## 10. Pendientes
+
 
 - [x] Colores del logo medidos y tokens ajustados (ADR 0006).
 - [ ] Pedir al diseñador original del logo (si existe) los valores exactos, para eliminar el margen de ±2 del JPG.
 - [x] Verificar cobertura de caracteres del español en ambas familias (A2, comprobación de WOFF2 y página `/prueba-tipografia`).
 - [ ] Probar la paleta con al menos una persona con daltonismo (recomendación de Okabe e Ito: los simuladores son solo aproximaciones).
 - [ ] Prueba con 5 usuarios reales, al menos uno de zona rural.
+
+### Tokens de forma del mapa de carreras (ADR 0037)
+
+Trazos, anchos y alturas del mapa usan tokens del grupo `forma`, con su razón en el ADR 0037: anillos de foco y bordes de campo según WCAG 2.2 (1.4.11 y 2.4.7), y cifras en `rem` según 1.4.4.
 
 ---
 

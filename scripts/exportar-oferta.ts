@@ -10,9 +10,9 @@
 // Decisiones (ver docs/datos/portal.md):
 // - Una carrera del portal es una variante (sede y jornada), como en la muestra.
 // - Cupos: solo la vía regular. Las demás vías no tienen campo en la ficha todavía.
-// - Ingreso al 4.º año: es un tramo (tramo_ingreso_sies), no un promedio. Queda
-//   fuera hasta que la ficha tenga un bloque para tramos.
+// - Ingreso al 4.º año: es un tramo (tramo_ingreso_sies), no un promedio; la ficha lo muestra tal como lo publica el SIES.
 // - Matrícula total: no está en los lotes cargados; queda fuera.
+// - Área: la del SIES por carrera genérica (lib/datos/areas-sies.json), cruzada por programa_generico.nombre_normalizado.
 
 import { copyFileSync, existsSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -23,11 +23,11 @@ import { construirOferta, type DatosBase } from '../lib/datos/oferta-mapeo.ts';
 // Lectura de la base (solo SELECT, con paginación de 1.000 filas por página).
 // ---------------------------------------------------------------------------
 
-async function leerTabla<T>(url: string, clave: string, tabla: string, select: string): Promise<T[]> {
+async function leerTabla<T>(url: string, clave: string, tabla: string, select: string, filtro = ''): Promise<T[]> {
   const filas: T[] = [];
   const pagina = 1000;
   for (let desde = 0; ; desde += pagina) {
-    const r = await fetch(`${url}/rest/v1/${tabla}?select=${encodeURIComponent(select)}`, {
+    const r = await fetch(`${url}/rest/v1/${tabla}?select=${encodeURIComponent(select)}${filtro ? `&${filtro}` : ''}`, {
       headers: {
         apikey: clave,
         Authorization: `Bearer ${clave}`,
@@ -44,15 +44,18 @@ async function leerTabla<T>(url: string, clave: string, tabla: string, select: s
 }
 
 async function leerBase(url: string, clave: string): Promise<DatosBase> {
+  const genericas = await leerTabla<{ id: string; nombre_normalizado: string }>(url, clave, 'programa_generico', 'id,nombre_normalizado');
+  const normalizadaPorId = new Map(genericas.map((g) => [g.id, g.nombre_normalizado]));
+  const variantes = await leerTabla<DatosBase['variantes'][number]>(
+    url,
+    clave,
+    'programa_variante',
+    'id,programa_id,programa_generico_id,codigo_sies,codigo_demre,sede,comuna,region,jornada,duracion_semestres,fuente_id',
+  );
   return {
     instituciones: await leerTabla(url, clave, 'institucion', 'id,nombre,tipo'),
     programas: await leerTabla(url, clave, 'programa', 'id,institucion_id,nombre'),
-    variantes: await leerTabla(
-      url,
-      clave,
-      'programa_variante',
-      'id,programa_id,programa_generico_id,codigo_sies,sede,comuna,region,jornada,duracion_semestres,fuente_id',
-    ),
+    variantes: variantes.map((v) => ({ ...v, generica_normalizada: normalizadaPorId.get(v.programa_generico_id) ?? null })),
     aranceles: await leerTabla(
       url,
       clave,
@@ -71,11 +74,30 @@ async function leerBase(url: string, clave: string): Promise<DatosBase> {
       'indicador',
       'programa_generico_id,tipo,valor,unidad,periodo,fuente_id,url,fecha_consulta,motivo_sin_dato',
     ),
+    indicadores_variante: await leerTabla(
+      url,
+      clave,
+      'indicador',
+      'variante_id,tipo,valor,unidad,periodo,fuente_id,url,fecha_consulta,motivo_sin_dato',
+      'variante_id=not.is.null',
+    ),
+    tramos_ingreso: await leerTabla(
+      url,
+      clave,
+      'tramo_ingreso_sies',
+      'programa_generico_id,tramo_publicado,periodo,fuente_id,url,fecha_consulta,motivo_sin_dato',
+    ),
     requisitos: await leerTabla(
       url,
       clave,
       'requisito_admision',
       'variante_id,nem,ranking,competencia_lectora,matematica_1,matematica_2,historia_cs_sociales,ciencias,historia_o_ciencias,prueba_especial,asignacion_especial_pedagogia,puntaje_ponderado_minimo,puntaje_promedio_minimo,periodo,fuente_id,url,fecha_consulta',
+    ),
+    acreditaciones: await leerTabla(
+      url,
+      clave,
+      'acreditacion_institucion',
+      'institucion_id,estado,anios,desde,hasta,situacion_al,periodo,fuente_id,url,fecha_consulta',
     ),
     fuentes: await leerTabla(url, clave, 'fuente', 'id,organismo,nombre'),
   };

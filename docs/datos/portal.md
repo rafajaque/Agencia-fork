@@ -39,8 +39,12 @@ Una ficha es `/carreras/{institución}/{carrera}-{sede}-{código SIES}`. El cód
 - **Una carrera del portal es una variante** (sede y jornada).
 - **Arancel, cupos y los indicadores del SIES** se publican con su fuente, período, fecha y motivo cuando falta el dato.
 - **Cupos:** solo la vía regular. MC, BEA, PACE y el segundo semestre no tienen campo en la ficha todavía.
-- **Ingreso al 4.º año:** es un tramo de pesos, no un promedio. No se publica hasta tener un bloque para tramos.
-- **Matrícula total:** no está en los lotes cargados.
+- **Ingreso al 4.º año:** es un tramo en palabras («De $1 millón a $1 millón 100 mil»), no un promedio. La ficha lo muestra tal como lo publica el SIES (tabla `tramo_ingreso_sies`, por carrera genérica).
+- **Retención de primer año y continuidad de estudios** (SIES) se muestran en la ficha. **Duración formal** (Mineduc) y **duración real** (SIES) van juntas en una tarjeta, cada una con su fuente; no se restan ni se promedian.
+- **Carreras fuera del sistema de admisión centralizado** (sin código DEMRE): la ficha dice por qué no hay vacantes, puntaje de corte ni ponderaciones, en vez de «sin datos».
+- **Comparador y hoja de decisión** muestran las mismas filas que la ficha, definidas en `lib/datos/indicadores-vista.ts`: empleabilidad, ingreso (tramo en palabras), retención, continuidad, arancel, matrícula, costo del primer año (elaboración propia), duración formal y real, vacantes, puntaje de corte y matrícula total. Cuando falta un dato dicen por qué: carrera fuera del sistema de admisión centralizado, o sin cifras del SIES.
+- **Matrícula total:** viene del lote 15 (recuento de personas matriculadas en la carrera, sumando todos sus años).
+- **Área:** cada carrera lleva el área de conocimiento que el SIES asigna a su carrera genérica (Buscador de Empleabilidad e Ingresos 2025-2026), desde `lib/datos/areas-sies.json`, que genera `datos/exportar_areas_sies.py`. No se infiere por el nombre: si el SIES no publica la carrera genérica (por ejemplo «Otras ingenierías»), la carrera queda sin área. La usa el criterio de alternativas cercanas (N6).
 - **Derecho y carreras con excepción:** la empleabilidad al 1.er año queda sin valor, con su motivo.
 
 ## Límites conocidos
@@ -53,4 +57,4 @@ Una ficha es `/carreras/{institución}/{carrera}-{sede}-{código SIES}`. El cód
 
 - Medir el tiempo de respuesta y el uso de CPU del explorador en el plan gratuito de Cloudflare.
 - Medir el tiempo de compilación con las ~11.364 fichas.
-- Bloques de la ficha para tramos de ingreso, vacantes MC/BEA/PACE y matrícula.
+- Bloques de la ficha para vacantes MC/BEA/PACE y matrícula.

@@ -1,6 +1,8 @@
 // Consultas al explorador y al comparador, sin acceso a la red. Son puras y tienen pruebas.
 // Los valores de región y jornada vienen de la carga oficial (datos/procesados/carga.csv).
 
+import { normalizar } from './buscar.ts';
+
 export const POR_PAGINA = 25;
 
 export const REGIONES = [
@@ -50,6 +52,7 @@ export function listaPostgrest(valores: readonly string[]): string {
 const SELECT_VARIANTE = [
   'id',
   'codigo_sies',
+  'codigo_demre',
   'sede',
   'comuna',
   'region',
@@ -58,7 +61,8 @@ const SELECT_VARIANTE = [
   'programa_id',
   'programa_generico_id',
   'fuente_id',
-  'programa:programa_id!inner(id,nombre,institucion_id,institucion:institucion_id!inner(id,nombre,tipo))',
+  'programa_generico:programa_generico_id(nombre_normalizado)',
+  'programa:programa_id!inner(id,nombre,nombre_normalizado,institucion_id,institucion:institucion_id!inner(id,nombre,tipo))',
 ].join(',');
 
 export function parametrosBusqueda(filtros: FiltrosBusqueda, pagina: number): URLSearchParams {
@@ -68,8 +72,11 @@ export function parametrosBusqueda(filtros: FiltrosBusqueda, pagina: number): UR
   p.set('limit', String(POR_PAGINA));
   p.set('offset', String(Math.max(0, pagina - 1) * POR_PAGINA));
 
-  for (const palabra of palabrasSeguras(filtros.texto)) {
-    p.append('programa.nombre', `ilike.*${palabra}*`);
+  // Se busca en el nombre normalizado (sin tildes ni mayúsculas, como lo guarda la carga), con las palabras
+  // normalizadas igual: si no, «enfermería» no encuentra «ENFERMERIA». Solo el nombre de la carrera: la
+  // institución, la sede y la comuna están en otras tablas y PostgREST no une un «o» entre ellas.
+  for (const palabra of palabrasSeguras(normalizar(filtros.texto))) {
+    p.append('programa.nombre_normalizado', `ilike.*${palabra}*`);
   }
   const regiones = filtros.regiones.filter((r) => (REGIONES as readonly string[]).includes(r));
   if (regiones.length) p.set('region', listaPostgrest(regiones));

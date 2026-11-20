@@ -1,10 +1,10 @@
 # 0035 — Descripción de carreras en lenguaje claro, por grupo de carrera
 
-Fecha: 2026-11-14 · Estado: aceptada (líder, 2026-11-14)
+Fecha: 2026-11-14 · Estado: aceptada (2026-11-14, por el líder)
 
 ## Contexto
 
-Los nombres oficiales de las carreras no bastan para decidir. En la oferta chilena conviven títulos muy parecidos que entregan grados, títulos y perfiles distintos: «Ingeniería Informática», «Ingeniería Civil en Informática» e «Ingeniería de Ejecución en Informática», además de sus menciones. Una persona que egresa de 4.º medio y no conoce esas diferencias puede elegir una carrera por el nombre, sin saber qué estudia ni qué título obtiene.
+Los nombres oficiales de las carreras no bastan para decidir. En la oferta chilena conviven títulos muy parecidos. Entregan grados, títulos y perfiles distintos: «Ingeniería Informática», «Ingeniería Civil en Informática» e «Ingeniería de Ejecución en Informática», además de sus menciones. Una persona que egresa de 4.º medio y no conoce esas diferencias puede elegir una carrera por el nombre, sin saber qué estudia ni qué título obtiene.
 
 La oferta cubierta por el proyecto tiene del orden de 11 mil carreras y programas (cifra por verificar contra la base de oferta cargada). Escribir y revisar una descripción para cada uno no es viable antes del lanzamiento, y una descripción generada sin revisión infringiría AGENTS.md 2.1 y 7.3.
 
@@ -14,12 +14,12 @@ La oferta cubierta por el proyecto tiene del orden de 11 mil carreras y programa
 |---|---|---|
 | **Descripción por grupo de carrera (nombre normalizado, sin menciones ni sedes), revisada por profesionales, mostrada en todas las carreras del grupo, más un bloque «títulos parecidos» que explica las diferencias** | Pocos textos (cientos, no miles) que se pueden revisar bien; el bloque comparativo responde la confusión real; se mantiene con el mismo flujo de revisión que el contenido psicoeducativo | Un grupo puede agrupar programas con planes distintos; hay que mantener la tabla de agrupación |
 | Descripción por cada una de las ~11 mil carreras | Máxima precisión por programa | Inviable de revisar; alto riesgo de textos inventados o desactualizados; mantenimiento permanente |
-| Descripción generada por IA a partir del plan de estudios, sin revisión humana | Rápido y barato | Viola AGENTS.md 2.1 (todo dato verificado en fuente) y 2.4 (contenido revisado por profesional); el texto aparenta ser oficial |
+| Descripción generada por inteligencia artificial (IA) a partir del plan de estudios, sin revisión humana | Rápido y barato | Viola AGENTS.md 2.1 (todo dato verificado en fuente) y 2.4 (contenido revisado por profesional); el texto aparenta ser oficial |
 | No describir; mostrar solo el nombre y los datos oficiales | Cero riesgo de redacción | Deja sin resolver la causa del problema: la persona no sabe qué es la carrera |
 
 ## Decisión
 
-1. **Unidad de descripción: el grupo de carrera.** Se define una tabla de agrupación que asigna cada carrera oficial a un grupo, normalizando el nombre (sin menciones, sin sede, sin jornada). La tabla es versionada en `datos/` y cada asignación se revisa con el equipo. Una carrera sin grupo asignado no muestra descripción, nunca una inventada.
+1. **Unidad de descripción: el grupo de carrera.** El grupo es la **carrera genérica oficial**: el campo `area_carrera_generica` de la matrícula de Datos Abiertos Mineduc. No hay reglas de nombre propias. Así la tabla solo ordena lo que publica el organismo y no inventa agrupaciones. La tabla se genera con `datos/generar_grupos_carrera.py` (PR 218), y sus CSV se regeneran en `datos/procesados/`, que está en `.gitignore`. Una carrera sin grupo asignado no muestra descripción, nunca una inventada.
 
 2. **Contenido de cada descripción.** Breve, en lenguaje claro (`lenguaje-claro`):
    - Qué estudia la persona y qué suele hacer al egresar, en dos o tres frases. Describe actividades típicas de la profesión y no promete resultados. Si el texto menciona empleo, solo puede hacerlo con el indicador oficial de empleabilidad, con qué mide y su año (AGENTS.md 2.1), nunca como afirmación del texto.
@@ -47,13 +47,16 @@ La oferta cubierta por el proyecto tiene del orden de 11 mil carreras y programa
 
 ## Consecuencias
 
-- Hay que construir y mantener la tabla de agrupación. Es trabajo de datos y se hace antes de publicar descripciones.
+- La tabla de agrupación ya existe (PR 218). Con la oferta de 2026: 11.364 programas, 1.957 nombres oficiales y 256 grupos.
+- **Desviación respecto de la versión propuesta:** el borrador decía que la tabla «normaliza el nombre». Se cambió a la carrera genérica oficial, porque inventar reglas de nombre sin fuente iba contra AGENTS.md 2.1. Los grupos son los del organismo, no nuestros.
+- 15 nombres oficiales caen en dos grupos (por ejemplo, «TRABAJO SOCIAL» es técnico y profesional). Eso se muestra como dato, no se corrige.
+- **Pendiente:** «Derecho» y «Bachillerato y/o Licenciatura en Derecho» son grupos distintos en la fuente; no se unen sin una decisión del equipo.
 - Un grupo puede tener programas con planes distintos. Si la diferencia importa para elegir, se abre un grupo propio; no se resuelve con texto genérico.
-- Hay que definir qué profesionales revisan cada área. Pendiente de decisión del líder.
+- La revisión profesional aplica a las descripciones de cada grupo, no a los nombres de área (ver la nota del 2026-11-14).
 - **Por verificar:** si mifuturo.cl u otra fuente oficial ya publica descripciones de carreras. Si las publica, se citan en lugar de redactar, y este ADR se ajusta.
 - **Por verificar:** la cifra exacta de carreras y programas en la base de oferta, y cuántos nombres normalizados resultan.
 - Las descripciones van en el esquema de datos versionado (ADR 0014), no en el código fuente.
 
 ## Nota del 2026-11-14 (nombres de áreas)
 
-Los nombres de las áreas (las 11 del buscador del SIES: diez áreas y «Sin área definida») se toman tal cual de esa fuente oficial, citada en `docs/fuentes.md`. Solo se copian los nombres; no se copia ninguna descripción de otra página. Como los nombres no son textos redactados, no requieren la revisión profesional del punto 4: esa revisión aplica a las descripciones de cada grupo, no a las áreas. La cita oficial de esa lista (URL y fecha exacta de consulta) queda pendiente de verificar antes de publicarla.
+Los nombres de las áreas (las 11 del filtro «Área de conocimiento» del buscador de mifuturo.cl: diez áreas y «Sin área definida») se toman tal cual de esa fuente oficial, citada en `docs/fuentes.md`. Solo se copian los nombres; no se copia ninguna descripción de otra página. Como los nombres no son textos redactados, ningún profesional revisa la lista de áreas: la revisión profesional del punto 4 aplica solo a las descripciones de cada grupo. Esta nota se refiere solo a los nombres: las descripciones de área que muestra la página `/ocupaciones` siguen rotuladas como elaboración propia (`docs/fuentes.md`, paso 3).

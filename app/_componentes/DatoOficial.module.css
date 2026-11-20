@@ -1,0 +1,49 @@
+.dato {
+  display: grid;
+  align-content: start;
+  min-inline-size: 0;
+  overflow-wrap: break-word;
+  gap: var(--espacio-3);
+  border: var(--borde) solid var(--color-borde);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+}
+
+.dato h3 {
+  padding: var(--espacio-4) var(--espacio-6);
+  background: var(--color-marca-fondo);
+  color: var(--color-marca-texto);
+  font-size: var(--texto-1);
+}
+
+.dato p { padding-inline: var(--espacio-6); }
+.dato p:last-child { padding-block-end: var(--espacio-6); }
+.dato[data-sin-dato] { border-style: dashed; }
+
+.dato h3,
+.dato p {
+  min-inline-size: 0;
+  margin: 0;
+}
+
+.valor {
+  font-family: var(--fuente-texto);
+  font-size: var(--texto-2);
+  font-weight: 700;
+  /* Con el texto al 200 % una palabra larga como «estudiantes» no cabe en 375 px: se parte en vez de salirse de la tarjeta. */
+  overflow-wrap: anywhere;
+}
+
+/* La fuente de cifras solo va en valores con dígitos; «No acreditada» o «Terminada» usan la de texto. */
+.valor[data-cifra] {
+  font-family: var(--fuente-cifras);
+}
+
+.sinDato {
+  color: var(--color-texto-suave);
+  font-weight: 700;
+}
+
+.dato a {
+  color: var(--color-linea-texto);
+}

@@ -1,16 +1,8 @@
-.comparador {
-  max-inline-size: var(--medida-comparativa);
-  margin-inline: auto;
-  padding: var(--espacio-8) var(--espacio-4);
-}
-
-.volver,
 .celda a {
   color: var(--color-linea-texto);
   text-decoration: underline;
 }
 
-.encabezado,
 .selector,
 .tabla,
 .fila,
@@ -18,37 +10,26 @@
 .celda,
 .seleccionadas,
 .seleccionadas li,
-.elegirMovil {
+.bloquesMoviles,
+.bloqueCarrera,
+.grupo,
+.indicadorMovil {
   display: grid;
   gap: var(--espacio-3);
 }
 
-.encabezado {
-  margin-block: var(--espacio-6);
-  padding-block-end: var(--espacio-6);
-  border-block-end: var(--borde-linea) solid var(--color-linea);
-}
 
-.encabezado h1,
-.encabezado p,
 .selector h2,
 .selector p,
 .selector label,
 .tabla p,
-.fila h2,
+.fila h3,
 .fila p,
 .celda p {
   margin: 0;
 }
 
-.encabezado h1 {
-  font-size: var(--texto-3);
-}
 
-.estacion {
-  color: var(--color-texto-suave);
-  font-weight: 700;
-}
 
 .selector {
   min-inline-size: 0;
@@ -60,7 +41,8 @@
 
 .selector h2,
 .selector label,
-.etiqueta h2 {
+.etiqueta h3,
+.etiqueta h4 {
   font-size: var(--texto-1);
   font-weight: 700;
 }
@@ -80,27 +62,6 @@
   font: inherit;
 }
 
-.elegirMovil {
-  min-inline-size: 0;
-  padding: var(--espacio-3);
-  border: var(--borde) solid var(--color-borde);
-  border-radius: var(--radio);
-}
-
-.elegirMovil label {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--espacio-2);
-  min-block-size: var(--objetivo-tactil);
-  padding-block: var(--espacio-2);
-}
-
-.elegirMovil input {
-  inline-size: var(--espacio-4);
-  block-size: var(--espacio-4);
-  flex: none;
-}
-
 .selector select:disabled {
   cursor: not-allowed;
   border-style: dashed;
@@ -117,17 +78,49 @@
 
 .seleccionadas li {
   min-inline-size: 0;
-  padding-block-end: var(--espacio-3);
-  border-block-end: var(--borde) solid var(--color-borde);
+  padding: var(--espacio-4);
+  border: var(--borde) solid var(--color-marca-linea);
+  border-radius: var(--radio);
+  background: var(--color-marca-fondo);
+  color: var(--color-marca-texto);
 }
 
-.seleccionadas span {
+.seleccionadas .descripcionCarrera {
+  font-weight: 700;
+}
+
+.descripcionCarrera {
   min-inline-size: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  word-break: normal;
+  text-transform: uppercase;
 }
 
 .tabla {
+  display: none;
   margin-block-start: var(--espacio-8);
+}
+
+.bloquesMoviles {
+  margin-block-start: var(--espacio-8);
+}
+
+.bloqueCarrera {
+  min-inline-size: 0;
+  padding: var(--espacio-4);
+  border: var(--borde) solid var(--color-borde);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+}
+
+.bloqueCarrera h2 {
+  font-size: var(--texto-1);
+}
+
+.indicadorMovil {
+  min-inline-size: 0;
+  padding-block-start: var(--espacio-4);
+  border-block-start: var(--borde) solid var(--color-borde);
 }
 
 .columnas,
@@ -149,7 +142,15 @@
 .etiqueta,
 .celda {
   min-inline-size: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.tituloDeGrupo {
+  margin: var(--espacio-6) 0 0;
+  padding-block-end: var(--espacio-2);
+  border-block-end: var(--borde-linea) solid var(--color-linea);
+  font-size: var(--texto-2);
 }
 
 .fila {
@@ -166,12 +167,22 @@
   border-inline-start: var(--borde-linea) solid var(--color-linea);
 }
 
+.metadatos {
+  display: grid;
+  gap: var(--espacio-2);
+  color: var(--color-texto-suave);
+  font-size: var(--texto-m1);
+}
+
 .valor {
+  min-inline-size: 0;
   color: var(--color-texto);
   font-family: var(--fuente-cifras);
   font-size: var(--texto-1);
   font-weight: 700;
   text-align: end;
+  /* El tramo de ingreso es un texto largo («De $1 millón a $1 millón 100 mil»): parte en los espacios, nunca dentro de una cifra. */
+  white-space: normal;
 }
 
 .sinDato {
@@ -192,7 +203,21 @@
   block-size: var(--espacio-4);
 }
 
+@media (max-width: 64rem) {
+  .bloqueCarrera .valor {
+    font-size: var(--texto-0);
+  }
+}
+
 @media (min-width: 64rem) {
+  .tabla {
+    display: grid;
+  }
+
+  .bloquesMoviles {
+    display: none;
+  }
+
   .columnas,
   .celdas {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -207,25 +232,13 @@
     inline-size: auto;
   }
 
-  .elegirMovil {
-    display: none;
-  }
-
-  .ocultaEnMovil {
-    display: grid;
-  }
-}
-
-@media (max-width: 64rem) {
-  .ocultaEnMovil {
-    display: none;
-  }
 }
 
 /* Buscador para agregar carreras: la etiqueta no es un título, la caja y el botón van en una fila. */
 .buscarCarrera {
   display: grid;
   gap: var(--espacio-2);
+  max-inline-size: var(--medida-comparativa);
   margin-block: var(--espacio-4);
 }
 
@@ -235,63 +248,82 @@
 
 .entrada {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: var(--espacio-2);
 }
 
 .buscarCarrera input {
   min-inline-size: 0;
   min-block-size: var(--objetivo-tactil);
-  padding-inline: var(--espacio-3);
+  padding: var(--espacio-3) var(--espacio-4);
   border: var(--borde) solid var(--color-borde);
   border-radius: var(--radio);
   background: var(--color-superficie);
   color: var(--color-texto);
   font: inherit;
+  font-size: var(--texto-1);
 }
 
-.buscarCarrera button,
-.seleccionadas a {
+.buscarCarrera button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-block-size: var(--objetivo-tactil);
   padding-inline: var(--espacio-4);
-  border: var(--borde) solid var(--color-accion);
+  border: var(--borde) solid var(--color-accion-texto);
   border-radius: var(--radio);
   background: var(--color-accion);
   color: var(--color-sobre-accion);
   font: inherit;
   font-weight: 700;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
 }
 
+/* «Quitar carrera» va sobre el fondo de marca: texto de marca y subrayado, sin relleno. */
 .seleccionadas a {
-  border-color: var(--color-linea);
-  background: var(--color-superficie);
-  color: var(--color-linea-texto);
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  min-block-size: var(--objetivo-tactil);
+  color: var(--color-marca-texto);
+  text-decoration: underline;
+  text-underline-offset: var(--espacio-1);
 }
 
 .resultadosComparador {
   display: grid;
-  gap: var(--espacio-2);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+.resultadosComparador li {
+  border-block-end: var(--borde) solid var(--color-borde);
+}
+
+.resultadosComparador li:first-child {
+  border-block-start: var(--borde) solid var(--color-borde);
+}
+
 .resultadosComparador a {
   display: block;
   min-block-size: var(--objetivo-tactil);
-  padding-block: var(--espacio-2);
+  padding: var(--espacio-4);
   color: var(--color-linea-texto);
+  text-decoration: underline;
+  text-underline-offset: var(--espacio-1);
 }
 
 .buscarCarrera button:focus-visible,
 .buscarCarrera input:focus-visible,
-.seleccionadas a:focus-visible,
 .resultadosComparador a:focus-visible {
   outline: var(--anillo-foco) solid var(--color-foco);
-  outline-offset: 2px;
+  outline-offset: var(--espacio-1);
+}
+
+.seleccionadas a:focus-visible {
+  outline: var(--anillo-foco) solid var(--color-marca-texto);
+  outline-offset: var(--espacio-1);
 }
 
 /* Lleva las carreras elegidas a la hoja de decisión. Acción secundaria: borde, sin relleno. */
@@ -312,4 +344,143 @@
 .usarEnHoja:focus-visible {
   outline: var(--anillo-foco) solid var(--color-foco);
   outline-offset: var(--espacio-1);
+}
+
+/* Página interior: la cabecera compartida trae el título; el contenido va en una columna centrada. */
+.contenido {
+  display: grid;
+  gap: var(--espacio-6);
+  max-inline-size: var(--medida-comparativa);
+  margin-inline: auto;
+  padding: var(--espacio-8) var(--espacio-4);
+}
+
+.comparador[data-pagina-interior] .contenido > * {
+  min-inline-size: 0;
+}
+
+.error,
+.vacio {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-3);
+  padding: var(--espacio-4);
+  border: var(--borde) solid var(--color-alerta);
+  border-radius: var(--radio);
+  color: var(--color-alerta-texto);
+}
+
+.error p {
+  margin: 0;
+}
+
+.error svg {
+  flex: none;
+  inline-size: var(--espacio-4);
+  block-size: var(--espacio-4);
+}
+
+/* Sin resultados: borde discontinuo, para que no se lea como una alerta. */
+.vacio {
+  border-style: dashed;
+  border-color: var(--color-borde);
+  color: var(--color-texto-suave);
+}
+
+.compartir {
+  color: var(--color-texto-suave);
+  font-size: var(--texto-m1);
+}
+
+/* Cada carrera elegida es una tarjeta: nombre en negrita, institución y sede debajo. */
+.seleccionadas li {
+  display: grid;
+  gap: var(--espacio-3);
+}
+
+.seleccionadas li > div {
+  display: grid;
+  gap: var(--espacio-1);
+  min-inline-size: 0;
+}
+
+/* El HTML va en minúsculas para los lectores de pantalla (lib/datos/texto.ts); la mayúscula es solo visual. */
+.seleccionadas strong,
+.seleccionadas span,
+.columnas strong,
+.columnas span {
+  text-transform: uppercase;
+}
+
+.seleccionadas span {
+  color: var(--color-marca-linea);
+  font-size: var(--texto-m1);
+}
+
+.seleccionadas a svg,
+.buscarCarrera button svg,
+.resultadosComparador a svg {
+  flex: none;
+  inline-size: var(--espacio-4);
+  block-size: var(--espacio-4);
+  margin-inline-end: var(--espacio-2);
+}
+
+.resultadosComparador a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-3);
+}
+
+.resultadosComparador a svg {
+  margin-inline-end: 0;
+}
+
+/* Una celda sin dato lleva borde discontinuo: la ausencia no se transmite solo con el texto. */
+.celda[data-sin-dato] {
+  border-inline-start-style: dashed;
+}
+
+@media (min-width: 64rem) {
+  /* Tabla: la etiqueta ocupa una cuarta parte y las celdas el resto; la cabecera de carreras sigue esa cuadrícula. */
+  .columnas {
+    margin-inline-start: 25%;
+    border: 0;
+    border-block: var(--borde) solid var(--color-borde);
+    border-radius: 0;
+    background: var(--color-marca-fondo);
+    color: var(--color-marca-texto);
+  }
+
+  .columnas p {
+    display: grid;
+    align-content: start;
+    gap: var(--espacio-1);
+  }
+
+  .columnas span {
+    color: var(--color-marca-linea);
+    font-size: var(--texto-m1);
+    font-weight: 400;
+  }
+
+  .fila {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    align-items: start;
+  }
+
+  .fila > .aviso {
+    grid-column: 1 / -1;
+  }
+
+  .seleccionadas {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--medida)), 1fr));
+    gap: var(--espacio-6);
+  }
+
+  .seleccionadas li {
+    grid-template-columns: minmax(0, 1fr);
+    align-content: space-between;
+  }
 }

@@ -2,10 +2,128 @@
 
 Memoria de trabajo entre sesiones. Lo más reciente, arriba.
 
+## 2026-11-19 (revisión del sitio publicado y arreglo de la búsqueda, rama `fix/busqueda-y-textos`)
+
+**Revisión del sitio publicado** (`agencia-de-enlace.rafajaqued.workers.dev`, 360 px, datos reales): ninguna página se desborda ni muestra errores en la consola. Hallazgos: (1) la búsqueda con tilde daba 0 («enfermería» 0, «enfermeria» 455); (2) la etiqueta prometía buscar por institución, sede o comuna, y daba 0; (3) a 974 de las 1.447 variantes de IP INACAP les faltan los datos del SIES, porque el SIES las publica bajo CFT INACAP (traspaso); en total, 4.065 de 11.364 variantes no tienen SIES; (4) las tarjetas del buscador decían «Todavía no mostramos este dato»; (5) la página 404 era la de Next, en inglés; (6) el FUAS anuncia «Llegar» y «Avanzar» como «Próximamente», y la portada dice «avanzar», aunque la permanencia está fuera del alcance (ADR 0032); además, nombres sin tildes, siglas sin explicar en las tarjetas, textos «qué mide» distintos entre la ficha y el comparador, y la hoja sin enlace en el menú.
+**Arreglado en esta rama**: (1) la consulta a Supabase busca en `programa.nombre_normalizado` con las palabras normalizadas igual que la carga; (2) la etiqueta dice «Busca por nombre de carrera»; (4) la tarjeta usa `motivoSinFila`, el mismo motivo de la ficha y el comparador; (5) `app/not-found.tsx` en español, con menú y enlaces para volver. Verificado: `tsc`, `eslint`, 301 pruebas, tokens, `next build`, y la 404 y la etiqueta a 360 px con la muestra. **No verificado**: la búsqueda contra Supabase (sin credenciales locales; el modo local usa otra función) y el texto nuevo de la tarjeta (la muestra no tiene el caso).
+**Decisiones del líder pendientes**: (3) si se usan las cifras de CFT INACAP para IP INACAP, con nota y rotuladas como elaboración propia; (6) quitar o mantener «Llegar» y «Avanzar».
+**Por qué los tests no lo detectaron**: en modo local, `lib/datos/buscar.ts` normaliza y busca en la carrera, la institución, la sede y la comuna; solo la consulta remota (`lib/datos/consultas.ts`) no lo hacía.
+
+## 2026-11-19 (área del SIES en la oferta exportada, PR 277 revisado y fusionado)
+
+**Hecho** (worktree `../wt-area-sies`, desde `origin/main` `2e96542`): cada carrera de la oferta trae `area`, que es el área de conocimiento que el SIES asigna a su carrera genérica. `datos/exportar_areas_sies.py` (7 pruebas) genera `lib/datos/areas-sies.json` (190 genéricas, con fuente, URL y fecha) desde `datos/procesados/empleabilidad.csv`. El mapeo la cruza por `programa_generico.nombre_normalizado`, que leen el exportador y la consulta en vivo (embebido en `SELECT_VARIANTE`). La muestra trae el área de sus 10 carreras. Sin cambios en la base: no hay migración ni lote nuevo.
+**Cobertura medida con `datos/procesados/oferta.csv`**: 190 de 256 carreras genéricas tienen área, lo que cubre 10.850 de 11.364 variantes (95,5 %). Las que faltan son genéricas que el SIES no publica («Otras ingenierías», varios técnicos) y quedan sin área, sin inferirla.
+**Verificado**: `tsc`, `eslint`, 286 pruebas de TypeScript, 229 de Python y `next build` con la muestra. **No verificado contra Supabase**: las variables de `.env.local` están vacías. Falta comprobar que la consulta embebida `programa_generico:programa_generico_id(nombre_normalizado)` responde y que la exportación real trae el área (lo prueba el build de Cloudflare).
+**Revisión** (`revisar-pr`): un Alto sin verificar, la consulta embebida de `SELECT_VARIANTE` contra Supabase. **El líder ordenó fusionar igual**, sin esa prueba. Si el buscador o la ficha en vivo fallan con error 400, el arreglo es leer `programa_generico` aparte en `oferta-remota.ts`, como hace el exportador. Menores pendientes: escribir en la guía de carga cuándo regenerar `areas-sies.json` (al publicarse un buscador nuevo del SIES: `cargar_empleabilidad.py` y luego `exportar_areas_sies.py`), y probar el cruce en `exportar-oferta.ts`. El 276 y el 277 se fusionaron con squash y `--admin`, por orden del líder.
+## 2026-11-19 (N6: criterio de alternativas cercanas, PR 276 revisado y fusionado)
+
+**Hecho** (worktree `../wt-alternativas`, desde `origin/main` `2e96542`, PR 276): `lib/calculos/alternativas.ts`, función pura `alternativasCercanas(meta, carreras, { excluir, limite })`, con 12 pruebas en `tests/calculos/alternativas.test.ts`. Criterio: misma área del SIES y misma región que la meta, con puntaje de corte del año anterior igual o menor al de la meta, de la más cercana a la más lejana (empate por código). Las carreras fuera del sistema centralizado van en una lista aparte, porque no piden ese puntaje; las del sistema sin corte publicado no entran. El tipo no tiene ningún campo de cliente, y una prueba lo comprueba. Verificado: `tsc`, `eslint` y 297 pruebas.
+**Decisión que tomé y que el líder debe confirmar**: «alcanzable» se compara contra el corte de la meta y no contra el puntaje de la persona. Así no hay umbral inventado y la función no necesita el puntaje de la persona. Si se quiere usar el puntaje simulado, se agrega como filtro opcional.
+**Revisión** (`revisar-pr`, confirmada por el líder): se aprobó sin hallazgos Críticos ni Altos. Se aplicaron los Menores: `aComparable(carrera)` para no duplicar la lectura del corte, un límite negativo se trata como cero, y la guía de N10 pide el texto «el año anterior pidieron un puntaje igual o menor» y no «alcanzable», porque cada carrera pondera distinto (era el Medio). Fusionado con squash.
+**Pendiente para que Alejandro lo use en N10**: el tipo `Carrera` y la oferta exportada (`scripts/exportar-oferta.ts`) no traen el área. La fuente oficial es la columna `area` del archivo de empleabilidad del SIES (`datos/procesados/empleabilidad.csv`: una sola área por cada una de las 190 carreras genéricas). Falta llevarla a la base o a la exportación. Las carreras sin empleabilidad quedan sin área y no reciben alternativas.
+
 ## 2026-11-18 (274 de Alejandro fusionado)
 
 **Hecho**: el **274** (hoja de decisión al 200 %, Alejandro) se revisó con `revisar-pr`, sin hallazgos Críticos, Altos ni Medios, y se fusionó con squash y `--admin` (siete checks en verde). Cristóbal no tiene PR abiertos.
 **Pendiente (menores, comentados en el 274)**: el enlace «Elegir como respaldo» de `Hoja.tsx` queda en minúsculas (falta `estilos.nombreCarrera`); el test `comparador-zoom.spec.ts` es de otro tema y usa 320 px. La verificación manual con TalkBack y zoom 200 % la declara Alejandro; no se pudo confirmar.
+## 2026-11-17 (ADR 0030 aceptado)
+
+**Hecho**: el líder aceptó el ADR 0030, «Continuidad visual y movimiento del portal» (comparte logo, navegación y tren de la portada; cabeceras con ilustración propia; tarjetas con cabecera gráfica; entrada de 850 ms y escalonado de 90 ms limitado a dos posiciones; foco inmediato, movimiento reducido y contenido visible sin JavaScript). Pasó de «propuesta» a «aceptada (2026-11-17, por el líder)». Lo construido en #265, #266 y #267 ya lo cumple y se verifica con `tests/accesibilidad/continuidad.spec.ts`.
+
+## 2026-11-17 (lotes 12 a 15 cargados en Supabase)
+
+**Hecho**: los lotes 12, 13, 14 y 15 quedaron cargados en la base de producción con `scripts/cargar-lotes.mjs`, cada uno en su transacción, con la cadena de conexión en `.env.local` (ignorado por git; el script no la imprime). Primero `--simular` (conexión correcta, sin escribir) y después la carga real. Conteos antes → después: acreditaciones 0 → 116 (82 acreditadas, 19 no acreditadas, 15 bajo tutela); puntaje de corte 0 → 2.138 (1.591 con valor, 547 sin valor con su motivo); costo de matrícula 0 → 11.364 (10.914 con valor, de $40.000 a $3.301.936, y 450 sin valor con su motivo); matrícula total 0 → 11.364 (de 1 a 5.303 estudiantes). El resto de la base no cambió (11.364 variantes, 7.950 indicadores del SIES, 2.086 requisitos, 10.430 vacantes, 1.590 tramos de ingreso).
+**Tropiezos**: la cadena de la primera prueba tenía marcadores sin reemplazar (`TU-PROYECTO`, `TU-REGION`); se corrigieron el usuario y el servidor en `.env.local` sin tocar la contraseña. El pooler correcto del proyecto es el de São Paulo (`aws-1-sa-east-1`), puerto 5432.
+**Pendiente**: borrar la línea `SUPABASE_DB_URL` de `.env.local` (la contraseña de la base no hace falta guardada); comprobar en el sitio publicado que la ficha, el comparador y la hoja muestran los datos nuevos; regenerar los lotes 7 a 10 si cambia algo (el cambio del PDF del DEMRE del 13-nov no alteró cifras en lo comparable).
+
+## 2026-11-17 (carga de los lotes 12 a 15: preparada, falta que el líder la ejecute)
+
+**Qué pasó**: el líder pidió cargar los lotes 12 a 15 en Supabase. No lo hice: no tengo la cadena de conexión a la base (`.env.local` trae la URL, la clave pública y una clave de servicio, pero no la contraseña de Postgres), los lotes son archivos SQL que PostgREST no ejecuta, y escribir en producción con la clave de servicio saltándose la ruta probada habría sido improvisar sobre la base real. La guía de carga pide que la cadena no pase por ningún chat.
+**Lo que sí quedó listo** (rama `docs/cargar-lotes-12-15`): los lotes generados con el código actual en `datos/procesados/lotes/` (12: 116 acreditaciones; 13: 2.138 puntajes de corte; 14: 11.364 matrículas de inscripción; 15: 11.364 matrículas totales) y `scripts/cargar-lotes.mjs`, un cargador sin `psql` que comprueba la base, carga cada lote en una transacción y muestra conteos antes y después. Probado con un sustituto de `pg` sobre un Postgres en memoria: simulación, carga real, reversión ante un error (exit 1, nada a medias) y repetición sin duplicados. **No se probó contra un Postgres real por red** (el servidor de PGlite no es compatible con `pg`).
+**Pendiente**: el líder ejecuta `node scripts/cargar-lotes.mjs --simular 12 13 14 15` y luego sin `--simular`, con su cadena en `SUPABASE_DB_URL`.
+
+## 2026-11-17 (costo del primer año repuesto)
+
+**Hecho** (rama `feat/costo-primer-anio`): por decisión del líder, ahora que el diccionario oficial define `VALOR_MATRICULA` (#269), se repone «Costo del primer año» = arancel anual + costo de matrícula, **elaboración propia** con datos de Mineduc (`lib/datos/costo.ts`). Va en la ficha (tarjeta propia) y en el comparador y la hoja (fila del grupo «Cuánto cuesta», calculada en `datoDeFila`). Solo se calcula si Mineduc informa los dos montos; con uno solo diría menos de lo real y la tarjeta dice por qué no. Se habla del «primer año» porque el diccionario no dice si la matrícula se repite cada año.
+**Verificado**: `tsc`, `eslint`, tokens, 285 pruebas de TypeScript (5 nuevas), build y 114 de accesibilidad; Enfermería U. de Chile: $6.388.500 + $217.600 = $6.606.100.
+**Pendiente**: cargar los lotes 12 a 15 en Supabase (líder); sin el lote 14 el costo del primer año dirá «sin datos» en producción.
+
+## 2026-11-17 (definición oficial de la matrícula confirmada)
+
+**Hecho** (rama `docs/matricula-definicion`): el RAR de Matrícula 2026 respondió esta noche (34 MB, descargado en una carpeta aislada del scratchpad; solo se extrajo el diccionario). El diccionario oficial (`ER_Matricula_Educacion_Superior_2007_2026_PUBL_MRUN.pdf`, página 3) define `VALOR_MATRICULA` como el «valor en pesos que el estudiante debe pagar para hacer efectiva su matrícula» y `VALOR_ARANCEL` como el «arancel anual de la carrera o programa»; `FORMATO_VALORES` es la moneda (pesos o UF) de ambos. Con eso el texto de la tarjeta «Costo de matrícula» dice ahora «Valor en pesos que se paga para hacer efectiva la matrícula, aparte del arancel anual» (ficha, comparador y hoja), el glosario público trae «Costo de matrícula» y «Costo del arancel anual» con esta fuente, y el diccionario y la guía de carga dejan de marcar la definición como pendiente.
+**Lo que el diccionario NO dice**: si la matrícula se repite cada año. Dice que es lo que se paga para hacerla efectiva.
+**Decisión del líder pendiente**: reponer «Costo del primer año» (arancel anual + matrícula). Con la definición oficial la suma tiene sentido para el primer año; es elaboración propia y se rotularía así.
+**Verificado**: `tsc`, `eslint`, tokens, 280 pruebas de TypeScript, 114 de accesibilidad (la prueba de siglas del glosario obligó a escribir «Unidad de Fomento» sin sigla).
+
+## 2026-11-17 (trazabilidad del Puntaje Ranking: se cerró el #234 y se rehízo con TODO(fuente))
+
+**Hecho** (rama `docs/trazabilidad-puntaje-ranking`): el #234 de Cristóbal se cerró porque las citas de Acceso Mineduc (Acta N.º 75, Instrumentos 2023 e Instrumentos marzo 2027) no se pueden verificar: los PDF devuelven un aviso de mantenimiento. Su contenido se rehízo sobre `main` sin afirmar nada que no se haya comprobado: el ADR 0024 conserva su contexto verificado y agrega un bloque «Citas de Acceso Mineduc pendientes de verificar» con cada atribución y `TODO(fuente)`; el módulo y la prueba del ranking llevan el mismo `TODO(fuente)`. La aritmética del ejemplo de 824 puntos sí se comprobó (m = 331,4; b + m × 6,33 = 824,36). La fuente del ejemplo del ponderado (848,75) **sí** se verificó el 17-nov en el PDF del DEMRE, página 5, y quedó citada.
+**Verificado**: `tsc`, `eslint`, tokens y las pruebas de TypeScript.
+**Pendiente**: abrir los tres PDF de Acceso Mineduc cuando el sitio responda y anotar página y sección exactas; ahí se quitan los `TODO(fuente)`.
+
+## 2026-11-17 (ADR 0030 y prueba de continuidad visual; reemplaza el #168)
+
+**Hecho** (rama `feat/continuidad-visual`): el ADR 0030 (estado propuesta, a la espera del líder) y `tests/accesibilidad/continuidad.spec.ts` de Cristóbal, aplicados sobre `main` una vez integrados el comparador (#266) y beneficios (#265). La prueba se adaptó a la ficha actual (12 paneles en vez de 9; el título se compara sin distinguir mayúsculas, porque el HTML va en minúsculas). Al correrla apareció un desborde real: a 375 px con el texto al 200 %, la tarjeta «Matrícula total» no cabía («473 estudiantes»). Se corrigió con `overflow-wrap: anywhere` en el valor de las tarjetas.
+**Verificado**: `tsc`, `eslint`, tokens, build y 114 de accesibilidad (103 más 11 de navegación).
+**Pendiente**: el líder acepta o rechaza el ADR 0030; cerrar los PR 164 a 168 de Cristóbal con un comentario.
+
+## 2026-11-17 (comparador con la cabecera compartida; reemplaza el #164 y el #165)
+
+**Hecho** (rama `feat/comparador-cabecera`): el comparador usa `CabeceraInterior`, tarjetas de carreras con ícono, estados de error y de «sin resultados», celdas con borde discontinuo cuando falta el dato y la cuadrícula 1/4 + 3/4 de la tabla en escritorio. Es el contenido propio del #164 (CSS de tabla y celdas) y del #165 (integración) de Cristóbal, adaptado a la estructura actual de `main` (grupos del #263 y bloque por carrera en teléfono, que reemplazó a las casillas «elige dos carreras»). La prueba `tests/accesibilidad/comparador.spec.ts` del #165 se adaptó: ya no hay casillas en teléfono, y los encabezados son grupos (nivel 2) y filas (nivel 3).
+**Verificado**: `tsc`, `eslint`, tokens, build y 102 de accesibilidad (91 más 11 de navegación); comparador con tres carreras a 1280 px y a 360 px sin desborde.
+**Pendiente**: cerrar el #164 y el #165 con un comentario; el #168 (ADR 0030 y prueba de continuidad) depende de que este y el de beneficios (#265) estén fusionados.
+
+## 2026-11-17 (beneficios con la cabecera compartida; reemplaza el #166 y el #167)
+
+**Hecho** (rama `feat/beneficios-cabecera`): la página de beneficios usa `CabeceraInterior` con dos accesos («Ver calendario» y «Buscar beneficios»), y sus tarjetas y plazos tienen los estilos del sistema visual. Es el contenido propio del #166 (estilos) y del #167 (integración) de Cristóbal, aplicado limpio sobre `main` (el parche se aplicó sin conflictos). Se agregó la prueba de accesibilidad `tests/accesibilidad/beneficios.spec.ts` (catálogo y plazos con fuente y fecha sin JavaScript; búsqueda) y la sección «Beneficios» de `docs/diseno.md`; el párrafo del #167 quedaba mal ubicado bajo «Pendientes».
+**Verificado**: `tsc`, `eslint`, tokens, build y 100 de accesibilidad (89 más 11 de navegación); beneficios a 360 px sin desborde.
+**Pendiente**: cerrar el #166 y el #167 con un comentario que explique el reemplazo.
+
+## 2026-11-17 (hoja de decisión en secciones)
+
+**Hecho** (rama `feat/hoja-secciones`): la hoja de decisión usa los mismos cuatro grupos que el comparador (`GRUPOS_DE_FILAS`), en pantalla (encabezados de nivel 3 dentro de cada opción) y en el texto descargable, que ahora trae el título de cada grupo antes de sus datos. La primera fila de cada grupo no repite el borde de la línea del título.
+**Verificado**: `tsc`, `eslint`, tokens, 279 pruebas de TypeScript (1 nueva), build y 95 de accesibilidad; hoja con dos carreras revisada a 360 px sin desborde.
+**Pendiente**: cargar los lotes 12 a 15 en Supabase (líder); confirmar qué mide `valor_matricula`.
+
+## 2026-11-17 (comparador en secciones)
+
+**Hecho** (rama `feat/comparador-secciones`): las 11 filas del comparador van en cuatro grupos: «Cuánto cuesta», «Cómo entrar», «Cómo es estudiarla» y «Después de titularte» (`GRUPOS_DE_FILAS` en `lib/datos/indicadores-vista.ts`). La tabla de escritorio y el bloque por carrera del teléfono usan los mismos grupos, con encabezados de nivel 2 y 3 (escritorio) o 3 y 4 (teléfono). El tramo de ingreso, que es texto largo, ahora parte en los espacios en vez de salirse de su celda. Documentado en `docs/diseno.md`.
+**Verificado**: `tsc`, `eslint`, tokens, 278 pruebas de TypeScript (2 nuevas: cada fila está en un solo grupo), build y 95 de accesibilidad; comparador con tres carreras revisado a 360 px (sin desborde horizontal) y a 1280 px.
+**Pendiente**: la hoja de decisión sigue con la lista plana de filas; decidir si también se agrupa. Cargar los lotes 12 a 15 en Supabase (líder).
+
+## 2026-11-17 (comparador y hoja de decisión con los datos nuevos)
+
+**Hecho** (rama `feat/comparador-datos-nuevos`): el comparador y la hoja leen ahora las mismas 11 filas que la ficha: se sumaron ingreso al 4.º año (tramo en palabras), retención de primer año, continuidad de estudios, costo de matrícula, duración formal y matrícula total. Antes la fila de ingreso decía «sin datos» en todas las carreras porque buscaba un indicador numérico que no existe. Un solo lugar arma el dato de cada fila (`datoDeFila` en `lib/datos/indicadores-vista.ts`) para el comparador, la hoja y el texto descargable. Cuando falta un dato dice por qué (fuera del sistema de admisión centralizado, o sin cifras del SIES). El título «Arancel anual» pasó a «Costo del arancel anual», igual que en la ficha.
+**Verificado**: `tsc`, `eslint`, tokens, 276 pruebas de TypeScript (7 nuevas), build y 95 de accesibilidad; comparador con tres carreras revisado en pantalla.
+**Pendiente**: cargar los lotes 12 a 15 en Supabase (líder); confirmar qué mide `valor_matricula`; regenerar los lotes 7 a 10; con 11 filas × 3 carreras el comparador queda largo en teléfono, conviene mirarlo con una persona real.
+
+## 2026-11-17 (matrícula total: lote 15)
+
+**Hecho** (rama `feat/matricula-total`): la «Matrícula total» de la ficha tenía 0 % de cobertura porque nadie la cargaba, aunque `carga.csv` trae el recuento de las 11.364 carreras y la unidad `estudiantes` ya existía en la base. `generar_lotes.py` escribe ahora `15_matricula_total.sql` (indicador de variante, de 1 a 5.303 estudiantes, fuente Mineduc). Probado en Postgres en memoria (PGlite): 11.364 filas y repetible. La ficha no cambia: ya leía ese indicador. Documentado en la guía de carga (sección 16), el diccionario y `portal.md`.
+**Aviso**: hay carreras con muy pocos estudiantes (el mínimo es 1). Es un recuento por carrera y no identifica a nadie, pero una cifra tan baja puede leerse como «carrera casi sin estudiantes» cuando solo refleja el último año de una carrera nueva.
+**Pendiente**: cargar el lote 15 junto con el 12, 13 y 14 en Supabase (lo hace el líder).
+
+## 2026-11-17 (noche: 162 cerrado, 163 rehecho y fusionado como 259)
+
+**Hecho**: el **162** se cerró (lo reemplazó el 255). El **163** de Cristóbal se rehízo desde `main` como el **259** (mío, con su diseño): tarjetas de carrera elegida con colores de marca, buscador y resultados para agregar; fusionado con squash y `--admin` a las 22:59 UTC, CI completo en verde, y el 163 se cerró con un comentario. Verificado en local: `tsc`, `eslint`, `next build`, `tokens.py --check`, pruebas de accesibilidad del comparador, y el estado con dos carreras y resultados con axe en tema claro y oscuro, sin desborde a 360 y 1280 px al 100 % y 200 %, con capturas revisadas.
+**Por qué**: el 163 estaba escrito sobre el CSS del comparador anterior al 244 y su base era la pila antigua. **No se portó** el `overflow-wrap: break-word` de la tabla (habría revertido el arreglo del 244 a 200 %), ni el ancho de página (`.contenido`) ni el CSS de `.elegirMovil`: eso queda para el 165 (cabecera compartida).
+**Pendiente**: el 164 (tabla y celdas) lo rehace Cristóbal desde `main`, avisado en el comentario; después 165 a 168, de a uno. El 234 sigue bloqueado: desde esta máquina `acceso.mineduc.cl` rechaza la conexión (curl, agente de lectura web y navegador integrado), así que no se pudieron verificar las páginas de las tres citas; alguien debe abrir los PDF desde un navegador normal. El 256 (del líder) está sin revisar. No se probó en lector de pantalla ni en teléfono real.
+**Lección**: un cambio de rama con archivos sin commit en el árbol aborta y un script posterior editó la rama equivocada; para tocar `BITACORA.md` o armar un PR limpio, usar un worktree desde `origin/main`. El archivo usa saltos CRLF: insertar texto con `
+`.
+
+## 2026-11-17 (ficha: ingreso, retención, continuidad, duración formal frente a real y por qué faltan datos del DEMRE)
+
+**Hecho** (rama `feat/ficha-ingreso-retencion`): medí qué datos hay en las 11.364 carreras y encontré que la ficha mostraba «Sin datos suficientes» en el ingreso al 4.º año en el 100 % de ellas, aunque el tramo está cargado para 7.299. Ahora la ficha lee `tramo_ingreso_sies` y muestra el tramo en palabras tal como lo publica el SIES. También muestra **retención de primer año** (59,8 % de las carreras) y **continuidad de estudios** (64,2 %), que estaban cargadas pero no se veían. **Duración formal y real** van juntas en una tarjeta, cada una con su fuente y sin restarse (la formal sale de Mineduc, con la fuente del arancel de la misma variante). Las carreras sin código DEMRE explican en palabras por qué no tienen vacantes, puntaje de corte ni ponderaciones. Sin fila del SIES, la tarjeta dice que Mi Futuro no publica el dato o que no pudimos asociar la carrera.
+**Cobertura medida** (Postgres de prueba con los lotes 1 a 14): acreditación 100 %; arancel 99,9 %; costo de matrícula 96,0 %; empleabilidad 63,1 %; duración real 57,4 %; ingreso (tramo) 64,2 %; solo carreras DEMRE (2.086): vacantes y ponderaciones 100 %, puntaje de corte 74 %; matrícula total 0 % (no está cargada).
+**Cambios de código**: `codigo_demre` y `tramos_ingreso` en el mapeo, la consulta remota y el exportador; tipos `TramoIngreso` y `duracion_formal_semestres` (este último no está en la base: lo arma el mapeo); componentes `IngresoTramo` y `Duracion`; muestra de desarrollo con tramos y continuidad reales y sin vacantes ni puntaje en las carreras sin código DEMRE.
+**Verificado**: `tsc`, `eslint`, tokens, 269 pruebas de TypeScript, 220 de Python, build y 89 de accesibilidad; ficha de IP Duoc UC revisada a 360 px.
+**Pendiente**: la carga de los lotes 12, 13 y 14 en Supabase es del líder (no tengo acceso a la base); los lotes 7 a 10 son del 9-nov y no traen el cambio del PDF del DEMRE del 13-nov; la matrícula total sigue sin cargarse; el comparador no muestra los datos nuevos; textos de las tarjetas para tu revisión.
+
+## 2026-11-17 (cierre: 255 fusionado, el 162 queda reemplazado)
+
+**Hecho**: Cristóbal abrió el **255**, el reemplazo del 162 desde `main` (un commit propio, cinco archivos, Next 16.4.6 intacto); se revisó con `revisar-pr` (aprobable, sin hallazgos Críticos, Altos ni Medios) y se fusionó con squash y `--admin` a las 22:51 UTC, con el CI completo en verde. Trae la cabecera compartida del explorador, la espera accesible al enviar el formulario («Buscando carreras…», tres tarjetas decorativas, movimiento reducido, `pageshow` al volver), el error y el vacío con título, y la sigla SIES explicada. Se borró la rama del 254 en el fork del líder.
+**Pendiente**: cerrar el 162 en GitHub. El líder debe ver cómo se ve la espera y leer los textos (AGENTS.md 4.6.4); confirmar que la cabecera compartida da salida clara a la portada, porque se quitó «Volver al inicio». El 163 y los siguientes (164 a 168) se rehacen desde `main`, de a uno, cada uno después de fusionar el anterior. El 234 sigue bloqueado: sus tres PDF de Acceso Mineduc no se pudieron verificar y falta el rebase.
+**Por qué**: rehacer cada tramo desde `main` con solo el aporte propio evita revertir trabajo ya fusionado; el 162 antiguo habría borrado unas 3.700 líneas.
 
 ## 2026-11-17 (noche: 251 fusionado, 162 devuelto para rehacerlo desde main)
 
@@ -28,6 +146,29 @@ Memoria de trabajo entre sesiones. Lo más reciente, arriba.
 **Por qué se pidieron cambios en el 244**: la fuente visible pasó a ser la sigla cruda (se perdió `nombreDeFuente()`), la fecha perdió «Consultada el» y duplica `lib/datos/fechas.ts`, y `textoLegible` deja todo en minúsculas con otro criterio que la ficha. El 244 también choca con `main` en `docs/auditoria-accesibilidad-2026-11-14.md` (el 241 edita filas contiguas), así que Alejandro debe rebasar.
 **Pendiente**: Alejandro corrige y rebasa el 244; el líder decide si acepta que en teléfono el comparador deje de mostrar dos carreras lado a lado (queda un bloque vertical por carrera). Unificar en una sola función compartida el pasaje a minúsculas del nombre de la carrera (hoy está duplicado en la ficha y en el comparador). La rama `fix/zoom-200-accesibilidad` del 241 no se borró.
 **Siguiente**: cuando Alejandro suba el rebase del 244, revisar solo los tres puntos medios (siglas, fecha, minúsculas) y el conflicto resuelto.
+
+## 2026-11-17 (lotes 12, 13 y 14 probados contra Postgres)
+
+**Hecho**: con PGlite (Postgres en WebAssembly, instalado solo en la carpeta temporal, no es dependencia del repo) se aplicaron las 11 migraciones y los lotes 1 a 6, 12, 13 y 14 con la carga real del 5-nov, sin errores. Resultados: 11.364 variantes; 116 acreditaciones; 2.138 puntajes de corte (1.591 con valor); 11.364 matrículas de inscripción (10.914 con valor, 450 nulas con motivo). El lote 14 es repetible: una segunda carga no agrega filas. Se usó un esquema `auth` simulado y sin las pruebas de RLS.
+**Qué no prueba**: el comportamiento de RLS con usuarios reales de Supabase ni el rendimiento en la base de producción. Los lotes 7 a 11 (SIES y DEMRE) no se incluyeron.
+**Pendiente**: cargar los lotes en Supabase (lo hace el líder); confirmar qué mide `valor_matricula` (el RAR no se pudo bajar: Mineduc y Mi Futuro rechazan la conexión desde este equipo); glosario público y comparador sin los términos nuevos.
+
+## 2026-11-17 (matrícula en la ficha: lote 14 y dos tarjetas; el total se quitó; PR 252)
+
+**Hecho** (rama `feat/costo-total`, PR 252): `generar_lotes.py` escribe `14_matricula_inscripcion.sql` (indicador de variante, pesos, Mineduc; con la carga real, 10.914 variantes con monto y 450 nulas con el motivo oficial). La ficha muestra «Costo de matrícula» y «Costo del arancel anual», cada uno con su fuente. La muestra trae la matrícula real de sus 10 carreras. Documentado en la guía de carga (sección 15), el diccionario y el glosario de datos.
+**Decisión del líder**: «Costo del primer año» (arancel + matrícula) se sacó porque no se pudo confirmar qué mide `valor_matricula`. Los sitios de Mineduc y Mi Futuro rechazaron la conexión desde este equipo (curl, navegador y agentes de lectura); Internet Archive no tiene el RAR, y su copia del glosario de matrícula 2025 solo define conteos de estudiantes. Una página de la U. de Concepción muestra el mismo monto (52.795) como «Valor Matrícula», pero no es fuente.
+**Verificado**: `tsc`, `eslint`, pruebas de TypeScript y Python, build y accesibilidad (ver el PR).
+**Pendiente**: ejecutar el lote 14 contra Postgres de prueba; si se consigue el diccionario del RAR (`ER_Matricula_Educacion_Superior_2007_2026_PUBL_MRUN.pdf`, descargado desde otra red) y define la matrícula como cobro anual o único, volver a evaluar el total; glosario público y comparador sin los términos nuevos.
+
+## 2026-11-17 (cierre: PR 243, 245, 247 y 248 fusionados a `main` con permisos de administrador)
+
+**Hecho**: el líder autorizó fusionar con `--admin` cuando todo estuviera en verde. Se fusionaron con squash, en orden: [243](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/243) `next` 16.4.6 (`310288f`), [245](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/245) ponderaciones (`92d51c6`), [247](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/247) acreditación y lote 12 (`70abcef`) y [248](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/248) puntaje de corte y lote 13 (`0d80f43`). Los checks de cada uno estaban en verde (7 de 7) antes de fusionar.
+**Qué hubo que resolver**: al fusionarse el 245 con squash, el 247 quedó con conflicto de contenido idéntico (llevaba los commits del 245). Se rebasó solo su commit propio sobre `main` (`git rebase --onto`, `--force-with-lease` sobre mi propia rama) y se verificó el estado combinado antes de fusionar. La rama del puntaje de corte se rebasó igual; su árbol resultó idéntico al ya verificado.
+**Verificado en `main` (`0d80f43`) tras las cuatro fusiones**: `tsc`, `eslint`, tokens, 254 pruebas de TypeScript, 217 de Python, build con `next` 16.4.6 sin el aviso de seguridad y 60 de accesibilidad. El CI de GitHub de los tres primeros terminó en éxito; el del último seguía corriendo al escribir esto.
+**Pendiente de datos (no es código)**: cargar en Supabase los lotes 12 (acreditaciones) y 13 (puntajes de corte, ya generado en `datos/procesados/lotes/`), previa prueba en una base de prueba (no se ejecutaron contra Postgres), y recargar vacantes y ponderaciones del DEMRE (el PDF cambió el 13-nov). Hasta entonces la ficha en producción dice «Mineduc no informa la acreditación» y «El DEMRE solo publica datos de las carreras…» para todas las carreras.
+**Después del cierre, el mismo día**: la página `/preguntas` (con «puntaje de corte» y «bajo tutela» en el glosario y una pregunta sobre el puntaje de corte) se subió en el [PR 249](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/249), y el análisis de sitios de referencia con estas entradas, en otro PR de documentos. Las entradas que siguen se escribieron antes de subir cada rama: donde dicen «sin subir» o «sin commit», ya están fusionadas.
+**Pendiente de producto**: pedir al DEMRE que confirme el método del puntaje de corte; costo total (matrícula), que tiene fuente pero no cargador; el resto de las propuestas del análisis (calendario, comparación con rango, portada y menú por etapa).
+**Limpieza**: los worktrees `../feat-ficha-completa` y `../fix-next-16-4-6` y las ramas fusionadas pueden borrarse cuando el líder quiera; no se borró nada de lo fusionado. Los archivos individuales del DEMRE ya se borraron.
 
 ## 2026-11-17 (puntaje de corte: calculado, validado y construido en `feat/puntaje-de-corte`, 1 commit local sin subir)
 
@@ -156,6 +297,58 @@ Memoria de trabajo entre sesiones. Lo más reciente, arriba.
 **Callejón**: el INE no publica el grupo CIUO en la ENE del trimestre Jul-Sep 2026; la tabla exportada del Banco salió toda en cero. El microdato de la ENE tampoco trae comuna. El cruce de áreas SIES con ramas CAE es un supuesto nuestro sin validar.
 **Pendiente**: solicitud al INE ingresada con folio AH007T0014649 (acuse de recibo confirmado por el INE; el acuse no se sube al repositorio); seguir el plazo de 20 días hábiles en portaltransparencia.cl; fecha de referencia del Censo 2024; cuadros de Redatam por comuna de trabajo × CIUO; revisar la cifra de 120 filas con `cubierto=0`; decidir si «Derecho» y «Bachillerato y/o Licenciatura en Derecho» se agrupan; el mapa no se ha visto en un navegador real.
 **Siguiente**: cuando llegue la tabla del INE o el CSV del Censo, cruzar comuna de trabajo con grupo CIUO y área SIES, y revisar el cruce áreas-ramas con el líder.
+## 2026-11-16 (pruebas del resto del cruce de ocupaciones y áreas: PR 238 fusionado)
+
+**Hecho** (rama `datos/pruebas-cruce-areas`, [PR 238](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/238)): `tests/datos/test_cruce_ocupaciones.py` pasa de 5 a 23 pruebas. Cubre cada rama de `area_de_carrera`, las excepciones de gerentes 11-9xxx, la regla del prefijo más largo, el grupo 19, el grupo desconocido y que toda tabla use solo áreas de `AREAS`.
+**Por qué**: la entrada del cruce N18 decía que solo la regla de artistas tenía pruebas.
+**Arreglado después** (a pedido del líder): las claves de `CLAVES_ARTE` se buscan como palabra completa (antes «partes» calzaba con «artes»), y se quitó la entrada muerta `"19"` de `GRUPO_SOC`. En las 256 carreras genéricas reales ningún área cambia. Prueba nueva con «Técnico en Partes y Piezas».
+**Ordenado**: la prueba de niñeras pasó de la clase de artistas a `PruebasAreaDeOcupacion`. `ocupacion_area.csv` regenerado el 16-nov en `datos/procesados/` de la copia principal (ignorado por Git): solo cambió la niñera (39-9011.01) a Educación; `carreras_areas.csv` salió idéntico. El JSON versionado de la página ya tenía ese cambio.
+**Pendiente** (revisión del commit 847a37d): la prueba fija que «Otros Profesionales de Ingeniería» devuelve (None, None), y con ese resultado `main()` termina con `SystemExit`. Hoy no ocurre: esa carrera no está en `oferta.csv`, y las 22 genéricas «Otros… de X» o «Bachillerato y/o Licenciatura en X» de la oferta 2026 usan como X el nombre de un área, así que todas tienen regla. Decidir si una genérica nueva de ese tipo necesita una regla propia o si el `SystemExit` es el aviso buscado. Las pruebas comparan contra las tablas del propio código, no contra una fuente oficial (el cruce es elaboración propia). Lo de «256 carreras sin cambio» se verificó contra `datos/procesados/` de la copia principal, porque el worktree no tiene esa carpeta.
+**Fusionado** (16-nov): el [PR 238](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/238) entró a `main` como `52f2e90` (squash, con bypass de administrador, tras la revisión `revisar-pr` y los 7 checks en verde). La rama se borró del fork y de local.
+**Decidido** (16-nov, líder): se deja el `SystemExit`. Una genérica nueva sin regla detiene el script y se revisa a mano antes de asignarle área; un comentario en `main()` de `datos/cruce_ocupaciones_areas.py` lo dice.
+
+## 2026-11-14 (nombres de áreas del ADR 0035: cita verificada)
+
+**Hecho** (rama `docs/adr-0035-areas-sies`, sobre `main`): la lista de 11 áreas se toma del filtro «Área de conocimiento» de https://www.mifuturo.cl/buscador-de-carreras/ (leída literal el 14-nov). `docs/fuentes.md` cita la URL y la fecha de lectura. El ADR 0035 tiene una nota: solo se copian nombres, no descripciones, y los nombres no requieren revisión profesional.
+**Por qué**: el líder pidió citar la lista oficial en vez de usar nombres sin fuente, y que no se revise cada área.
+**Pendiente**: la página no muestra fecha de actualización; se leyó solo la primera mitad (el resumen automático dijo que no hay filtro de área, y se descartó porque contradice el texto literal); la diferencia de mayúsculas «Sin Área definida» (página) frente a «Sin área definida» (código).
+**Siguiente**: decidir con el líder si la interfaz muestra otro nombre para esa área.
+
+## 2026-11-14 (plantilla de descripciones por grupo: PR 224 fusionado)
+
+**Hecho**: [PR 224](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/224) fusionado. `datos/descripciones_grupos.csv` tiene los 256 grupos de carrera en estado «pendiente», sin texto. `datos/generar_plantilla_descripciones.py` la crea o actualiza sin borrar textos ya escritos; sus pruebas corren en `tests/datos`.
+**Por qué**: el ADR 0035 pide un texto por grupo, revisado y rotulado. Dejar los campos vacíos evita publicar algo sin fuente ni revisión.
+**Pendiente**: quién revisa cada área; de dónde salen las fuentes (planes de estudio o una descripción oficial en mifuturo.cl); por qué grupos empezar. Las descripciones no están redactadas.
+**Siguiente**: validar el tono con tres o cuatro grupos antes de hacer los 256.
+
+## 2026-11-14 (ADR 0035 ajustado a la carrera genérica oficial: PR 222 fusionado)
+
+**Hecho**: [PR 222](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/222) fusionado. El [ADR 0035](docs/decisiones/0035-descripcion-de-carreras.md) ya dice que el grupo es la carrera genérica oficial de Mineduc, no una normalización propia. Se documentan las cifras (11.364 programas, 1.957 nombres, 256 grupos), los 15 nombres en dos grupos y la separación de «Derecho» y «Bachillerato y/o Licenciatura en Derecho».
+**Por qué**: el ADR debe decir lo mismo que el código del PR 218. Inventar reglas de nombre sin fuente iba contra AGENTS.md 2.1.
+**Pendiente**: decidir si «Derecho» y «Bachillerato y/o Licenciatura en Derecho» se unen; la tabla de descripciones por grupo, con revisión profesional y rotulado.
+**Siguiente**: empezar la tabla de descripciones por grupo cuando el equipo lo decida.
+
+## 2026-11-14 (tabla de agrupación de carreras: PR 218 fusionado)
+
+**Hecho**: [PR 218](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/218) fusionado: `datos/generar_grupos_carrera.py` y sus pruebas. El grupo de cada carrera es su «carrera genérica» oficial (`area_carrera_generica` de la matrícula Mineduc 2026). Resultado: 11.364 programas, 1.957 nombres oficiales, 256 grupos; 15 nombres oficiales caen en dos grupos (por ejemplo, «TRABAJO SOCIAL»: técnico y profesional). Los CSV se generan en `datos/procesados/`, ignorado por Git.
+**Por qué**: el ADR 0035 pide agrupar sin inventar nombres. Usar el campo oficial evita reglas propias. Es una desviación del ADR, que dice «normaliza el nombre».
+**Callejón**: el PR 217 salió con commits viejos porque la rama se creó desde `docs/bitacora-n17` en vez de `main` (un `git checkout -B` falló sin avisar). Se cerró y se rehízo desde `main` como PR 218. El CI falló por importar `pytest`, que no está en el entorno de `tests/datos` (se usa `unittest`).
+**Pendiente**: decidir si el ADR 0035 se ajusta a la desviación; la casilla «Leí y entiendo todo el código» del PR 218 quedó sin marcar, para que la marque el líder.
+**Siguiente**: tabla de descripciones por grupo, con revisión profesional y rotulado.
+
+## 2026-11-14 (ADR 0035 aceptado: descripción de carreras por grupo)
+
+**Hecho**: el líder aceptó el [ADR 0035](docs/decisiones/0035-descripcion-de-carreras.md). Fusionados el [PR 213](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/213) (el ADR), el [PR 214](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/214) (la entrada de propuesta) y el [PR 215](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/215) (estado aceptada).
+**Por qué**: la fusión de la rama `main` exige una aprobación que la cuenta autora no puede dar, así que el líder fusionó desde GitHub.
+**Pendiente**: tabla de agrupación en `datos/`; verificar si mifuturo.cl ya publica descripciones de carreras; medir cuántos grupos resultan de la base de oferta; definir qué profesionales revisan cada área.
+**Siguiente**: construir la tabla de agrupación en `datos/`.
+
+## 2026-11-14 (propuesta de ADR 0035: descripción de carreras por grupo)
+
+**Hecho**: [ADR 0035](docs/decisiones/0035-descripcion-de-carreras.md) en estado propuesta, en el [PR 213](https://github.com/AE-SE/Agencia-de-Enlaces-y-Seguimiento-Estudiantil/pull/213). Propone describir cada grupo de carrera (nombre normalizado, sin menciones ni sedes) en lenguaje claro, con un bloque «Títulos parecidos» que explica las diferencias, en vez de describir las ~11 mil carreras una a una. Cada texto se rotula (fuente citada o «elaboración propia») y lo revisa un profesional antes de publicarse. Revisado con `revisar-pr` y `lenguaje-claro`; la confirmación del líder está pendiente.
+**Por qué**: los nombres parecidos (Ingeniería Informática, Civil en Informática, de Ejecución en Informática) confunden a quien egresa. Describir cada programa no es revisable a tiempo, y una descripción generada por IA sin revisión infringe AGENTS.md 2.1 y 7.3.
+**Pendiente**: aceptar el ADR (líder); verificar si mifuturo.cl ya publica descripciones de carreras; medir cuántos grupos resultan de la base de oferta; definir qué profesionales revisan cada área.
+**Siguiente**: construir la tabla de agrupación en `datos/` si se acepta el ADR. Fusionar primero el PR 213 y después este PR, para que el enlace al ADR no quede roto en `main`.
 
 ## 2026-11-14 (cruce N18: artistas de espectáculo sin área; revisión de alcance)
 

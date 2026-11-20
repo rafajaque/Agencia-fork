@@ -111,7 +111,7 @@ La semana del 30 de noviembre empieza la medición: la tabla de N15 en la secci�
 1. Desde la vista de carrera, agrega el botón «Fijar esta carrera como mi meta».
 2. Permite guardar hasta tres preferencias, en orden, y cambiarlas o quitarlas.
 3. Guarda todo **solo en el dispositivo** (almacenamiento local), con manejo de errores si el navegador lo bloquea. No hay cuenta, no se envía nada al servidor y no se usa analítica sobre estos datos.
-4. Muestra las alternativas cercanas con la función de N6 y escribe el criterio a la vista, con las palabras de Rafael («misma área, región y puntaje alcanzable»). Nunca se ordena por ser cliente.
+4. Muestra las alternativas cercanas con `alternativasCercanas` de `lib/calculos/alternativas.ts` (N6); pasa cada carrera por `aComparable`. Escribe el criterio a la vista: «misma área y región que tu meta, y el año anterior pidieron un puntaje igual o menor». **No uses «alcanzable» ni «puedes entrar»**: cada carrera pondera las pruebas distinto, así que un corte menor no garantiza que la persona quede. La lista de carreras que no piden puntaje del sistema centralizado va aparte y lo dice. Nunca se ordena por ser cliente. El área llega con el PR 277.
 5. Muestra el próximo plazo del calendario ya existente que corresponde a la meta (el calendario es la tarea N3 de Cristóbal); no construyas un calendario nuevo.
 6. Agrega «Borrar mis datos de este dispositivo», siempre visible, con efecto inmediato.
 7. Avisa con un texto claro que la meta se guarda solo en este dispositivo y se pierde si se limpian los datos del navegador.
@@ -201,7 +201,7 @@ La página `/ocupaciones` permite elegir hasta tres áreas de interés y muestra
 - [ ] Pie con fuente, fecha y «elaboración propia».
 
 ### A8 · Simulador de puntaje (pantallas) · histórico
-Fusionado (PR 169). Reglas que siguen vigentes: mensaje «El año pasado el último matriculado tuvo X. Con tus puntajes simulados tendrías Y.» (nunca «quedas» o «no quedas»); si no se ha rendido la prueba, avisa que es estimación; rangos válidos y errores que dicen cómo corregir; **nada se guarda** (no hay cuenta); el puntaje ponderado se ve junto al arancel.
+Fusionado (PR 169). Reglas que siguen vigentes: mensaje «El año pasado el último matriculado tuvo X. Con tus puntajes simulados tendrías Y.» (nunca «quedas» o «no quedas»); si no se ha rendido la prueba, avisa que es estimación; rangos válidos y errores que dicen cómo corregir; **nada se guarda** (no hay cuenta); el puntaje ponderado se ve junto al arancel. Las capturas de la descripción del PR usaron datos ficticios solo para probar la interfaz; no forman parte del repositorio ni respaldan datos oficiales. El 14 de noviembre se verificó localmente la exclusión de carreras con una fixture temporal ignorada por Git; se retiró antes del commit y no modificó datos oficiales.
 
 ### A13 · Auditoría de accesibilidad y rendimiento
 **Rama:** `fix/auditoria-final` · **Fecha:** primera pasada el lunes 16 nov; segunda pasada completa del 7 al 11 dic, sobre `main`

@@ -7,7 +7,6 @@
   gap: var(--espacio-6);
 }
 
-.encabezado,
 .situacion,
 .pasos li,
 .enlaces {
@@ -15,23 +14,12 @@
   gap: var(--espacio-3);
 }
 
-.encabezado h1,
-.encabezado p,
 .situacion h2,
 .situacion p,
 .pasos h3,
 .pasos p,
 .fuente {
   margin: 0;
-}
-
-.encabezado {
-  padding-block-end: var(--espacio-6);
-  border-block-end: var(--borde-linea) solid var(--color-linea);
-}
-
-.encabezado h1 {
-  font-size: var(--texto-3);
 }
 
 .situacion {
@@ -50,6 +38,7 @@
 .pasos {
   display: grid;
   gap: var(--espacio-3);
+  min-inline-size: 0;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -73,11 +62,24 @@
   font-size: var(--texto-1);
 }
 
+/* A 200 % de zoom, los ítems de una grilla conservan por defecto el ancho de
+   su palabra más larga. Permitimos que el texto se ajuste dentro de la tarjeta. */
+.pasos li > * {
+  min-inline-size: 0;
+  overflow-wrap: break-word;
+}
+
 .estado {
   display: flex;
   align-items: center;
   gap: var(--espacio-2);
+  min-inline-size: 0;
   color: var(--color-linea-texto);
+}
+
+.estado strong {
+  min-inline-size: 0;
+  overflow-wrap: break-word;
 }
 
 .icono {

@@ -88,6 +88,19 @@ const base = (): DatosBase => ({
       fuente_id: 'f2', url: 'https://ejemplo.invalid/demre', fecha_consulta: '2026-11-05',
     },
   ],
+  tramos_ingreso: [
+    {
+      programa_generico_id: 'g1',
+      tramo_publicado: 'De $1 millón 600 mil a $1 millón 700 mil',
+      periodo: 'titulados 2018 a 2020; pesos de septiembre de 2025',
+      fuente_id: 'f3',
+      url: 'https://ejemplo.invalid/sies',
+      fecha_consulta: '2026-11-05',
+      motivo_sin_dato: null,
+    },
+  ],
+  acreditaciones: [],
+  indicadores_variante: [],
   fuentes: [
     { id: 'f1', organismo: 'Mineduc', nombre: 'Datos Abiertos Mineduc: matrícula 2026' },
     { id: 'f2', organismo: 'DEMRE', nombre: 'Oferta definitiva' },
@@ -155,4 +168,160 @@ test('una variante sin programa se detiene', () => {
   const datos = base();
   datos.variantes[0] = { ...datos.variantes[0], programa_id: 'no-existe' };
   assert.throws(() => construirOferta(datos), /sin programa o institución/);
+});
+
+const acreditacion = (cambios: Partial<DatosBase['acreditaciones'][number]> = {}): DatosBase['acreditaciones'][number] => ({
+  institucion_id: 'i1',
+  estado: 'acreditada',
+  anios: 5,
+  desde: '2023-01-10',
+  hasta: '2028-01-10',
+  situacion_al: '2026-11-05',
+  periodo: 'matrícula 2026',
+  fuente_id: 'f1',
+  url: 'https://ejemplo.invalid/mineduc',
+  fecha_consulta: '2026-11-05',
+  ...cambios,
+});
+
+test('la acreditación de la institución llega a la carrera con su fuente y su fecha', () => {
+  const [c] = construirOferta({ ...base(), acreditaciones: [acreditacion()] });
+  assert.deepEqual(c.institucion.acreditacion, {
+    estado: 'acreditada',
+    anios: 5,
+    desde: '2023-01-10',
+    hasta: '2028-01-10',
+    situacion_al: '2026-11-05',
+    periodo: 'matrícula 2026',
+    fuente: 'Datos Abiertos Mineduc',
+    url: 'https://ejemplo.invalid/mineduc',
+    fecha_consulta: '2026-11-05',
+  });
+});
+
+test('si hay varias fechas de una misma institución, manda la más reciente', () => {
+  const [c] = construirOferta({
+    ...base(),
+    acreditaciones: [acreditacion({ situacion_al: '2027-03-01', anios: 6 }), acreditacion({ situacion_al: '2026-11-05', anios: 5 })],
+  });
+  assert.equal(c.institucion.acreditacion?.anios, 6);
+  assert.equal(c.institucion.acreditacion?.situacion_al, '2027-03-01');
+});
+
+test('una institución no acreditada conserva su estado y no inventa años ni fechas', () => {
+  const [c] = construirOferta({ ...base(), acreditaciones: [acreditacion({ estado: 'no_acreditada', anios: null, desde: null, hasta: null })] });
+  assert.equal(c.institucion.acreditacion?.estado, 'no_acreditada');
+  assert.equal(c.institucion.acreditacion?.anios, null);
+  assert.equal(c.institucion.acreditacion?.hasta, null);
+});
+
+test('la acreditación de otra institución no se mezcla', () => {
+  const [c] = construirOferta({ ...base(), acreditaciones: [acreditacion({ institucion_id: 'otra' })] });
+  assert.equal(c.institucion.acreditacion, undefined);
+});
+
+const corteDeVariante = (cambios: Partial<DatosBase['indicadores_variante'][number]> = {}): DatosBase['indicadores_variante'][number] => ({
+  variante_id: 'v1',
+  tipo: 'puntaje_corte',
+  valor: 781.4,
+  unidad: 'puntos',
+  periodo: 'selección del 19 de enero de 2026, vía regular',
+  fuente_id: 'f4',
+  url: 'https://ejemplo.invalid/datos-abiertos',
+  fecha_consulta: '2026-11-17',
+  motivo_sin_dato: null,
+  ...cambios,
+});
+
+const conFuenteDeDatosAbiertos = (datos: DatosBase): DatosBase => ({
+  ...datos,
+  fuentes: [...datos.fuentes, { id: 'f4', organismo: 'Datos abiertos DEMRE', nombre: 'Postulación y selección, proceso 2026' }],
+});
+
+test('el puntaje de corte de una variante llega a su carrera como indicador de variante con su fuente', () => {
+  const [c] = construirOferta(conFuenteDeDatosAbiertos({ ...base(), indicadores_variante: [corteDeVariante()] }));
+  const corte = c.indicadores.find((i) => i.tipo === 'puntaje_corte');
+  assert.ok(corte);
+  assert.equal(corte.valor, 781.4);
+  assert.equal(corte.nivel, 'variante');
+  assert.equal(corte.unidad, 'puntos');
+  assert.equal(corte.fuente, 'Datos abiertos DEMRE');
+  assert.equal(corte.fecha_consulta, '2026-11-17');
+});
+
+test('un puntaje de corte sin valor conserva su motivo y no aparece como cero', () => {
+  const [c] = construirOferta(conFuenteDeDatosAbiertos({
+    ...base(),
+    indicadores_variante: [corteDeVariante({ valor: null, motivo_sin_dato: 'El DEMRE quita registros de sus datos abiertos.' })],
+  }));
+  const corte = c.indicadores.find((i) => i.tipo === 'puntaje_corte');
+  assert.ok(corte);
+  assert.equal(corte.valor, null);
+  assert.equal((corte as { motivo_sin_dato: string }).motivo_sin_dato, 'El DEMRE quita registros de sus datos abiertos.');
+});
+
+test('el puntaje de corte de otra variante no se mezcla', () => {
+  const [c] = construirOferta(conFuenteDeDatosAbiertos({ ...base(), indicadores_variante: [corteDeVariante({ variante_id: 'otra' })] }));
+  assert.equal(c.indicadores.some((i) => i.tipo === 'puntaje_corte'), false);
+});
+
+test('un indicador de variante sin motivo y sin valor se detiene', () => {
+  assert.throws(() => construirOferta(conFuenteDeDatosAbiertos({ ...base(), indicadores_variante: [corteDeVariante({ valor: null })] })));
+});
+
+test('el ingreso al 4.º año llega como el tramo en palabras que publica el SIES, con su fuente', () => {
+  const [c] = construirOferta(base());
+  assert.equal(c.ingreso_tramo?.tramo, 'De $1 millón 600 mil a $1 millón 700 mil');
+  assert.equal(c.ingreso_tramo?.fuente, 'Mi Futuro');
+  assert.equal(c.ingreso_tramo?.motivo_sin_dato, null);
+});
+
+test('un tramo sin publicar queda vacío con su motivo, y una carrera sin fila no inventa tramo', () => {
+  const sinTramo = base();
+  sinTramo.tramos_ingreso[0] = { ...sinTramo.tramos_ingreso[0], tramo_publicado: null, motivo_sin_dato: 'El SIES no publica el ingreso con menos de 10 personas.' };
+  assert.equal(construirOferta(sinTramo)[0].ingreso_tramo?.tramo, null);
+  assert.match(construirOferta(sinTramo)[0].ingreso_tramo?.motivo_sin_dato ?? '', /menos de 10/);
+
+  const sinFila = base();
+  sinFila.tramos_ingreso = [];
+  assert.equal(construirOferta(sinFila)[0].ingreso_tramo, undefined);
+});
+
+test('la duración formal sale de Mineduc con la fuente del arancel de la misma variante', () => {
+  const [c] = construirOferta(base());
+  const formal = c.indicadores.find((i) => i.tipo === 'duracion_formal_semestres');
+  assert.ok(formal);
+  assert.equal(formal.valor, 6);
+  assert.equal(formal.unidad, 'semestres');
+  assert.equal(formal.fuente, 'Datos Abiertos Mineduc');
+});
+
+test('sin arancel no hay fuente que citar y la duración formal no se publica', () => {
+  const datos = base();
+  datos.aranceles = [];
+  assert.equal(construirOferta(datos)[0].indicadores.some((i) => i.tipo === 'duracion_formal_semestres'), false);
+});
+
+test('una carrera sin código DEMRE se marca fuera del sistema de admisión; sin dato del código, no se afirma nada', () => {
+  const conCodigo = base();
+  conCodigo.variantes[0] = { ...conCodigo.variantes[0], codigo_demre: '11080' };
+  assert.equal(construirOferta(conCodigo)[0].admision_centralizada, true);
+
+  const sinCodigo = base();
+  sinCodigo.variantes[0] = { ...sinCodigo.variantes[0], codigo_demre: null };
+  assert.equal(construirOferta(sinCodigo)[0].admision_centralizada, false);
+
+  assert.equal(construirOferta(base())[0].admision_centralizada, undefined);
+});
+
+test('el área es la del SIES para la carrera genérica, y no aparece si el SIES no la publica', () => {
+  const conArea = base();
+  conArea.variantes[0].generica_normalizada = 'enfermeria';
+  assert.equal(construirOferta(conArea)[0].area, 'Salud');
+
+  const sinPublicar = base();
+  sinPublicar.variantes[0].generica_normalizada = 'otras ingenierias';
+  assert.equal('area' in construirOferta(sinPublicar)[0], false);
+
+  assert.equal('area' in construirOferta(base())[0], false);
 });

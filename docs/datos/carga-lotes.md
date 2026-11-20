@@ -2,7 +2,7 @@
 
 Guía paso a paso para generar, probar y cargar la oferta de Mineduc (matrícula 2026) en la base de datos. El lote 1 carga instituciones, carreras genéricas, títulos, variantes (sede y jornada) y aranceles.
 
-**No incluye todavía:** indicadores del SIES (empleabilidad, ingreso, retención), vacantes, requisitos y ponderaciones del DEMRE, ni acreditación detallada. Son lotes posteriores (sección 9).
+**No incluye todavía:** indicadores del SIES (empleabilidad, ingreso, retención), vacantes, requisitos y ponderaciones del DEMRE, ni acreditación detallada (esa es el lote 4, sección 13). Son lotes posteriores (sección 9).
 
 ## 0. Resumen
 
@@ -60,6 +60,7 @@ Salida en `datos/procesados/lotes/` (fuera de git):
 | `04_programas.sql` | `programa` | 3.974 |
 | `05_variantes.sql` | `programa_variante` | 11.364 |
 | `06_aranceles.sql` | `arancel_variante` | 11.364 |
+| `12_acreditaciones.sql` | `acreditacion_institucion` | 116 (ver sección 13) |
 | `informe.json` | resumen | — |
 
 Si el generador termina con `ERROR:`, no escribió lotes completos. Corrige la causa y repite.
@@ -112,6 +113,19 @@ psql "$CADENA" -v ON_ERROR_STOP=1 -f datos/procesados/lotes/06_aranceles.sql
 Donde `CADENA` es la variable de entorno con la cadena de conexión, que tú defines en tu terminal.
 
 Antes del paso 1, comprobar que la base está vacía de datos de oferta (paso 5 de la guía, consulta de conteos en el editor SQL). Si algún conteo no es 0, parar y revisar.
+
+### Con el script, sin `psql`
+
+Si no tienes `psql`, `scripts/cargar-lotes.mjs` hace lo mismo para cualquier lote (1 a 10 y 12 a 15), con tres cuidados más: comprueba que la base ya tiene la oferta (0 variantes: se niega a cargar), carga cada archivo en **una transacción** (si falla, ese lote se deshace y la carga se detiene) y muestra los conteos de antes y después. La cadena de conexión va en una variable de entorno; el script nunca la imprime.
+
+```bash
+npm install --no-save pg
+export SUPABASE_DB_URL="postgresql://..."        # PowerShell: $env:SUPABASE_DB_URL = "postgresql://..."
+node scripts/cargar-lotes.mjs --simular 12 13 14 15   # comprueba conexión y archivos; no escribe nada
+node scripts/cargar-lotes.mjs 12 13 14 15             # carga en ese orden
+```
+
+Los lotes 12 a 15 (acreditación, puntaje de corte, matrícula de inscripción y matrícula total) se generan con `datos/generar_lotes.py` (12, 14 y 15) y `datos/generar_lotes_corte.py` (13). Van después de los lotes 1 a 6 y son repetibles. Probado el 17-nov-2026 con la oferta real sobre un Postgres en memoria: carga correcta, un error en un lote lo revierte entero y repetir la carga no duplica filas.
 
 ## 7. Comprobar después
 
@@ -239,3 +253,51 @@ Esperado: 10.430, 2.086, 1.798 y 2.176.
 - Una vía sin cupos publicados queda nula con el motivo «DEMRE no publica cupos para esta vía en esta carrera».
 - El enlace y la fecha son los del PDF de la oferta definitiva (Admisión 2027).
 - El nombre original de Mineduc siempre queda en `programa.nombre_oficial`. `programa.nombre` cambia solo cuando DEMRE contiene las mismas palabras y respalda la ortografía; si no, queda original con `nombre_verificado = false`.
+
+## 13. Lote 4: acreditación fechada (archivo `12_acreditaciones.sql`)
+
+`generar_lotes.py` también escribe `12_acreditaciones.sql`, con una fila por institución en la tabla `acreditacion_institucion` (estado, años, inicio, término, fecha de la fuente y fuente). Antes solo se guardaban los años y la fecha final dentro de `institucion`, sin estado ni fuente, y no se distinguía una institución no acreditada de una sin información.
+
+- **Se carga después del lote 2** (necesita `fuente` e `institucion`). No hace falta repetir los demás lotes: `psql "$CADENA" -v ON_ERROR_STOP=1 -f datos/procesados/lotes/12_acreditaciones.sql`.
+- **Con la carga real del 5-nov-2026 genera 116 filas:** 82 acreditadas, 19 no acreditadas y 15 «bajo tutela», sin filas descartadas. Los 15 «bajo tutela» son los centros de formación técnica estatales; la Ley 20.910 (artículo tercero) dice que cada uno es tutelado y acompañado por una universidad del Estado.
+- **`situacion_al` es la fecha de descarga del archivo de Mineduc**, la única fecha que la fuente da de esa situación. La acreditación cambia: la ficha lo dice y enlaza la CNA.
+- **Sin estado, o «acreditada» sin años, no se inventa nada:** no hay fila, se anota en `informe.json` (`acreditaciones_sin_dato`) y la ficha dice que Mineduc no informa la acreditación. Años en una institución no acreditada, o un término anterior al inicio, detienen el generador.
+- **Repetible:** `on conflict (institucion_id, situacion_al) do nothing`. Una descarga nueva trae otra fecha y agrega otra fila; la aplicación usa la más reciente. Corregir una fila de la misma fecha exige borrarla antes.
+- **Probado en Postgres (17-nov-2026):** las migraciones y los lotes 1 a 6, 12, 13 y 14 se aplicaron en orden sobre un Postgres en memoria (PGlite) sin errores: 116 acreditaciones. Sigue conviniendo repetir la prueba en la base de prueba de la sección 5 antes de producción.
+
+## 14. Lote 13: puntaje de corte (archivo `13_puntajes_corte.sql`)
+
+`datos/generar_lotes_corte.py` calcula el puntaje del último seleccionado de cada carrera y escribe una fila de `indicador` por variante (`tipo = puntaje_corte`, `unidad = puntos`). Va después de los lotes 1 a 11.
+
+```bash
+python datos/generar_lotes_corte.py [carga.csv] [ArchivoD.csv] [Estadisticas.csv] [carpeta_salida] [AAAA-MM-DD]
+```
+
+- **Entradas:** la carga de Mineduc (`datos/procesados/carga.csv`, para cruzar el código DEMRE con la variante) y, en `datos/crudos/demre/` (fuera de git), el «Archivo D» y las «Estadísticas de Selección» del proceso 2026, que se bajan del portal de datos abiertos del DEMRE. La fecha es la de descarga y va como fecha de consulta.
+- **Reglas:** se publica el mínimo solo si el conteo de seleccionados del archivo es igual a `NUM_SELEC_REG` oficial y hay al menos 8; si no, queda nulo con su motivo. Una carrera sin variante en la carga, o que no está en las estadísticas, no recibe fila. El detalle y la validación están en `docs/datos/diccionario.md`.
+- **Fuente nueva:** inserta (si no existe) la fuente «Datos abiertos DEMRE» y cita el portal. Hay que respetar sus condiciones de uso: citar «Datos abiertos DEMRE 2026», no identificar personas y no guardar ni subir los archivos individuales.
+- **Informe:** `informe_corte.json` con solo conteos; nunca filas de personas.
+- **Repetible:** `on conflict on constraint indicador_unico do nothing`. Un proceso nuevo trae otro `periodo` y agrega otra fila.
+- **Probado en Postgres (17-nov-2026):** 2.138 filas, 1.591 con puntaje y el resto nulo con su motivo; `indicador_nivel_valido` se cumple. Repetir en la base de prueba (sección 5) antes de producción.
+- **Pruebas:** `tests/datos/test_generar_lotes_corte.py` (17 casos con datos inventados).
+
+## 15. Lote 14: matrícula de inscripción (archivo `14_matricula_inscripcion.sql`)
+
+`generar_lotes.py` también escribe `14_matricula_inscripcion.sql`: una fila de `indicador` por variante (`tipo = matricula_inscripcion`, `unidad = pesos`, `periodo = año 2026`) con el valor de matrícula que informa Mineduc. El tipo ya existía en la base; faltaba el cargador.
+
+- **Se carga después de los lotes 1 a 6** (necesita `fuente` y `programa_variante`): `psql "$CADENA" -v ON_ERROR_STOP=1 -f datos/procesados/lotes/14_matricula_inscripcion.sql`. No hace falta repetir los demás.
+- **Con la carga real del 5-nov-2026:** 10.914 variantes con monto y 450 sin él (Mineduc informa 0 o no informa); estas quedan nulas con ese motivo. Los montos van de $40.000 a $3.301.936.
+- **Repetible:** `on conflict on constraint indicador_unico do nothing`.
+- **La ficha** muestra «Costo de matrícula» junto a «Costo del arancel anual» y, con los dos, «Costo del primer año» (elaboración propia: su suma; `lib/datos/costo.ts`). Solo se calcula si Mineduc informa ambos montos.
+- **Probado en Postgres (17-nov-2026):** 11.364 filas (10.914 con monto, de $40.000 a $3.301.936, y 450 nulas con motivo); una segunda carga no agrega filas. Repetir en la base de prueba (sección 5) antes de producción.
+- **Definición confirmada el 17-nov-2026** en el diccionario oficial del RAR de Matrícula 2026 (`ER_Matricula_Educacion_Superior_2007_2026_PUBL_MRUN.pdf`, página 3): `VALOR_MATRICULA` es el «valor en pesos que el estudiante debe pagar para hacer efectiva su matrícula» y `VALOR_ARANCEL` es el «arancel anual de la carrera o programa». El diccionario no dice si la matrícula se repite cada año; sí dice que es lo que se paga para hacerla efectiva.
+
+## 16. Lote 15: matrícula total (archivo `15_matricula_total.sql`)
+
+`generar_lotes.py` también escribe `15_matricula_total.sql`: una fila de `indicador` por variante (`tipo = matricula`, `unidad = estudiantes`, `periodo = matrícula total 2026, todos los años de la carrera`). La unidad `estudiantes` ya existe en la base (migración `20261104000000`).
+
+- **Se carga después de los lotes 1 a 6**: `psql "$CADENA" -v ON_ERROR_STOP=1 -f datos/procesados/lotes/15_matricula_total.sql`.
+- **Con la carga real del 5-nov-2026:** 11.364 filas, de 1 a 5.303 estudiantes. Un valor vacío, cero o que no sea un número detiene el generador.
+- **Qué es:** el número de registros del archivo de Matrícula 2026 con el código de la carrera (`CODIGO_UNICO`), es decir, personas matriculadas sumando todos sus años. Es un recuento: no se guarda ni se muestra nada de ninguna persona.
+- **Repetible:** `on conflict on constraint indicador_unico do nothing`.
+

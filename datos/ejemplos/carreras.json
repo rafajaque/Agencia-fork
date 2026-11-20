@@ -4,7 +4,21 @@
     {
       "codigo_sies": "I70S1C41J1V1",
       "carrera": "Enfermería",
-      "institucion": { "nombre": "Universidad de Chile", "tipo": "universidad" },
+      "institucion": {
+        "nombre": "Universidad de Chile",
+        "tipo": "universidad",
+        "acreditacion": {
+          "estado": "acreditada",
+          "anios": 7,
+          "desde": "2025-12-23",
+          "hasta": "2032-12-23",
+          "situacion_al": "2026-11-05",
+          "periodo": "matrícula 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-05"
+        }
+      },
       "sede": "Santiago",
       "comuna": "Santiago",
       "region": "Metropolitana",
@@ -15,6 +29,16 @@
           "tipo": "arancel_anual",
           "nivel": "variante",
           "valor": 6388500,
+          "unidad": "pesos",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
+        },
+        {
+          "tipo": "matricula_inscripcion",
+          "nivel": "variante",
+          "valor": 217600,
           "unidad": "pesos",
           "periodo": "año 2026",
           "fuente": "Datos Abiertos Mineduc",
@@ -72,22 +96,83 @@
           "fecha_consulta": "2026-11-04"
         },
         {
-          "tipo": "ingreso_promedio_4to_anio",
+          "tipo": "puntaje_corte",
+          "nivel": "variante",
+          "valor": 781.4,
+          "unidad": "puntos",
+          "periodo": "selección del 19 de enero de 2026, vía regular",
+          "fuente": "Datos abiertos DEMRE",
+          "url": "https://portal-transparencia.demre.cl/portal-base-datos",
+          "fecha_consulta": "2026-11-17"
+        },
+        {
+          "tipo": "continuidad_estudios",
           "nivel": "programa",
-          "valor": null,
-          "unidad": "pesos",
-          "periodo": "cohortes tituladas 2018-2020; ingresos 2022-2024",
+          "valor": 0.0,
+          "unidad": "porcentaje",
+          "periodo": "titulados 2021 a 2023, matriculados al año siguiente de titularse",
           "fuente": "Mi Futuro",
           "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "La fuente oficial publica solo el tramo 'De $2 millones a $2 millones 100 mil'. No entrega un monto exacto."
+          "fecha_consulta": "2026-11-05"
+        },
+        {
+          "tipo": "duracion_formal_semestres",
+          "nivel": "variante",
+          "valor": 10,
+          "unidad": "semestres",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
         }
-      ]
+      ],
+      "requisito_admision": {
+        "nem": 10,
+        "ranking": 20,
+        "competencia_lectora": 15,
+        "matematica_1": 20,
+        "matematica_2": null,
+        "historia_cs_sociales": null,
+        "ciencias": 35,
+        "historia_o_ciencias": false,
+        "prueba_especial": null,
+        "asignacion_especial_pedagogia": null,
+        "puntaje_ponderado_minimo": null,
+        "puntaje_promedio_minimo": 458,
+        "periodo": "Proceso de Admisión 2027",
+        "fuente": "DEMRE",
+        "url": "https://demre.cl/publicaciones/pdf/2027-26-09-24-oferta-definitiva-carreras-p2027.pdf",
+        "fecha_consulta": "2026-11-16"
+      },
+      "ingreso_tramo": {
+        "tramo": "De $2 millones a $2 millones 100 mil",
+        "motivo_sin_dato": null,
+        "periodo": "titulados 2018 a 2020; años de ingreso 2022 a 2024; pesos de septiembre de 2025",
+        "fuente": "Mi Futuro",
+        "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
+        "fecha_consulta": "2026-11-05"
+      },
+      "admision_centralizada": true,
+      "area": "Salud"
     },
     {
       "codigo_sies": "I87S1C49J1V3",
       "carrera": "Ingeniería Civil Informática",
-      "institucion": { "nombre": "Universidad de Concepción", "tipo": "universidad" },
+      "institucion": {
+        "nombre": "Universidad de Concepción",
+        "tipo": "universidad",
+        "acreditacion": {
+          "estado": "acreditada",
+          "anios": 7,
+          "desde": "2023-11-22",
+          "hasta": "2030-11-22",
+          "situacion_al": "2026-11-05",
+          "periodo": "matrícula 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-05"
+        }
+      },
       "sede": "Casa Central",
       "comuna": "Concepción",
       "region": "Biobío",
@@ -98,6 +183,16 @@
           "tipo": "arancel_anual",
           "nivel": "variante",
           "valor": 7422393,
+          "unidad": "pesos",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
+        },
+        {
+          "tipo": "matricula_inscripcion",
+          "nivel": "variante",
+          "valor": 52795,
           "unidad": "pesos",
           "periodo": "año 2026",
           "fuente": "Datos Abiertos Mineduc",
@@ -155,22 +250,65 @@
           "fecha_consulta": "2026-11-04"
         },
         {
-          "tipo": "ingreso_promedio_4to_anio",
+          "tipo": "puntaje_corte",
+          "nivel": "variante",
+          "valor": 809,
+          "unidad": "puntos",
+          "periodo": "selección del 19 de enero de 2026, vía regular",
+          "fuente": "Datos abiertos DEMRE",
+          "url": "https://portal-transparencia.demre.cl/portal-base-datos",
+          "fecha_consulta": "2026-11-17"
+        },
+        {
+          "tipo": "continuidad_estudios",
           "nivel": "programa",
-          "valor": null,
-          "unidad": "pesos",
-          "periodo": "cohortes tituladas 2018-2020; ingresos 2022-2024",
+          "valor": 11.11,
+          "unidad": "porcentaje",
+          "periodo": "titulados 2021 a 2023, matriculados al año siguiente de titularse",
           "fuente": "Mi Futuro",
           "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "La fuente oficial publica solo el tramo 'Desde $2 millones 500 mil a $3 millones'. No entrega un monto exacto."
+          "fecha_consulta": "2026-11-05"
+        },
+        {
+          "tipo": "duracion_formal_semestres",
+          "nivel": "variante",
+          "valor": 10,
+          "unidad": "semestres",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
         }
-      ]
+      ],
+      "ingreso_tramo": {
+        "tramo": "Desde $2 millones 500 mil a $3 millones",
+        "motivo_sin_dato": null,
+        "periodo": "titulados 2018 a 2020; años de ingreso 2022 a 2024; pesos de septiembre de 2025",
+        "fuente": "Mi Futuro",
+        "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
+        "fecha_consulta": "2026-11-05"
+      },
+      "admision_centralizada": true,
+      "area": "Tecnología"
     },
     {
       "codigo_sies": "I72S1C75J1V1",
       "carrera": "Psicología",
-      "institucion": { "nombre": "Universidad de Valparaíso", "tipo": "universidad" },
+      "institucion": {
+        "nombre": "Universidad de Valparaíso",
+        "tipo": "universidad",
+        "acreditacion": {
+          "estado": "acreditada",
+          "anios": 6,
+          "desde": "2023-03-08",
+          "hasta": "2029-03-08",
+          "situacion_al": "2026-11-05",
+          "periodo": "matrícula 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-05"
+        }
+      },
       "sede": "Casa Central (Valparaíso)",
       "comuna": "Valparaíso",
       "region": "Valparaíso",
@@ -181,6 +319,16 @@
           "tipo": "arancel_anual",
           "nivel": "variante",
           "valor": 5311000,
+          "unidad": "pesos",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
+        },
+        {
+          "tipo": "matricula_inscripcion",
+          "nivel": "variante",
+          "valor": 226000,
           "unidad": "pesos",
           "periodo": "año 2026",
           "fuente": "Datos Abiertos Mineduc",
@@ -238,22 +386,65 @@
           "fecha_consulta": "2026-11-04"
         },
         {
-          "tipo": "ingreso_promedio_4to_anio",
+          "tipo": "puntaje_corte",
+          "nivel": "variante",
+          "valor": 707.9,
+          "unidad": "puntos",
+          "periodo": "selección del 19 de enero de 2026, vía regular",
+          "fuente": "Datos abiertos DEMRE",
+          "url": "https://portal-transparencia.demre.cl/portal-base-datos",
+          "fecha_consulta": "2026-11-17"
+        },
+        {
+          "tipo": "continuidad_estudios",
           "nivel": "programa",
-          "valor": null,
-          "unidad": "pesos",
-          "periodo": "cohortes tituladas 2018-2020; ingresos 2022-2024",
+          "valor": 2.83,
+          "unidad": "porcentaje",
+          "periodo": "titulados 2021 a 2023, matriculados al año siguiente de titularse",
           "fuente": "Mi Futuro",
           "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "La fuente oficial publica solo el tramo 'De $1 millón 100 mil a $1 millón 200 mil'. No entrega un monto exacto."
+          "fecha_consulta": "2026-11-05"
+        },
+        {
+          "tipo": "duracion_formal_semestres",
+          "nivel": "variante",
+          "valor": 10,
+          "unidad": "semestres",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
         }
-      ]
+      ],
+      "ingreso_tramo": {
+        "tramo": "De $1 millón 100 mil a $1 millón 200 mil",
+        "motivo_sin_dato": null,
+        "periodo": "titulados 2018 a 2020; años de ingreso 2022 a 2024; pesos de septiembre de 2025",
+        "fuente": "Mi Futuro",
+        "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
+        "fecha_consulta": "2026-11-05"
+      },
+      "admision_centralizada": true,
+      "area": "Ciencias Sociales"
     },
     {
       "codigo_sies": "I73S2C5J1V1",
       "carrera": "Derecho",
-      "institucion": { "nombre": "Universidad de Antofagasta", "tipo": "universidad" },
+      "institucion": {
+        "nombre": "Universidad de Antofagasta",
+        "tipo": "universidad",
+        "acreditacion": {
+          "estado": "acreditada",
+          "anios": 5,
+          "desde": "2022-09-07",
+          "hasta": "2027-09-07",
+          "situacion_al": "2026-11-05",
+          "periodo": "matrícula 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-05"
+        }
+      },
       "sede": "Campus Coloso",
       "comuna": "Antofagasta",
       "region": "Antofagasta",
@@ -264,6 +455,16 @@
           "tipo": "arancel_anual",
           "nivel": "variante",
           "valor": 5385000,
+          "unidad": "pesos",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
+        },
+        {
+          "tipo": "matricula_inscripcion",
+          "nivel": "variante",
+          "valor": 225000,
           "unidad": "pesos",
           "periodo": "año 2026",
           "fuente": "Datos Abiertos Mineduc",
@@ -323,22 +524,57 @@
           "motivo_sin_dato": "La fuente oficial marca la duración real como 'sin información' para esta carrera e institución."
         },
         {
-          "tipo": "ingreso_promedio_4to_anio",
+          "tipo": "puntaje_corte",
+          "nivel": "variante",
+          "valor": 596.45,
+          "unidad": "puntos",
+          "periodo": "selección del 19 de enero de 2026, vía regular",
+          "fuente": "Datos abiertos DEMRE",
+          "url": "https://portal-transparencia.demre.cl/portal-base-datos",
+          "fecha_consulta": "2026-11-17"
+        },
+        {
+          "tipo": "continuidad_estudios",
           "nivel": "programa",
-          "valor": null,
-          "unidad": "pesos",
-          "periodo": "cohortes tituladas 2018-2020; ingresos 2022-2024",
+          "valor": 1.18,
+          "unidad": "porcentaje",
+          "periodo": "titulados 2021 a 2023, matriculados al año siguiente de titularse",
           "fuente": "Mi Futuro",
           "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "La fuente oficial marca el ingreso al 4.º año como 'sin información' para esta carrera e institución."
+          "fecha_consulta": "2026-11-05"
+        },
+        {
+          "tipo": "duracion_formal_semestres",
+          "nivel": "variante",
+          "valor": 10,
+          "unidad": "semestres",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
         }
-      ]
+      ],
+      "admision_centralizada": true,
+      "area": "Derecho"
     },
     {
       "codigo_sies": "I111S4C39J1V1",
       "carrera": "Diseño Gráfico",
-      "institucion": { "nombre": "IP Duoc UC", "tipo": "instituto_profesional" },
+      "institucion": {
+        "nombre": "IP Duoc UC",
+        "tipo": "instituto_profesional",
+        "acreditacion": {
+          "estado": "acreditada",
+          "anios": 7,
+          "desde": "2024-10-16",
+          "hasta": "2031-10-16",
+          "situacion_al": "2026-11-05",
+          "periodo": "matrícula 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-05"
+        }
+      },
       "sede": "Viña del Mar",
       "comuna": "Viña del Mar",
       "region": "Valparaíso",
@@ -356,6 +592,16 @@
           "fecha_consulta": "2026-11-04"
         },
         {
+          "tipo": "matricula_inscripcion",
+          "nivel": "variante",
+          "valor": 296000,
+          "unidad": "pesos",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
+        },
+        {
           "tipo": "matricula",
           "nivel": "variante",
           "valor": 376,
@@ -364,17 +610,6 @@
           "fuente": "Datos Abiertos Mineduc",
           "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
           "fecha_consulta": "2026-11-04"
-        },
-        {
-          "tipo": "vacantes",
-          "nivel": "variante",
-          "valor": null,
-          "unidad": "cupos",
-          "periodo": "admisión 2027, vacantes regulares",
-          "fuente": "DEMRE",
-          "url": "https://demre.cl/publicaciones/pdf/2027-26-09-24-oferta-definitiva-carreras-p2027.pdf",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "Todavía no verificamos las vacantes de esta carrera en la oferta oficial para la Admisión 2027."
         },
         {
           "tipo": "empleabilidad_1er_anio",
@@ -407,22 +642,55 @@
           "fecha_consulta": "2026-11-04"
         },
         {
-          "tipo": "ingreso_promedio_4to_anio",
+          "tipo": "continuidad_estudios",
           "nivel": "programa",
-          "valor": null,
-          "unidad": "pesos",
-          "periodo": "cohortes tituladas 2018-2020; ingresos 2022-2024",
+          "valor": 1.5,
+          "unidad": "porcentaje",
+          "periodo": "titulados 2021 a 2023, matriculados al año siguiente de titularse",
           "fuente": "Mi Futuro",
           "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "La fuente oficial publica solo el tramo 'De $1 millón a $1 millón 100 mil'. No entrega un monto exacto."
+          "fecha_consulta": "2026-11-05"
+        },
+        {
+          "tipo": "duracion_formal_semestres",
+          "nivel": "variante",
+          "valor": 8,
+          "unidad": "semestres",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
         }
-      ]
+      ],
+      "ingreso_tramo": {
+        "tramo": "De $1 millón a $1 millón 100 mil",
+        "motivo_sin_dato": null,
+        "periodo": "titulados 2018 a 2020; años de ingreso 2022 a 2024; pesos de septiembre de 2025",
+        "fuente": "Mi Futuro",
+        "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
+        "fecha_consulta": "2026-11-05"
+      },
+      "admision_centralizada": false,
+      "area": "Arte y Arquitectura"
     },
     {
       "codigo_sies": "I143S20C28J1V1",
       "carrera": "Trabajo Social",
-      "institucion": { "nombre": "IP AIEP", "tipo": "instituto_profesional" },
+      "institucion": {
+        "nombre": "IP AIEP",
+        "tipo": "instituto_profesional",
+        "acreditacion": {
+          "estado": "acreditada",
+          "anios": 5,
+          "desde": "2022-11-23",
+          "hasta": "2027-11-23",
+          "situacion_al": "2026-11-05",
+          "periodo": "matrícula 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-05"
+        }
+      },
       "sede": "Temuco",
       "comuna": "Temuco",
       "region": "La Araucanía",
@@ -440,6 +708,16 @@
           "fecha_consulta": "2026-11-04"
         },
         {
+          "tipo": "matricula_inscripcion",
+          "nivel": "variante",
+          "valor": 240000,
+          "unidad": "pesos",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
+        },
+        {
           "tipo": "matricula",
           "nivel": "variante",
           "valor": 123,
@@ -448,17 +726,6 @@
           "fuente": "Datos Abiertos Mineduc",
           "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
           "fecha_consulta": "2026-11-04"
-        },
-        {
-          "tipo": "vacantes",
-          "nivel": "variante",
-          "valor": null,
-          "unidad": "cupos",
-          "periodo": "admisión 2027, vacantes regulares",
-          "fuente": "DEMRE",
-          "url": "https://demre.cl/publicaciones/pdf/2027-26-09-24-oferta-definitiva-carreras-p2027.pdf",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "Todavía no verificamos las vacantes de esta carrera en la oferta oficial para la Admisión 2027."
         },
         {
           "tipo": "empleabilidad_1er_anio",
@@ -491,22 +758,55 @@
           "fecha_consulta": "2026-11-04"
         },
         {
-          "tipo": "ingreso_promedio_4to_anio",
+          "tipo": "continuidad_estudios",
           "nivel": "programa",
-          "valor": null,
-          "unidad": "pesos",
-          "periodo": "cohortes tituladas 2018-2020; ingresos 2022-2024",
+          "valor": 14.18,
+          "unidad": "porcentaje",
+          "periodo": "titulados 2021 a 2023, matriculados al año siguiente de titularse",
           "fuente": "Mi Futuro",
           "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "La fuente oficial publica solo el tramo 'De $1 millón a $1 millón 100 mil'. No entrega un monto exacto."
+          "fecha_consulta": "2026-11-05"
+        },
+        {
+          "tipo": "duracion_formal_semestres",
+          "nivel": "variante",
+          "valor": 8,
+          "unidad": "semestres",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
         }
-      ]
+      ],
+      "ingreso_tramo": {
+        "tramo": "De $1 millón a $1 millón 100 mil",
+        "motivo_sin_dato": null,
+        "periodo": "titulados 2018 a 2020; años de ingreso 2022 a 2024; pesos de septiembre de 2025",
+        "fuente": "Mi Futuro",
+        "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
+        "fecha_consulta": "2026-11-05"
+      },
+      "admision_centralizada": false,
+      "area": "Ciencias Sociales"
     },
     {
       "codigo_sies": "I143S2C609J1V2",
       "carrera": "Gastronomía Internacional",
-      "institucion": { "nombre": "IP AIEP", "tipo": "instituto_profesional" },
+      "institucion": {
+        "nombre": "IP AIEP",
+        "tipo": "instituto_profesional",
+        "acreditacion": {
+          "estado": "acreditada",
+          "anios": 5,
+          "desde": "2022-11-23",
+          "hasta": "2027-11-23",
+          "situacion_al": "2026-11-05",
+          "periodo": "matrícula 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-05"
+        }
+      },
       "sede": "Antofagasta",
       "comuna": "Antofagasta",
       "region": "Antofagasta",
@@ -524,6 +824,16 @@
           "fecha_consulta": "2026-11-04"
         },
         {
+          "tipo": "matricula_inscripcion",
+          "nivel": "variante",
+          "valor": 240000,
+          "unidad": "pesos",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
+        },
+        {
           "tipo": "matricula",
           "nivel": "variante",
           "valor": 50,
@@ -532,17 +842,6 @@
           "fuente": "Datos Abiertos Mineduc",
           "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
           "fecha_consulta": "2026-11-04"
-        },
-        {
-          "tipo": "vacantes",
-          "nivel": "variante",
-          "valor": null,
-          "unidad": "cupos",
-          "periodo": "admisión 2027, vacantes regulares",
-          "fuente": "DEMRE",
-          "url": "https://demre.cl/publicaciones/pdf/2027-26-09-24-oferta-definitiva-carreras-p2027.pdf",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "Todavía no verificamos las vacantes de esta carrera en la oferta oficial para la Admisión 2027."
         },
         {
           "tipo": "empleabilidad_1er_anio",
@@ -575,22 +874,55 @@
           "fecha_consulta": "2026-11-04"
         },
         {
-          "tipo": "ingreso_promedio_4to_anio",
+          "tipo": "continuidad_estudios",
           "nivel": "programa",
-          "valor": null,
-          "unidad": "pesos",
-          "periodo": "cohortes tituladas 2018-2020; ingresos 2022-2024",
+          "valor": 6.95,
+          "unidad": "porcentaje",
+          "periodo": "titulados 2021 a 2023, matriculados al año siguiente de titularse",
           "fuente": "Mi Futuro",
           "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "La fuente oficial publica solo el tramo 'De $700 mil a $800 mil'. No entrega un monto exacto."
+          "fecha_consulta": "2026-11-05"
+        },
+        {
+          "tipo": "duracion_formal_semestres",
+          "nivel": "variante",
+          "valor": 4,
+          "unidad": "semestres",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
         }
-      ]
+      ],
+      "ingreso_tramo": {
+        "tramo": "De $700 mil a $800 mil",
+        "motivo_sin_dato": null,
+        "periodo": "titulados 2018 a 2020; años de ingreso 2022 a 2024; pesos de septiembre de 2025",
+        "fuente": "Mi Futuro",
+        "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
+        "fecha_consulta": "2026-11-05"
+      },
+      "admision_centralizada": false,
+      "area": "Administración y Comercio"
     },
     {
       "codigo_sies": "I260S45C47J1V1",
       "carrera": "Técnico en Enfermería",
-      "institucion": { "nombre": "CFT Santo Tomás", "tipo": "centro_formacion_tecnica" },
+      "institucion": {
+        "nombre": "CFT Santo Tomás",
+        "tipo": "centro_formacion_tecnica",
+        "acreditacion": {
+          "estado": "acreditada",
+          "anios": 6,
+          "desde": "2024-12-21",
+          "hasta": "2030-12-21",
+          "situacion_al": "2026-11-05",
+          "periodo": "matrícula 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-05"
+        }
+      },
       "sede": "Concepción",
       "comuna": "Concepción",
       "region": "Biobío",
@@ -608,6 +940,16 @@
           "fecha_consulta": "2026-11-04"
         },
         {
+          "tipo": "matricula_inscripcion",
+          "nivel": "variante",
+          "valor": 94000,
+          "unidad": "pesos",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
+        },
+        {
           "tipo": "matricula",
           "nivel": "variante",
           "valor": 336,
@@ -616,17 +958,6 @@
           "fuente": "Datos Abiertos Mineduc",
           "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
           "fecha_consulta": "2026-11-04"
-        },
-        {
-          "tipo": "vacantes",
-          "nivel": "variante",
-          "valor": null,
-          "unidad": "cupos",
-          "periodo": "admisión 2027, vacantes regulares",
-          "fuente": "DEMRE",
-          "url": "https://demre.cl/publicaciones/pdf/2027-26-09-24-oferta-definitiva-carreras-p2027.pdf",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "Todavía no verificamos las vacantes de esta carrera en la oferta oficial para la Admisión 2027."
         },
         {
           "tipo": "empleabilidad_1er_anio",
@@ -659,22 +990,55 @@
           "fecha_consulta": "2026-11-04"
         },
         {
-          "tipo": "ingreso_promedio_4to_anio",
+          "tipo": "continuidad_estudios",
           "nivel": "programa",
-          "valor": null,
-          "unidad": "pesos",
-          "periodo": "cohortes tituladas 2018-2020; ingresos 2022-2024",
+          "valor": 5.82,
+          "unidad": "porcentaje",
+          "periodo": "titulados 2021 a 2023, matriculados al año siguiente de titularse",
           "fuente": "Mi Futuro",
           "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "La fuente oficial publica solo el tramo 'De $800 mil a $900 mil'. No entrega un monto exacto."
+          "fecha_consulta": "2026-11-05"
+        },
+        {
+          "tipo": "duracion_formal_semestres",
+          "nivel": "variante",
+          "valor": 5,
+          "unidad": "semestres",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
         }
-      ]
+      ],
+      "ingreso_tramo": {
+        "tramo": "De $800 mil a $900 mil",
+        "motivo_sin_dato": null,
+        "periodo": "titulados 2018 a 2020; años de ingreso 2022 a 2024; pesos de septiembre de 2025",
+        "fuente": "Mi Futuro",
+        "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
+        "fecha_consulta": "2026-11-05"
+      },
+      "admision_centralizada": false,
+      "area": "Salud"
     },
     {
       "codigo_sies": "I915S4C10J1V2",
       "carrera": "Técnico de Nivel Superior en Trabajo Social",
-      "institucion": { "nombre": "CFT de la Región del Biobío", "tipo": "centro_formacion_tecnica" },
+      "institucion": {
+        "nombre": "CFT de la Región del Biobío",
+        "tipo": "centro_formacion_tecnica",
+        "acreditacion": {
+          "estado": "bajo_tutela",
+          "anios": null,
+          "desde": null,
+          "hasta": null,
+          "situacion_al": "2026-11-05",
+          "periodo": "matrícula 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-05"
+        }
+      },
       "sede": "San Pedro",
       "comuna": "San Pedro de la Paz",
       "region": "Biobío",
@@ -692,6 +1056,17 @@
           "fecha_consulta": "2026-11-04"
         },
         {
+          "tipo": "matricula_inscripcion",
+          "nivel": "variante",
+          "valor": null,
+          "unidad": "pesos",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04",
+          "motivo_sin_dato": "Mineduc informa 0 o no informa este monto"
+        },
+        {
           "tipo": "matricula",
           "nivel": "variante",
           "valor": 28,
@@ -700,17 +1075,6 @@
           "fuente": "Datos Abiertos Mineduc",
           "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
           "fecha_consulta": "2026-11-04"
-        },
-        {
-          "tipo": "vacantes",
-          "nivel": "variante",
-          "valor": null,
-          "unidad": "cupos",
-          "periodo": "admisión 2027, vacantes regulares",
-          "fuente": "DEMRE",
-          "url": "https://demre.cl/publicaciones/pdf/2027-26-09-24-oferta-definitiva-carreras-p2027.pdf",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "Todavía no verificamos las vacantes de esta carrera en la oferta oficial para la Admisión 2027."
         },
         {
           "tipo": "empleabilidad_1er_anio",
@@ -746,22 +1110,37 @@
           "motivo_sin_dato": "La fuente oficial no publica este dato para esta carrera e institución."
         },
         {
-          "tipo": "ingreso_promedio_4to_anio",
-          "nivel": "programa",
-          "valor": null,
-          "unidad": "pesos",
-          "periodo": "cohortes tituladas 2018-2020; ingresos 2022-2024",
-          "fuente": "Mi Futuro",
-          "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "La fuente oficial no publica este dato para esta carrera e institución."
+          "tipo": "duracion_formal_semestres",
+          "nivel": "variante",
+          "valor": 5,
+          "unidad": "semestres",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
         }
-      ]
+      ],
+      "admision_centralizada": false,
+      "area": "Ciencias Sociales"
     },
     {
       "codigo_sies": "I456S2C14J1V1",
       "carrera": "Geominería",
-      "institucion": { "nombre": "CFT Ceduc UCN", "tipo": "centro_formacion_tecnica" },
+      "institucion": {
+        "nombre": "CFT Ceduc UCN",
+        "tipo": "centro_formacion_tecnica",
+        "acreditacion": {
+          "estado": "acreditada",
+          "anios": 5,
+          "desde": "2021-11-04",
+          "hasta": "2026-11-04",
+          "situacion_al": "2026-11-05",
+          "periodo": "matrícula 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-05"
+        }
+      },
       "sede": "Antofagasta",
       "comuna": "Antofagasta",
       "region": "Antofagasta",
@@ -779,6 +1158,16 @@
           "fecha_consulta": "2026-11-04"
         },
         {
+          "tipo": "matricula_inscripcion",
+          "nivel": "variante",
+          "valor": 179876,
+          "unidad": "pesos",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
+        },
+        {
           "tipo": "matricula",
           "nivel": "variante",
           "valor": 51,
@@ -787,17 +1176,6 @@
           "fuente": "Datos Abiertos Mineduc",
           "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
           "fecha_consulta": "2026-11-04"
-        },
-        {
-          "tipo": "vacantes",
-          "nivel": "variante",
-          "valor": null,
-          "unidad": "cupos",
-          "periodo": "admisión 2027, vacantes regulares",
-          "fuente": "DEMRE",
-          "url": "https://demre.cl/publicaciones/pdf/2027-26-09-24-oferta-definitiva-carreras-p2027.pdf",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "Todavía no verificamos las vacantes de esta carrera en la oferta oficial para la Admisión 2027."
         },
         {
           "tipo": "empleabilidad_1er_anio",
@@ -831,17 +1209,36 @@
           "motivo_sin_dato": "La fuente oficial marca la duración real como 'sin información' para esta carrera e institución."
         },
         {
-          "tipo": "ingreso_promedio_4to_anio",
+          "tipo": "continuidad_estudios",
           "nivel": "programa",
-          "valor": null,
-          "unidad": "pesos",
-          "periodo": "cohortes tituladas 2018-2020; ingresos 2022-2024",
+          "valor": 28.57,
+          "unidad": "porcentaje",
+          "periodo": "titulados 2021 a 2023, matriculados al año siguiente de titularse",
           "fuente": "Mi Futuro",
           "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
-          "fecha_consulta": "2026-11-04",
-          "motivo_sin_dato": "La fuente oficial publica solo el tramo 'De $1 millón 100 mil a $1 millón 200 mil'. No entrega un monto exacto."
+          "fecha_consulta": "2026-11-05"
+        },
+        {
+          "tipo": "duracion_formal_semestres",
+          "nivel": "variante",
+          "valor": 5,
+          "unidad": "semestres",
+          "periodo": "año 2026",
+          "fuente": "Datos Abiertos Mineduc",
+          "url": "https://datosabiertos.mineduc.cl/wp-content/uploads/2026/09/Matricula-Ed-Superior-2026.rar",
+          "fecha_consulta": "2026-11-04"
         }
-      ]
+      ],
+      "ingreso_tramo": {
+        "tramo": "De $1 millón 100 mil a $1 millón 200 mil",
+        "motivo_sin_dato": null,
+        "periodo": "titulados 2018 a 2020; años de ingreso 2022 a 2024; pesos de septiembre de 2025",
+        "fuente": "Mi Futuro",
+        "url": "https://mifuturo.cl/wp-content/uploads/2025/12/Buscador_Empleabilidad_ingresos_2025_2026_SIES.xlsx",
+        "fecha_consulta": "2026-11-05"
+      },
+      "admision_centralizada": false,
+      "area": "Ciencias Básicas"
     }
   ]
 }

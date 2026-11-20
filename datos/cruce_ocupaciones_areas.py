@@ -241,7 +241,7 @@ def area_de_carrera(nombre):
     if n.startswith("tecnico en administracion") or n.startswith("tecnico en contabilidad") \
             or n.startswith("tecnico en comercio exterior"):
         return "Administración y Comercio", "técnico en administración o comercio"
-    if n.startswith("tecnico") and any(k in n for k in CLAVES_ARTE):
+    if n.startswith("tecnico") and RE_CLAVES_ARTE.search(n):
         return "Arte y Arquitectura", "técnico en arte o diseño por palabra clave"
     if n.startswith("diseno"):
         return "Arte y Arquitectura", "diseño por nombre"
@@ -255,13 +255,16 @@ CLAVES_ARTE = (
     "audiovisual", "grafica", "eventos", "videojuegos", "musica", "teatro",
     "animacion", "paisajismo", "arquitectura", "artes",
 )
+# Palabra completa: como subcadena, "artes" calzaría con "partes".
+RE_CLAVES_ARTE = re.compile(r"\b(?:" + "|".join(CLAVES_ARTE) + r")\b")
 
 
 # Grupo ocupacional SOC (dos primeros dígitos) -> área. Excepciones por código.
+# El grupo 19 no está: lo resuelve una rama propia en area_de_ocupacion.
 GRUPO_SOC = {
     "11": "Administración y Comercio", "13": "Administración y Comercio",
     "15": "Tecnología", "17": "Tecnología",
-    "19": "Ciencias Básicas", "21": "Ciencias Sociales", "23": "Derecho",
+    "21": "Ciencias Sociales", "23": "Derecho",
     "25": "Educación", "27": "Arte y Arquitectura", "29": "Salud", "31": "Salud",
     "33": "Sin área definida", "35": "Administración y Comercio",
     "37": "Sin área definida", "39": "Sin área definida",
@@ -298,6 +301,9 @@ EXCEPCIONES_SOC = {
     "27-3": "Ciencias Sociales",
     # Sin área definida: deporte, cuidado de servicios, lavandería y transporte de servicio.
     "27-2": "Sin área definida",
+    # Bailarines, coreógrafos y músicos: las carreras de música y danza son Arte (2026-11-14).
+    "27-203": "Arte y Arquitectura",
+    "27-204": "Arte y Arquitectura",
     "27-2011.00": "Arte y Arquitectura",
     "39-": "Sin área definida",
     # Tecnología: técnicos de salud y seguridad ocupacional.
@@ -308,8 +314,10 @@ EXCEPCIONES_SOC = {
     "25-4": "Humanidades",
     # Administración y Comercio: gastronomía (cocineros, panaderos ya en Agro arriba).
     "39-6": "Administración y Comercio",
-    # Educación: cuidado infantil.
+    # Educación: cuidado infantil. La niñera (39-9011.01) es el mismo oficio que el
+    # cuidador de niños (39-9011.00); la revisión de 2026-11-15 la alineó.
     "39-9011.00": "Educación",
+    "39-9011.01": "Educación",
     # Revisión de Administración y Comercio y Salud (2026-11-14): gerentes que
     # dirigen otro tipo de servicio, no vender ni administrar negocios.
     "11-9021.00": "Tecnología",
@@ -360,6 +368,9 @@ def main():
             sin_area.append(nombre)
             continue
         carreras.append((nombre, area, programas[nombre], regla))
+    # Detenerse es a propósito (decisión del líder, 2026-11-16): una genérica
+    # nueva sin regla (p. ej. «Otros… de X» con X que no es un área) se revisa
+    # a mano antes de asignarle un área, en vez de adivinarla.
     if sin_area:
         raise SystemExit(f"Carreras sin área asignada: {sin_area}")
 

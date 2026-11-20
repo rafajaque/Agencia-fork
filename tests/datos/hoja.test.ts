@@ -57,5 +57,29 @@ test('el texto de la hoja pone la unidad a las cifras que la necesitan', () => {
   const texto = textoDeLaHoja({ opciones: carreras.slice(0, 1), respaldo: null, anotaciones: { influencia: '', pregunta: '' }, fecha: '2026-11-11' });
   assert.match(texto, /Duración real: [\d.,]+ semestres/);
   assert.match(texto, /Vacantes: [\d.,]+ cupos/);
-  assert.match(texto, /Arancel anual: \$/);
+  assert.match(texto, /Costo del arancel anual: \$/);
+});
+
+test('la hoja trae el tramo de ingreso en palabras y los datos nuevos, cada uno con su fuente', () => {
+  const texto = textoDeLaHoja({ opciones: carreras.slice(0, 1), respaldo: null, anotaciones: { influencia: '', pregunta: '' }, fecha: '2026-11-11' });
+  assert.match(texto, /Ingreso al 4\.º año: De \$/);
+  assert.match(texto, /Retención de primer año: [\d.,]+ %/);
+  assert.match(texto, /Continuidad de estudios: [\d.,]+ %/);
+  assert.match(texto, /Duración formal: [\d.,]+ semestres/);
+  assert.match(texto, /Costo de matrícula: \$/);
+  assert.match(texto, /Matrícula total: [\d.,]+ estudiantes/);
+});
+
+test('un dato faltante dice por qué en la hoja, no solo «sin datos»', () => {
+  // IP Duoc UC no entra por el sistema de admisión centralizado.
+  const duoc = carreras.find((c) => c.admision_centralizada === false)!;
+  const texto = textoDeLaHoja({ opciones: [duoc], respaldo: null, anotaciones: { influencia: '', pregunta: '' }, fecha: '2026-11-11' });
+  assert.match(texto, /Vacantes: Sin datos suficientes \(Esta carrera no entra por el sistema de admisión centralizado/);
+});
+
+test('el texto de la hoja agrupa los datos con los mismos títulos que el comparador, en orden', () => {
+  const texto = textoDeLaHoja({ opciones: carreras.slice(0, 1), respaldo: null, anotaciones: { influencia: '', pregunta: '' }, fecha: '2026-11-11' });
+  const posiciones = ['Cuánto cuesta', 'Cómo entrar', 'Cómo es estudiarla', 'Después de titularte'].map((titulo) => texto.indexOf(`  ${titulo}\n`));
+  assert.ok(posiciones.every((p) => p >= 0), 'faltan títulos de grupo');
+  assert.deepEqual([...posiciones].sort((a, b) => a - b), posiciones);
 });

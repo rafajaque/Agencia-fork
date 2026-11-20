@@ -63,7 +63,9 @@ async function cargarCarreras(variantes: Fila[], conRequisitos: boolean): Promis
   const idsVariantes = variantes.map((v) => String(v.id));
   const idsGenericos = [...new Set(variantes.map((v) => String(v.programa_generico_id)))];
 
-  const [aranceles, cupos, indicadores, fuentesFilas] = await Promise.all([
+  const idsInstituciones = [...new Set(variantes.map((v) => String(((v.programa as Fila).institucion as Fila).id)))];
+
+  const [aranceles, cupos, indicadores, indicadoresVariante, acreditaciones, tramos, fuentesFilas] = await Promise.all([
     consultar(
       'arancel_variante',
       new URLSearchParams({
@@ -83,6 +85,28 @@ async function cargarCarreras(variantes: Fila[], conRequisitos: boolean): Promis
       'indicador',
       new URLSearchParams({
         select: 'programa_generico_id,tipo,valor,unidad,periodo,fuente_id,url,fecha_consulta,motivo_sin_dato',
+        programa_generico_id: listaPostgrest(idsGenericos),
+      }),
+    ),
+    // Indicadores de variante (puntaje del último seleccionado): filas de `indicador` con variante_id.
+    consultar(
+      'indicador',
+      new URLSearchParams({
+        select: 'variante_id,tipo,valor,unidad,periodo,fuente_id,url,fecha_consulta,motivo_sin_dato',
+        variante_id: listaPostgrest(idsVariantes),
+      }),
+    ),
+    consultar(
+      'acreditacion_institucion',
+      new URLSearchParams({
+        select: 'institucion_id,estado,anios,desde,hasta,situacion_al,periodo,fuente_id,url,fecha_consulta',
+        institucion_id: listaPostgrest(idsInstituciones),
+      }),
+    ),
+    consultar(
+      'tramo_ingreso_sies',
+      new URLSearchParams({
+        select: 'programa_generico_id,tramo_publicado,periodo,fuente_id,url,fecha_consulta,motivo_sin_dato',
         programa_generico_id: listaPostgrest(idsGenericos),
       }),
     ),
@@ -113,7 +137,9 @@ async function cargarCarreras(variantes: Fila[], conRequisitos: boolean): Promis
       id: String(v.id),
       programa_id: String((v.programa as Fila).id),
       programa_generico_id: String(v.programa_generico_id),
+      generica_normalizada: ((v.programa_generico as Fila | null)?.nombre_normalizado as string | undefined) ?? null,
       codigo_sies: String(v.codigo_sies),
+      codigo_demre: (v.codigo_demre as string | null) ?? null,
       sede: (v.sede as string | null) ?? null,
       comuna: (v.comuna as string | null) ?? null,
       region: (v.region as string | null) ?? null,
@@ -124,7 +150,10 @@ async function cargarCarreras(variantes: Fila[], conRequisitos: boolean): Promis
     aranceles: aranceles.filas as unknown as DatosBase['aranceles'],
     vacantes: cupos.filas as unknown as DatosBase['vacantes'],
     indicadores: indicadores.filas as unknown as DatosBase['indicadores'],
+    tramos_ingreso: tramos.filas as unknown as DatosBase['tramos_ingreso'],
     requisitos: requisitos.filas as unknown as DatosBase['requisitos'],
+    indicadores_variante: indicadoresVariante.filas as unknown as DatosBase['indicadores_variante'],
+    acreditaciones: acreditaciones.filas as unknown as DatosBase['acreditaciones'],
     fuentes: fuentesFilas as unknown as DatosBase['fuentes'],
   };
 
