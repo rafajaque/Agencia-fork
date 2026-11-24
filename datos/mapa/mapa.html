@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carreras por región · prototipo 3D</title>
+<link rel="stylesheet" href="../../diseno/tokens.css">
+<style>
+  /* Mismas fuentes que el portal (app/fuentes.css), con rutas relativas porque este prototipo se abre como archivo. */
+  @font-face { font-family: "Atkinson Hyperlegible Next"; src: url("../../public/fuentes/atkinson-next-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+  @font-face { font-family: "Atkinson Hyperlegible Next"; src: url("../../public/fuentes/atkinson-next-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+  @font-face { font-family: "Atkinson Hyperlegible Mono"; src: url("../../public/fuentes/atkinson-mono-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+
+  body {
+    margin: 0; background: var(--color-fondo); color: var(--color-texto);
+    font-family: var(--fuente-texto); font-size: var(--texto-0); line-height: var(--interlineado);
+  }
+  :focus-visible { outline: var(--anillo-foco) solid var(--color-foco); outline-offset: var(--espacio-1); }
+  h1, h2 { font-weight: 700; line-height: var(--interlineado-titulos); }
+  h1 { font-size: var(--texto-3); margin: 0 0 var(--espacio-2); text-wrap: balance; overflow-wrap: anywhere; }
+  h2 { font-size: var(--texto-2); margin: var(--espacio-8) 0 0; }
+
+  /* Cabecera azul marino de Andén urbano (ADR 0029), igual que .encabezado del portal. */
+  .cabecera {
+    padding: var(--espacio-6) var(--espacio-4);
+    background: var(--color-marca-fondo); color: var(--color-marca-texto);
+    border-block-end: var(--borde-linea) solid var(--color-marca-linea);
+    --color-foco: var(--color-marca-texto);
+  }
+  .cabecera img { display: block; inline-size: var(--ancho-logo); max-inline-size: 100%; block-size: auto; max-block-size: var(--espacio-16); }
+  main { max-inline-size: var(--ancho-sitio); margin-inline: auto; padding: var(--espacio-8) var(--espacio-4); }
+  @media (min-width: 48rem) { .cabecera, main { padding-inline: var(--espacio-8); } }
+
+  .intro { max-inline-size: var(--medida); color: var(--color-texto-suave); margin: 0 0 var(--espacio-6); }
+  .panel { display: grid; gap: var(--espacio-6); }
+  @media (min-width: 60rem) { .panel { grid-template-columns: minmax(var(--ancho-logo), calc(var(--ancho-logo) * 1.25)) minmax(0, 1fr); align-items: start; } }
+  label { font-weight: 700; display: block; margin-bottom: var(--espacio-2); }
+  /* Mismo control que los campos del portal (app/globals.css). */
+  select {
+    box-sizing: border-box; font: inherit; inline-size: 100%; min-block-size: var(--objetivo-tactil);
+    padding: var(--espacio-3) var(--espacio-4); border: var(--borde) solid var(--color-borde); border-radius: var(--radio);
+    background: var(--color-superficie); color: var(--color-texto);
+  }
+  select:disabled { cursor: not-allowed; color: var(--color-texto-suave); }
+  .resumen { margin: var(--espacio-4) 0; padding: var(--espacio-4); background: var(--color-superficie-suave); border: var(--borde) solid var(--color-borde); border-radius: var(--radio); }
+  .resumen dt { font-size: var(--texto-m1); color: var(--color-texto-suave); }
+  .resumen dd { margin: 0 0 var(--espacio-3); font-weight: 700; }
+  /* La fuente de cifras va solo donde hay números. */
+  #res-entradas { font-family: var(--fuente-cifras); font-weight: 400; }
+  .resumen dd:last-child { margin-bottom: 0; }
+  .leyenda { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--espacio-2); font-size: var(--texto-m1); }
+  .leyenda li { display: flex; align-items: flex-start; gap: var(--espacio-2); }
+  .escena {
+    position: relative; inline-size: 100%; block-size: min(72vh, calc(var(--alto-arte) * 3)); min-block-size: calc(var(--alto-arte) * 2);
+    border: var(--borde) solid var(--color-borde); border-radius: var(--radio); overflow: hidden;
+    background: var(--color-superficie-suave); touch-action: none; cursor: grab;
+  }
+  .escena canvas { display: block; inline-size: 100%; block-size: 100%; }
+  .filtros {
+    position: absolute; inset-block-start: var(--espacio-3); inset-inline-start: var(--espacio-3); z-index: 2;
+    display: grid; gap: var(--espacio-2); inline-size: min(var(--ancho-logo), calc(100% - 2 * var(--espacio-3)));
+    background: var(--color-superficie); border: var(--borde) solid var(--color-borde); border-radius: var(--radio);
+    padding: var(--espacio-3); box-sizing: border-box;
+  }
+  .filtros label { margin-bottom: 0; font-size: var(--texto-m1); }
+  .filtros select { padding: var(--espacio-2) var(--espacio-3); font-size: var(--texto-m1); }
+  .etiqueta {
+    position: absolute; left: 0; top: 0; pointer-events: none; white-space: nowrap;
+    font-family: var(--fuente-cifras); font-size: var(--texto-m1); color: var(--color-texto);
+    background: var(--color-superficie); border: var(--borde) solid var(--color-borde); border-radius: var(--radio);
+    padding: 0 var(--espacio-1); transform: translate(-50%, -100%);
+  }
+  .etiqueta.sin { font-family: var(--fuente-texto); color: var(--color-texto-suave); }
+  .tip {
+    position: absolute; display: none; pointer-events: none; max-inline-size: var(--ancho-logo); z-index: 3;
+    background: var(--color-superficie); border: var(--borde) solid var(--color-linea); border-radius: var(--radio);
+    padding: var(--espacio-2) var(--espacio-3); font-size: var(--texto-m1);
+  }
+  .islas { position: absolute; inset-inline-end: var(--espacio-3); inset-block-end: var(--espacio-3); z-index: 2; display: flex; gap: var(--espacio-2); pointer-events: none; max-inline-size: calc(100% - 2 * var(--espacio-3)); }
+  /* A 360 px las dos islas no caben a su ancho completo: se encogen en vez de salirse del recuadro. */
+  .isla {
+    background: var(--color-superficie); border: var(--borde) solid var(--color-borde); border-radius: var(--radio);
+    padding: var(--espacio-1) var(--espacio-2); font-size: var(--texto-m1); flex: 0 1 calc(var(--espacio-12) * 3); min-inline-size: 0; box-sizing: border-box;
+  }
+  .isla .titulo { font-weight: 700; }
+  .isla .cifra { font-family: var(--fuente-cifras); }
+  .isla svg { display: block; inline-size: 100%; block-size: auto; }
+  .controles { display: flex; flex-wrap: wrap; gap: var(--espacio-2); margin-top: var(--espacio-3); }
+  /* Botón secundario del portal (.boton.secundario): la página no tiene acción principal coral. */
+  button {
+    font: inherit; font-weight: 700; min-block-size: var(--objetivo-tactil); min-inline-size: var(--objetivo-tactil);
+    padding: var(--espacio-3) var(--espacio-6); border: var(--borde) solid var(--color-linea); border-radius: var(--radio);
+    background: var(--color-superficie); color: var(--color-linea-texto); cursor: pointer;
+  }
+  .aviso { color: var(--color-texto-suave); margin: 0; padding: var(--espacio-4); }
+  .tabla-contenedor { overflow-x: auto; }
+  table { border-collapse: collapse; inline-size: 100%; font-size: var(--texto-m1); margin-top: var(--espacio-4); }
+  caption { text-align: left; color: var(--color-texto-suave); }
+  th, td { text-align: left; padding: var(--espacio-2); border-bottom: var(--borde) solid var(--color-borde); vertical-align: top; }
+  td.cifra, th.cifra { text-align: right; }
+  td.cifra { font-family: var(--fuente-cifras); }
+  /* La fila elegida se marca con fondo, línea y negrita, no solo con color. */
+  tr.marcada td { background: var(--color-superficie-suave); font-weight: 700; }
+  tr.marcada td:first-child { box-shadow: inset var(--borde-linea) 0 0 var(--color-linea); }
+  tr[data-codigo] { cursor: pointer; }
+  .notas { font-size: var(--texto-m1); color: var(--color-texto-suave); max-inline-size: var(--medida); margin-top: var(--espacio-6); }
+  .notas a { color: var(--color-linea-texto); text-decoration: underline; text-underline-offset: var(--espacio-1); }
+</style>
+</head>
+<body>
+
+<header class="cabecera">
+  <img src="../../public/marca/logo-horizontal-oscuro.svg" alt="Agencia de Enlace &amp; Seguimiento Estudiantil" width="1547" height="314">
+</header>
+
+<main>
+<h1>Carreras por región</h1>
+<p class="intro">Elige una carrera y mira dónde empiezan a estudiar personas nuevas cada año. Solo muestra datos: no ordena ni recomienda carreras ni lugares.</p>
+
+<div class="panel">
+  <div>
+    <label for="carrera">Carrera</label>
+    <select id="carrera"></select>
+
+    <dl class="resumen" aria-live="polite">
+      <dt>Carrera</dt>
+      <dd id="res-nombre">—</dd>
+      <dt>Estudiantes nuevos en 2026 (cálculo nuestro)</dt>
+      <dd id="res-entradas">—</dd>
+      <dt hidden>Valor típico</dt>
+      <dd id="res-med-n" hidden>—</dd>
+      <dt hidden>Valor típico</dt>
+      <dd id="res-med-e" hidden>—</dd>
+      <dt>Mostrando</dt>
+      <dd id="res-ambito">Chile, por región</dd>
+    </dl>
+
+    <ul class="leyenda" aria-label="Leyenda del mapa">
+      <li><span aria-hidden="true">▲</span><span>Verde y flecha ▲: esta zona tiene más empleo que la mayoría de las regiones.</span></li>
+      <li><span aria-hidden="true">▼</span><span>Rojo y flecha ▼: esta zona tiene menos empleo que la mayoría de las regiones.</span></li>
+      <li><span aria-hidden="true">■</span><span>Gris: menos de 10 estudiantes nuevos, o sin datos. No mostramos el número para no identificar a nadie.</span></li>
+      <li><span aria-hidden="true">·</span><span>Altura: cuántos estudiantes nuevos hay. Arrastra para girar. Usa la rueda o los botones para acercar.</span></li>
+    </ul>
+  </div>
+
+  <div>
+    <div class="escena" id="escena" tabindex="0" role="application" aria-label="Mapa de Chile. Usa los filtros de región y comuna, o la tabla de abajo, que tiene los mismos números. Con teclado: las flechas giran el mapa y + y − lo acercan.">
+      <div class="filtros">
+        <div>
+          <label for="filtro-region">Región</label>
+          <select id="filtro-region"></select>
+        </div>
+        <div>
+          <label for="filtro-comuna">Comuna</label>
+          <select id="filtro-comuna" disabled></select>
+        </div>
+      </div>
+      <div class="tip" id="tip" role="status"></div>
+      <div class="islas" id="islas" aria-label="Islas: Juan Fernández e Isla de Pascua"></div>
+      <p class="aviso" id="sin-webgl" hidden></p>
+    </div>
+    <div class="controles">
+      <button type="button" id="btn-girar" aria-pressed="false">Girar el mapa</button>
+      <button type="button" id="btn-reset">Volver a la vista inicial</button>
+    </div>
+  </div>
+</div>
+
+<h2 id="tabla-titulo">Detalle por región</h2>
+<div class="tabla-contenedor">
+  <table>
+    <caption id="tabla-leyenda">Mismos datos que el mapa, en texto.</caption>
+    <thead id="tabla-cabeza"></thead>
+    <tbody id="detalle"></tbody>
+  </table>
+</div>
+
+<div class="notas">
+  <p><strong>Qué significan los números.</strong></p>
+  <p><strong>Estudiantes nuevos:</strong> personas que empezaron primer año en 2026. Fuente: SIES (Servicio de Información de Educación Superior), matrícula de primer año. Los totales por región y comuna son cálculo nuestro a partir de esa base. Si una zona tiene menos de 10 estudiantes, no mostramos el número.</p>
+  <p><strong>Empleo al primer año:</strong> de cada 100 personas que se titularon de la carrera, cuántas tenían empleo formal al primer año después de titularse. Fuente: <a id="fuente-emp" href="#">Mi Futuro (SIES)</a>. El número por región y comuna es cálculo nuestro: el promedio de las instituciones, pesado por cuántos estudiantes nuevos tiene cada una. Si falta un dato, la zona queda sin número.</p>
+  <p><strong>Más o menos que la mayoría:</strong> una zona tiene «más» si supera a más de la mitad de las demás regiones que tienen esa carrera. Es un cálculo nuestro, no un juicio sobre la región.</p>
+  <p><strong>Mapa:</strong> contornos de regiones y comunas de la Biblioteca del Congreso Nacional (BCN), simplificados por nosotros. Las islas Juan Fernández y de Pascua aparecen en el recuadro de abajo a la derecha.</p>
+  <p>Prototipo de trabajo, no publicado.</p>
+</div>
+</main>
+
+<script src="regiones.js"></script>
+<script src="comunas.js"></script>
+<script src="islas.js"></script>
+<script src="carreras_regiones.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  var DATOS = window.MAPA_CARRERAS;
+  var REGIONES = window.REGIONES_CHILE.features;
+  var COMUNAS = window.COMUNAS_CHILE.features;
+  var escena = document.getElementById("escena");
+  var tip = document.getElementById("tip");
+  var sel = document.getElementById("carrera");
+  var selReg = document.getElementById("filtro-region");
+  var selCom = document.getElementById("filtro-comuna");
+  var detalle = document.getElementById("detalle");
+  var cabeza = document.getElementById("tabla-cabeza");
+
+  var ETIQUETAS_CRUCE = {
+    entradas_altas_empleabilidad_alta: "Más estudiantes nuevos y más empleo que la mayoría",
+    entradas_altas_empleabilidad_baja: "Más estudiantes nuevos y menos empleo que la mayoría",
+    entradas_bajas_empleabilidad_alta: "Menos estudiantes nuevos y más empleo que la mayoría",
+    entradas_bajas_empleabilidad_baja: "Menos estudiantes nuevos y menos empleo que la mayoría",
+    sin_cifra: "No hay cifra suficiente para comparar"
+  };
+
+  // Los colores se leen de diseno/tokens.css en vez de copiarse, para que el mapa siga el modo oscuro.
+  // El resalte usa la línea azul y no el coral: el coral queda solo para la acción principal (AGENTS.md 2.5).
+  var COL = {};
+  function token(nombre) { return getComputedStyle(document.documentElement).getPropertyValue(nombre).trim(); }
+  function leerColores() {
+    function hex(nombre) { return parseInt(token(nombre).replace("#", ""), 16); }
+    COL = { sobre: hex("--color-exito"), bajo: hex("--color-alerta"), gris: hex("--color-borde"),
+      sinDato: hex("--color-texto-suave"), resalte: hex("--color-linea"), contorno: hex("--color-linea") };
+  }
+  leerColores();
+  var MARGEN_TIP = parseFloat(token("--espacio-3"));
+  var ALTURA_MAX = 3.0;
+
+  function nombreCorto(n) { return n.replace(/^Región (de )?/, ""); }
+  function fmtN(n) { return n.toLocaleString("es-CL"); }
+  function fmtP(p) { return p.toLocaleString("es-CL", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + " %"; }
+
+  var regionSel = null, comunaSel = null, carreraActual = null;
+
+  function textoEtiqueta(f, medE) {
+    if (f.entradas === null) return "menos de 10";
+    if (f.empleabilidad_pct === null) return fmtN(f.entradas) + " · sin dato";
+    var flecha = (medE !== null && f.empleabilidad_pct < medE) ? "▼" : "▲";
+    return fmtN(f.entradas) + " · " + fmtP(f.empleabilidad_pct) + " " + flecha;
+  }
+  function colorDe(f, medE) {
+    if (f.entradas === null) return COL.gris;
+    if (f.empleabilidad_pct === null) return COL.sinDato;
+    return (medE !== null && f.empleabilidad_pct < medE) ? COL.bajo : COL.sobre;
+  }
+
+  function llenar(select, opciones, vacio) {
+    select.innerHTML = "";
+    if (vacio) { var v = document.createElement("option"); v.value = ""; v.textContent = vacio; select.appendChild(v); }
+    opciones.forEach(function (o) {
+      var op = document.createElement("option"); op.value = o.valor; op.textContent = o.texto; select.appendChild(op);
+    });
+  }
+
+  // Proyección local: x hacia el este, y hacia el norte (luego se gira al plano XZ).
+  var LAT_C = -36.5, FACTOR = Math.cos(35 * Math.PI / 180);
+  function aMundo(lon, lat) { return new THREE.Vector2((lon + 71) * FACTOR, lat - LAT_C); }
+
+  var hayWebGL = (function () { try { var c = document.createElement("canvas"); return !!(c.getContext("webgl") || c.getContext("experimental-webgl")); } catch (e) { return false; } })();
+  if (!window.THREE || !hayWebGL) {
+    var aviso = document.getElementById("sin-webgl");
+    aviso.hidden = false;
+    aviso.textContent = (!window.THREE ? "No se pudo cargar el mapa 3D (revisa tu conexión a internet). " : "Tu navegador tiene apagado el mapa 3D (WebGL). ") + "Usa la tabla de abajo, que tiene los mismos números.";
+    return modoTabla();
+  }
+
+  var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  escena.insertBefore(renderer.domElement, escena.firstChild);
+  var scene = new THREE.Scene();
+  var camara = new THREE.PerspectiveCamera(30, 1, 0.1, 200);
+  // Distancias de cámara: menor distancia = mapa más grande. Chile ocupa ~1.4 veces el alto del recuadro.
+  var DIST_INICIAL = 62, DIST_REGION = 15, DIST_MIN = 6, DIST_MAX = 120;
+  // Chile se muestra acostado (vista horizontal); las regiones, de pie.
+  var ANGULO_CHILE = Math.PI / 2;
+  var distancia = DIST_INICIAL, anguloY = ANGULO_CHILE, anguloX = 0.9, panX = 0, panY = 0, ambitoPrev = null;
+  var pivote = new THREE.Group(); scene.add(pivote);
+  // Luz blanca neutra: no es un color de interfaz, solo ilumina la escena sin teñir los colores de los tokens.
+  scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+  var luz = new THREE.DirectionalLight(0xffffff, 0.6); luz.position.set(5, 20, 10); scene.add(luz);
+
+  var grupoRegiones = new THREE.Group(); pivote.add(grupoRegiones);
+  var grupoComunas = new THREE.Group(); pivote.add(grupoComunas);
+  grupoComunas.visible = false;
+  var etiquetasEl = document.createElement("div");
+  etiquetasEl.style.position = "absolute"; etiquetasEl.style.inset = "0"; etiquetasEl.style.pointerEvents = "none";
+  escena.appendChild(etiquetasEl);
+
+  // Cada zona es un grupo con una malla extruida por anillo y userData con su identidad.
+  function construir(feature, padre, tipo) {
+    var g = new THREE.Group();
+    g.userData.tipo = tipo;
+    g.userData.codigo = feature.properties.codigo;
+    g.userData.nombre = feature.properties.nombre;
+    g.userData.codigo_region = feature.properties.codigo_region || feature.properties.codigo;
+    var mayor = null, mayorN = -1;
+    feature.geometry.coordinates.forEach(function (poli) {
+      poli.forEach(function (anillo) {
+        if (anillo.length < 4) return;
+        if (anillo.length > mayorN) { mayorN = anillo.length; mayor = anillo; }
+        var forma = new THREE.Shape(anillo.map(function (p) { return aMundo(p[0], p[1]); }));
+        var geo = new THREE.ExtrudeGeometry(forma, { depth: 0.05, bevelEnabled: false });
+        g.add(new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ color: COL.gris })));
+      });
+    });
+    var pts = mayor.map(function (p) { return aMundo(p[0], p[1]); });
+    var x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    pts.forEach(function (p) { x0 = Math.min(x0, p.x); x1 = Math.max(x1, p.x); y0 = Math.min(y0, p.y); y1 = Math.max(y1, p.y); });
+    g.userData.centro = new THREE.Vector2((x0 + x1) / 2, (y0 + y1) / 2);
+    g.rotation.x = -Math.PI / 2; // el espesor pasa a altura; el norte queda hacia el fondo
+    padre.add(g);
+    return g;
+  }
+
+  var mallasRegion = {}, mallasComuna = {};
+  REGIONES.forEach(function (f) { mallasRegion[f.properties.codigo] = construir(f, grupoRegiones, "region"); });
+  COMUNAS.forEach(function (f) { mallasComuna[f.properties.codigo] = construir(f, grupoComunas, "comuna"); });
+
+  // Punto de la etiqueta: sobre el centro de la zona, en coordenadas de pantalla.
+  function ancla(g) {
+    var c = g.userData.centro, h = g.userData.altura || 0.05;
+    return new THREE.Vector3(c.x, h + 0.1, -c.y).applyMatrix4(g.parent.matrixWorld);
+  }
+
+  function fijarAltura(g, h, color) {
+    g.userData.altura = h;
+    g.children.forEach(function (m) {
+      m.scale.set(1, 1, h / 0.05);
+      m.material.color.setHex(color);
+    });
+  }
+
+  var etiquetas = [];
+  function limpiarEtiquetas() { etiquetasEl.innerHTML = ""; etiquetas = []; }
+  function etiquetar(g, texto, clase) {
+    var d = document.createElement("div");
+    d.className = "etiqueta" + (clase ? " " + clase : "");
+    d.textContent = texto;
+    etiquetasEl.appendChild(d);
+    etiquetas.push({ g: g, el: d });
+  }
+
+  // Dibuja la carrera en todas las zonas (regiones y comunas).
+  function dibujar(carrera) {
+    carreraActual = carrera;
+    var datos = DATOS.carreras[carrera];
+    var medE = datos.mediana_empleabilidad_regional_pct;
+    var maxR = 0, maxC = 0;
+    datos.regiones.forEach(function (f) { if (f.entradas !== null && f.entradas > maxR) maxR = f.entradas; });
+    datos.comunas.forEach(function (f) { if (f.entradas !== null && f.entradas > maxC) maxC = f.entradas; });
+
+    var filaR = {}; datos.regiones.forEach(function (f) { filaR[f.codigo_region] = f; });
+    Object.keys(mallasRegion).forEach(function (c) {
+      var f = filaR[c], g = mallasRegion[c];
+      if (!f) { g.userData.fila = null; fijarAltura(g, 0.05, COL.sinDato); return; }
+      var h = f.entradas === null ? 0.05 : 0.1 + ALTURA_MAX * Math.sqrt(f.entradas / maxR);
+      g.userData.fila = f;
+      fijarAltura(g, h, colorDe(f, medE));
+    });
+
+    var filaC = {}; datos.comunas.forEach(function (f) { filaC[f.codigo_comuna] = f; });
+    Object.keys(mallasComuna).forEach(function (c) {
+      var f = filaC[c], g = mallasComuna[c];
+      if (!f) { g.userData.fila = null; fijarAltura(g, 0.05, COL.sinDato); return; }
+      var h = f.entradas === null ? 0.05 : 0.1 + ALTURA_MAX * Math.sqrt(f.entradas / maxC);
+      g.userData.fila = f;
+      fijarAltura(g, h, colorDe(f, medE));
+    });
+    aplicarAmbito();
+    dibujarIslas(carrera);
+  }
+
+  // Recuadro aparte para las islas: mismo color y cifra que las comunas.
+  var ISLAS = window.ISLAS_CHILE ? window.ISLAS_CHILE.features : [];
+  var panelIslas = document.getElementById("islas");
+  function dibujarIslas(carrera) {
+    panelIslas.innerHTML = "";
+    var datos = DATOS.carreras[carrera];
+    var medE = datos.mediana_empleabilidad_regional_pct;
+    var NS = "http://www.w3.org/2000/svg";
+    ISLAS.forEach(function (f) {
+      var fila = datos.comunas.find(function (x) { return x.codigo_comuna === f.properties.codigo; }) || null;
+      var lon0 = Infinity, lon1 = -Infinity, lat0 = Infinity, lat1 = -Infinity;
+      f.geometry.coordinates.forEach(function (poli) { poli.forEach(function (anillo) { anillo.forEach(function (p) {
+        lon0 = Math.min(lon0, p[0]); lon1 = Math.max(lon1, p[0]); lat0 = Math.min(lat0, p[1]); lat1 = Math.max(lat1, p[1]);
+      }); }); });
+      var ancho = 150, alto = 96;
+      var ux = (lon1 - lon0) * FACTOR, uy = (lat1 - lat0);
+      var k = Math.min((ancho - 8) / ux, (alto - 8) / uy);
+      var svgEl = document.createElementNS(NS, "svg");
+      svgEl.setAttribute("viewBox", "0 0 " + ancho + " " + alto);
+      svgEl.setAttribute("aria-hidden", "true");
+      var color = fila ? colorDe(fila, medE) : COL.gris;
+      f.geometry.coordinates.forEach(function (poli) { poli.forEach(function (anillo) {
+        var d = anillo.map(function (p, i) {
+          var x = 4 + (p[0] - lon0) * FACTOR * k, y = 4 + (lat1 - p[1]) * k;
+          return (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1);
+        }).join("") + "Z";
+        var path = document.createElementNS(NS, "path");
+        path.setAttribute("d", d);
+        path.setAttribute("fill", "#" + color.toString(16).padStart(6, "0"));
+        path.setAttribute("stroke", "#" + COL.contorno.toString(16).padStart(6, "0"));
+        path.setAttribute("stroke-width", "1");
+        svgEl.appendChild(path);
+      }); });
+      var caja = document.createElement("div");
+      caja.className = "isla";
+      var t = document.createElement("div"); t.className = "titulo"; t.textContent = f.properties.nombre;
+      var c = document.createElement("div"); c.className = "cifra";
+      c.textContent = fila ? textoEtiqueta(fila, medE) : "sin registros";
+      caja.appendChild(svgEl); caja.appendChild(t); caja.appendChild(c);
+      panelIslas.appendChild(caja);
+    });
+  }
+
+  function comunasDeRegion(codigoRegion) {
+    return COMUNAS.filter(function (c) { return c.properties.codigo_region === codigoRegion; })
+      .sort(function (a, b) { return a.properties.nombre.localeCompare(b.properties.nombre, "es"); });
+  }
+
+  // Vista de Chile por región, o de una región por comuna.
+  function aplicarAmbito() {
+    var datos = DATOS.carreras[carreraActual];
+    var medE = datos.mediana_empleabilidad_regional_pct;
+    limpiarEtiquetas();
+    // Al cambiar de ámbito (Chile ↔ región) se reencuadra la cámara; entre comunas no se mueve.
+    var ambito = regionSel || "";
+    if (ambito !== ambitoPrev) {
+      ambitoPrev = ambito;
+      anguloY = regionSel ? 0 : ANGULO_CHILE;
+      anguloX = 0.9;
+      distancia = regionSel ? DIST_REGION : DIST_INICIAL;
+      panX = 0; panY = 0;
+    }
+    if (!regionSel) {
+      grupoRegiones.visible = true;
+      grupoComunas.visible = false;
+      grupoRegiones.position.set(0, 0, 0);
+      grupoComunas.position.set(0, 0, 0);
+      datos.regiones.forEach(function (f) {
+        etiquetar(mallasRegion[f.codigo_region], textoEtiqueta(f, medE), (f.entradas === null || f.empleabilidad_pct === null) ? "sin" : "");
+      });
+      selCom.disabled = true;
+      llenar(selCom, [], "Elige primero una región");
+      document.getElementById("res-ambito").textContent = "Chile, por región";
+      document.getElementById("tabla-titulo").textContent = "Detalle por región";
+      document.getElementById("tabla-leyenda").textContent = "Mismos datos que el mapa, en texto.";
+      pintarTablaRegiones();
+    } else {
+      grupoRegiones.visible = false;
+      grupoComunas.visible = true;
+      Object.keys(mallasComuna).forEach(function (c) {
+        mallasComuna[c].visible = mallasComuna[c].userData.codigo_region === regionSel;
+      });
+      var centro = mallasRegion[regionSel].userData.centro;
+      grupoComunas.position.set(-centro.x, 0, centro.y);
+      selCom.disabled = false;
+      llenar(selCom, comunasDeRegion(regionSel).map(function (c) { return { valor: c.properties.codigo, texto: c.properties.nombre }; }), "Todas las comunas");
+      selCom.value = comunaSel || "";
+      var nombreReg = mallasRegion[regionSel].userData.nombre;
+      document.getElementById("res-ambito").textContent = nombreCorto(nombreReg) + ", por comuna";
+      document.getElementById("tabla-titulo").textContent = "Detalle por comuna: " + nombreCorto(nombreReg);
+      document.getElementById("tabla-leyenda").textContent = "Solo las comunas de esta región. Los números por comuna son cálculo nuestro.";
+      datos.comunas.filter(function (f) { return f.codigo_region === regionSel; }).forEach(function (f) {
+        var g = mallasComuna[f.codigo_comuna];
+        if (g) etiquetar(g, g.userData.nombre + ": " + textoEtiqueta(f, medE), (f.entradas === null || f.empleabilidad_pct === null) ? "sin" : "");
+      });
+      pintarTablaComunas();
+    }
+    resaltar();
+    actualizarResumen();
+    marcarTabla();
+  }
+
+  function resaltar() {
+    Object.keys(mallasComuna).forEach(function (c) {
+      mallasComuna[c].children.forEach(function (m) { m.material.emissive.setHex(c === comunaSel ? COL.resalte : 0x000000); });
+    });
+  }
+
+  function actualizarResumen() {
+    var datos = DATOS.carreras[carreraActual];
+    var medE = datos.mediana_empleabilidad_regional_pct;
+    document.getElementById("res-nombre").textContent = carreraActual;
+    if (comunaSel) {
+      var f = datos.comunas.find(function (x) { return x.codigo_comuna === comunaSel; });
+      var nom = mallasComuna[comunaSel].userData.nombre;
+      document.getElementById("res-entradas").textContent = !f ? "sin registros" : (f.entradas === null ? "menos de 10" : fmtN(f.entradas));
+      document.getElementById("res-med-n").textContent = nom;
+      document.getElementById("res-med-e").textContent = f && f.empleabilidad_pct !== null ? fmtP(f.empleabilidad_pct) : "sin dato";
+      document.getElementById("res-ambito").textContent = nom + " (comuna)";
+      return;
+    }
+    var total = datos.regiones.reduce(function (s, f) { return s + (f.entradas || 0); }, 0);
+    var totalComuna = datos.comunas.filter(function (f) { return f.codigo_region === regionSel; })
+      .reduce(function (s, f) { return s + (f.entradas || 0); }, 0);
+    document.getElementById("res-entradas").textContent = regionSel ? fmtN(totalComuna) + " (total de zonas con cifra)" : fmtN(total) + " (total de zonas con cifra)";
+    document.getElementById("res-med-n").textContent = datos.mediana_entradas_regionales === null ? "—" : datos.mediana_entradas_regionales.toLocaleString("es-CL");
+    document.getElementById("res-med-e").textContent = medE === null ? "—" : medE.toLocaleString("es-CL", { minimumFractionDigits: 1 }) + " %";
+  }
+
+  function pintarTablaRegiones() {
+    var datos = DATOS.carreras[carreraActual];
+    cabeza.innerHTML = '<tr><th scope="col">Región</th><th scope="col" class="cifra">Estudiantes nuevos 2026</th><th scope="col" class="cifra">Empleo al primer año</th><th scope="col">Comparación con otras regiones</th></tr>';
+    detalle.innerHTML = "";
+    REGIONES.forEach(function (r) {
+      var f = datos.regiones.find(function (x) { return x.codigo_region === r.properties.codigo; });
+      if (!f) return;
+      agregarFila([nombreCorto(r.properties.nombre),
+        f.entradas === null ? "menos de 10" : fmtN(f.entradas),
+        f.empleabilidad_pct === null ? "sin dato" : fmtP(f.empleabilidad_pct),
+        ETIQUETAS_CRUCE[f.cruce] || f.cruce], r.properties.codigo, true);
+    });
+  }
+
+  function pintarTablaComunas() {
+    var datos = DATOS.carreras[carreraActual];
+    cabeza.innerHTML = '<tr><th scope="col">Comuna</th><th scope="col" class="cifra">Estudiantes nuevos 2026</th><th scope="col" class="cifra">Empleo al primer año</th></tr>';
+    detalle.innerHTML = "";
+    comunasDeRegion(regionSel).forEach(function (c) {
+      var f = datos.comunas.find(function (x) { return x.codigo_comuna === c.properties.codigo; });
+      // Sin estudiantes nuevos aquí, el empleo es el de la región (no hay cifra propia de la comuna).
+      var fr = datos.regiones.find(function (x) { return x.codigo_region === regionSel; });
+      var empRegion = fr && fr.empleabilidad_pct !== null ? fmtP(fr.empleabilidad_pct) + " (de toda la región)" : "sin dato";
+      var conCifra = f && f.empleabilidad_pct !== null;
+      agregarFila([c.properties.nombre,
+        !f ? "sin estudiantes nuevos" : (f.entradas === null ? "menos de 10" : fmtN(f.entradas)),
+        conCifra ? fmtP(f.empleabilidad_pct) : empRegion],
+        c.properties.codigo, false);
+    });
+  }
+
+  function agregarFila(celdas, codigo, esRegion) {
+    var tr = document.createElement("tr");
+    tr.dataset.codigo = codigo;
+    tr.tabIndex = 0;
+    celdas.forEach(function (t, i) {
+      var td = document.createElement("td"); td.textContent = t;
+      if (i === 1 || i === 2) td.className = "cifra";
+      tr.appendChild(td);
+    });
+    tr.addEventListener("click", function () { elegirZona(codigo, esRegion); });
+    tr.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); elegirZona(codigo, esRegion); } });
+    detalle.appendChild(tr);
+  }
+
+  function elegirZona(codigo, esRegion) {
+    if (esRegion) { regionSel = codigo; comunaSel = null; }
+    else { comunaSel = codigo; }
+    selReg.value = regionSel || "";
+    aplicarAmbito();
+  }
+
+  function marcarTabla() {
+    var clave = comunaSel || regionSel;
+    Array.prototype.forEach.call(detalle.children, function (tr) {
+      var marcada = tr.dataset.codigo === clave;
+      tr.classList.toggle("marcada", marcada);
+      if (marcada) tr.setAttribute("aria-current", "true"); else tr.removeAttribute("aria-current");
+    });
+  }
+
+  // Ratón: arrastrar, rueda, hover y clic.
+  var arrastrando = false, movido = false, px = 0, py = 0;
+  var rayo = new THREE.Raycaster();
+  var ptr = new THREE.Vector2();
+  function bajoPuntero(e) {
+    var r = renderer.domElement.getBoundingClientRect();
+    ptr.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+    ptr.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+    rayo.setFromCamera(ptr, camara);
+    var mallas = [];
+    var grupo = regionSel ? grupoComunas : grupoRegiones;
+    grupo.children.forEach(function (g) { if (g.visible) g.children.forEach(function (m) { mallas.push(m); }); });
+    var hit = rayo.intersectObjects(mallas, false)[0];
+    return hit ? hit.object.parent : null;
+  }
+  var dom = renderer.domElement;
+  // Arrastrar gira; con Shift o botón derecho (o Alt) desplaza el mapa.
+  var desplazando = false;
+  dom.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+  dom.addEventListener("pointerdown", function (e) {
+    arrastrando = true; movido = false; px = e.clientX; py = e.clientY;
+    desplazando = e.shiftKey || e.altKey || e.button === 2;
+    dom.setPointerCapture(e.pointerId);
+  });
+  dom.addEventListener("pointermove", function (e) {
+    if (arrastrando) {
+      var dx = e.clientX - px, dy = e.clientY - py;
+      if (Math.abs(dx) + Math.abs(dy) > 3) movido = true;
+      if (desplazando) {
+        var escala = distancia * 0.0012;
+        panX += dx * escala; panY -= dy * escala;
+      } else {
+        anguloY += dx * 0.008;
+        anguloX = Math.max(0.2, Math.min(1.45, anguloX + dy * 0.008));
+      }
+      px = e.clientX; py = e.clientY;
+      tip.style.display = "none";
+      return;
+    }
+    var g = bajoPuntero(e);
+    if (g && g.userData.fila) {
+      var medE = DATOS.carreras[carreraActual].mediana_empleabilidad_regional_pct;
+      tip.innerHTML = "";
+      var t1 = document.createElement("strong"); t1.textContent = g.userData.nombre;
+      var t2 = document.createElement("div"); t2.textContent = textoEtiqueta(g.userData.fila, medE);
+      tip.appendChild(t1); tip.appendChild(t2);
+      var r = escena.getBoundingClientRect();
+      tip.style.display = "block";
+      tip.style.left = Math.min(e.clientX - r.left + MARGEN_TIP, r.width - tip.offsetWidth - MARGEN_TIP) + "px";
+      tip.style.top = (e.clientY - r.top + MARGEN_TIP) + "px";
+    } else {
+      tip.style.display = "none";
+    }
+  });
+  dom.addEventListener("pointerup", function (e) {
+    arrastrando = false;
+    if (movido) return;
+    var g = bajoPuntero(e);
+    if (!g) { if (comunaSel) { comunaSel = null; aplicarAmbito(); } return; }
+    elegirZona(g.userData.codigo, g.userData.tipo === "region");
+  });
+  dom.addEventListener("wheel", function (e) {
+    e.preventDefault();
+    distancia = Math.max(DIST_MIN, Math.min(DIST_MAX, distancia + e.deltaY * 0.05));
+  }, { passive: false });
+
+  escena.addEventListener("keydown", function (e) {
+    var paso = 0.08, desp = distancia * 0.05;
+    if (e.shiftKey) {
+      if (e.key === "ArrowLeft") panX += desp;
+      else if (e.key === "ArrowRight") panX -= desp;
+      else if (e.key === "ArrowUp") panY -= desp;
+      else if (e.key === "ArrowDown") panY += desp;
+      else return;
+    } else if (e.key === "ArrowLeft") anguloY -= paso;
+    else if (e.key === "ArrowRight") anguloY += paso;
+    else if (e.key === "ArrowUp") anguloX = Math.max(0.2, anguloX - paso);
+    else if (e.key === "ArrowDown") anguloX = Math.min(1.45, anguloX + paso);
+    else if (e.key === "+" || e.key === "=") distancia = Math.max(DIST_MIN, distancia - 3);
+    else if (e.key === "-") distancia = Math.min(DIST_MAX, distancia + 3);
+    else return;
+    e.preventDefault();
+  });
+
+  function posicionarCamara() {
+    pivote.rotation.y = anguloY;
+    pivote.rotation.x = anguloX;
+    // El mapa queda centrado en el recuadro. Chile acostado (vista inicial) se baja; una región de pie se sube.
+    var desfase = regionSel ? 0 : -0.015;
+    pivote.position.set(panX, panY + desfase * distancia, 0);
+    camara.position.set(0, 0, distancia);
+    camara.lookAt(0, 0, 0);
+  }
+
+  function ajustar() {
+    var w = escena.clientWidth, h = escena.clientHeight;
+    renderer.setSize(w, h, false);
+    camara.aspect = w / h;
+    camara.updateProjectionMatrix();
+  }
+  window.addEventListener("resize", ajustar);
+  ajustar();
+
+  var girando = false;
+  var btnGirar = document.getElementById("btn-girar");
+  btnGirar.addEventListener("click", function () {
+    girando = !girando;
+    btnGirar.setAttribute("aria-pressed", String(girando));
+    btnGirar.textContent = girando ? "Detener el giro" : "Girar el mapa";
+  });
+  document.getElementById("btn-reset").addEventListener("click", function () {
+    ambitoPrev = null;
+    regionSel = null; comunaSel = null; selReg.value = "";
+    aplicarAmbito();
+  });
+
+  selReg.addEventListener("change", function () {
+    regionSel = selReg.value || null; comunaSel = null;
+    aplicarAmbito();
+  });
+  selCom.addEventListener("change", function () {
+    comunaSel = selCom.value || null;
+    aplicarAmbito();
+  });
+
+  var vector = new THREE.Vector3();
+  function bucle() {
+    requestAnimationFrame(bucle);
+    if (girando && !arrastrando) anguloY += 0.003;
+    posicionarCamara();
+    renderer.render(scene, camara);
+    var w = escena.clientWidth, h = escena.clientHeight;
+    etiquetas.forEach(function (e) {
+      vector.copy(ancla(e.g)).project(camara);
+      e.el.style.display = (vector.z < 1 && e.g.visible) ? "block" : "none";
+      e.el.style.left = ((vector.x + 1) / 2 * w) + "px";
+      e.el.style.top = ((-vector.y + 1) / 2 * h) + "px";
+    });
+  }
+
+  // Inicio: selectores de carrera y de región.
+  var nombres = Object.keys(DATOS.carreras).sort(function (a, b) { return a.localeCompare(b, "es"); });
+  llenar(sel, nombres.map(function (n) { return { valor: n, texto: n }; }));
+  llenar(selReg, REGIONES.slice().sort(function (a, b) { return a.properties.codigo.localeCompare(b.properties.codigo); })
+    .map(function (r) { return { valor: r.properties.codigo, texto: nombreCorto(r.properties.nombre) }; }), "Todo Chile");
+  sel.addEventListener("change", function () { dibujar(sel.value); });
+
+  var fuente = DATOS.fuente_empleabilidad;
+  var enlace = document.getElementById("fuente-emp");
+  enlace.href = fuente.url;
+  enlace.textContent = fuente.fuente + " (SIES), periodo " + fuente.periodo;
+
+  sel.value = nombres.indexOf("Enfermería") >= 0 ? "Enfermería" : nombres[0];
+  dibujar(sel.value);
+  bucle();
+
+  // Si la persona cambia entre modo claro y oscuro, el mapa se vuelve a pintar con los colores del tema.
+  if (window.matchMedia) {
+    var esquema = window.matchMedia("(prefers-color-scheme: dark)");
+    var alCambiar = function () { leerColores(); dibujar(carreraActual); resaltar(); };
+    if (esquema.addEventListener) esquema.addEventListener("change", alCambiar); else esquema.addListener(alCambiar);
+  }
+
+  // Sin WebGL: solo la tabla por región, con el mismo selector de carrera.
+  function modoTabla() {
+    llenar(sel, Object.keys(DATOS.carreras).sort(function (a, b) { return a.localeCompare(b, "es"); }).map(function (n) { return { valor: n, texto: n }; }));
+    selReg.disabled = true; selCom.disabled = true;
+    function pintar() {
+      carreraActual = sel.value;
+      var datos = DATOS.carreras[carreraActual];
+      document.getElementById("res-nombre").textContent = carreraActual;
+      cabeza.innerHTML = '<tr><th scope="col">Región</th><th scope="col" class="cifra">Estudiantes nuevos 2026</th><th scope="col" class="cifra">Empleo al primer año</th><th scope="col">Comparación</th></tr>';
+      detalle.innerHTML = "";
+      datos.regiones.forEach(function (f) {
+        var r = REGIONES.find(function (x) { return x.properties.codigo === f.codigo_region; });
+        agregarFila([r ? nombreCorto(r.properties.nombre) : f.codigo_region,
+          f.entradas === null ? "menos de 10" : fmtN(f.entradas),
+          f.empleabilidad_pct === null ? "sin dato" : fmtP(f.empleabilidad_pct),
+          ETIQUETAS_CRUCE[f.cruce] || f.cruce], f.codigo_region, true);
+      });
+    }
+    var nombresT = Object.keys(DATOS.carreras);
+    sel.value = nombresT.indexOf("Enfermería") >= 0 ? "Enfermería" : nombresT[0];
+    sel.addEventListener("change", pintar);
+    pintar();
+  }
+})();
+</script>
+</body>
+</html>
